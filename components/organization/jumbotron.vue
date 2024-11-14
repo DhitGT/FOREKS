@@ -11,7 +11,7 @@
         :style="{
           backgroundImage: `url(/assets/img/bgJumbo/${currentBackground})`,
         }"
-        class="absolute inset-0 bg-center bg-no-repeat bg-cover bg-gray-900 bg-blend-multiply transition-opacity duration-1000 ease-in-out"
+        class="absolute inset-0 bg-center bg-no-repeat bg-cover bg-gray-700 bg-blend-multiply transition-opacity duration-1000 ease-in-out"
         :class="{ 'opacity-0': fadingOut, 'opacity-100': !fadingOut }"
       ></div>
 

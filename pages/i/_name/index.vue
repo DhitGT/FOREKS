@@ -1,48 +1,47 @@
 <template>
   <div class="container">
+    <!-- Hero Section -->
     <div class="hero p-8">
       <div class="flex">
-        <img
-          src="https://dheep.site/me.jpg"
-          width="300"
-          class="rounded-circle"
-          alt=""
-        />
+        <img :src="profilePic" width="300" class="rounded-circle" alt="" />
         <div class="flex flex-col ms-10 px-5 items-start justify-center">
           <div class="w-full">
-            <p class="text-6xl font bold">SMKN 2 BEKASI</p>
+            <p class="text-6xl font-bold">{{ name }}</p>
             <div class="flex justify-start gap-6">
               <div>
-                <p class="text-xl font-bold">Organizazion : 8</p>
+                <p class="text-xl font-bold">Organizazion: 8</p>
               </div>
               <div>
-                <p class="text-xl font-bold">All Member : 358</p>
+                <p class="text-xl font-bold">All Member: 358</p>
               </div>
               <div>
-                <p class="text-xl font-bold">Followers : 358</p>
+                <p class="text-xl font-bold">Followers: 358</p>
               </div>
             </div>
           </div>
-          <div class="max-h-14 items-center w-full flex">
-            <div>
-              <v-btn color="blue" class="px-8">Follow</v-btn>
-            </div>
+          <div class="max-h-14 items-center w-full flex gap-4">
+            <v-btn color="blue" class="px-8">Follow</v-btn>
+            <v-btn color="green" @click="showEditModal = true">Edit</v-btn>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Badge Section -->
     <div class="badge px-8">
       <div class="flex gap-5">
         <div
           v-for="(item, i) in badge"
           :key="i"
-          :class="`px-5 py-2 rounded-lg `"
-          :style="`background-color : ${item.color} `"
+          class="px-5 py-2 rounded-lg"
+          :style="{ backgroundColor: item.color }"
         >
           <p class="align-middle my-auto">{{ item.name }}</p>
         </div>
       </div>
     </div>
+
+    <!-- Organizations Cards -->
     <div>
       <div class="orgs-card max-h-fit">
         <div>
@@ -71,20 +70,49 @@
         </div>
       </div>
     </div>
+
+    <!-- Edit Modal -->
+    <v-dialog v-model="showEditModal" max-width="600px">
+      <v-card>
+        <v-card-title>Edit Profile</v-card-title>
+        <v-card-text>
+          <v-form ref="editForm">
+            <!-- Profile Picture Input -->
+            <v-text-field
+              v-model="editProfilePic"
+              label="Profile Picture URL"
+            ></v-text-field>
+
+            <!-- Name Input -->
+            <v-text-field v-model="editName" label="Name"></v-text-field>
+
+            <!-- Badge List Input -->
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="closeModal">Cancel</v-btn>
+          <v-btn color="blue" @click="saveChanges">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
+      profilePic: 'https://dheep.site/me.jpg',
+      name: 'SMKN 2 BEKASI',
       badge: [
-        { name: 'Lingkungan Hidup', color: '#A7F3D0' }, // Light green
-        { name: 'Voly', color: '#FEF3C7' }, // Light yellow
-        { name: 'Futsal', color: '#BFDBFE' }, // Light blue
-        { name: 'English Club', color: '#FECACA' }, // Light red
-        { name: 'Japanese Club', color: '#E9D5FF' }, // Light purple
-        { name: 'Software Community', color: '#D9F99D' }, // Light lime
-        { name: 'Tenro', color: '#FDE68A' }, // Light amber
+        { name: 'Lingkungan Hidup', color: '#A7F3D0' },
+        { name: 'Voly', color: '#FEF3C7' },
+        { name: 'Futsal', color: '#BFDBFE' },
+        { name: 'English Club', color: '#FECACA' },
+        { name: 'Japanese Club', color: '#E9D5FF' },
+        { name: 'Software Community', color: '#D9F99D' },
+        { name: 'Tenro', color: '#FDE68A' },
       ],
       orgsCard: [
         {
@@ -117,11 +145,37 @@ export default {
           description: 'Fostering creativity and design in various art forms.',
         },
       ],
+      // Modal and edit form data
+      showEditModal: false,
+      editProfilePic: '',
+      editName: '',
+      editBadge: [],
     }
   },
   methods: {
     cardclick(org) {
-      this.$router.push('/o/' + org.name)
+      this.$router.push(`${this.$route.path}/${org.name}`)
+    },
+    openEditModal() {
+      this.editProfilePic = this.profilePic
+      this.editName = this.name
+      this.editBadge = JSON.parse(JSON.stringify(this.badge))
+      this.showEditModal = true
+    },
+    closeModal() {
+      this.showEditModal = false
+    },
+    saveChanges() {
+      this.profilePic = this.editProfilePic
+      this.name = this.editName
+      this.badge = this.editBadge
+      this.showEditModal = false
+    },
+    addBadge() {
+      this.editBadge.push({ name: '', color: '#ffffff' })
+    },
+    removeBadge(index) {
+      this.editBadge.splice(index, 1)
     },
   },
 }

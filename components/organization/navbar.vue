@@ -107,7 +107,7 @@ export default {
     NavColors: {
       required: false,
       default: () => ({
-        bgPrimary: 'bg-[#1b1d2b]',
+        bgPrimary: 'bg-[#222222]',
         bgTransparent: 'bg-transparent',
         textPrimary: 'text-white',
         iconColor: 'text-gray-400',

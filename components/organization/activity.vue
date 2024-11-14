@@ -3,51 +3,33 @@
     <div class="pa-6">
       <v-container>
         <div class="flex flex-col items-center justify-center">
-          <span :style="{ color: fontColor }" class="text-4xl font-bold mb-5"
-            >Aktivitas Kami</span
-          >
+          <span :style="{ color: fontColor }" class="text-4xl font-bold mb-5">
+            {{ title }}
+          </span>
           <div>
             <p :style="{ color: fontColor }" class="mb-3 font-normal text-lg">
-              Adapun kegiatan yang kami lakukan adalah kegiatan yang
-              berkontribusi pada pelestarian lingkungan dan pengembangan diri.
-              Kami berusaha menyelenggarakan kegiatan yang bervariasi dan
-              mendidik untuk menginspirasi anggota kami. Berikut adalah beberapa
-              contohnya:
+              {{ description }}
             </p>
 
-            <ul class="`text-[#${FontColor}]`">
-              <li class="list-disc mb-2">
-                <span class="font-bold"> Mountaineering: </span>
-                Mendaki gunung untuk merasakan keindahan alam dan meningkatkan
-                keterampilan bertahan hidup di lingkungan yang keras.
-              </li>
-              <li class="list-disc mb-2">
-                <span class="font-bold"> Pembelajaran Hidroponik: </span>
-                Mengenal teknik bertani modern yang ramah lingkungan dan
-                berkontribusi pada ketahanan pangan.
-              </li>
-              <li class="list-disc mb-2">
-                <span class="font-bold">
-                  Pembelajaran tentang Lingkungan Hidup:
-                </span>
-                Memahami isu-isu lingkungan dan mencari solusi inovatif untuk
-                mengatasi tantangan yang dihadapi.
-              </li>
-              <li class="list-disc mb-2">
-                <span class="font-bold"> Kunjungan Studi: </span>
-                Mengunjungi tempat-tempat yang memiliki praktik terbaik dalam
-                pengelolaan lingkungan dan belajar dari pengalaman mereka.
+            <ul>
+              <li
+                class="list-disc mb-2"
+                v-for="(activity, i) in activities"
+                :key="i"
+              >
+                <span class="font-bold">{{ activity.title }}: </span>
+                {{ activity.description }}
               </li>
             </ul>
 
-            <p class="`mb-3 font-normal text-lg text-[#${FontColor}]`">
-              Nah dibawah ini ada detail beberapa kegiatan yang pernah kita
-              lakuin.
+            <p :style="{ color: fontColor }" class="mb-3 font-normal text-lg">
+              {{ footerText }}
             </p>
           </div>
         </div>
       </v-container>
     </div>
+
     <div :style="{ backgroundColor: carouselBgColor }">
       <v-container :style="{ backgroundColor: carouselBgColor }" class="py-6">
         <carousel
@@ -62,7 +44,8 @@
           :mouse-drag="true"
           :pagination-enabled="true"
         >
-          <slide v-if="indexPage > 1"> </slide>
+          <slide v-if="indexPage > 1"></slide>
+
           <slide
             style="padding: 10px"
             v-for="(item, i) in itemActivities"
@@ -77,13 +60,16 @@
               buttonTextColor="#FFEB3B"
             />
           </slide>
-          <slide v-if="itemActivities.length === 7 * perPage && dotsTotal > 7">
-          </slide>
+
+          <slide
+            v-if="itemActivities.length === 7 * perPage && dotsTotal > 7"
+          ></slide>
         </carousel>
       </v-container>
     </div>
   </div>
 </template>
+
 <script>
 import { Carousel, Slide } from 'vue-carousel'
 
@@ -93,22 +79,34 @@ export default {
     Slide,
   },
   props: {
+    // Dynamic content for title, description, footer, and activities
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    footerText: {
+      type: String,
+      required: true,
+    },
+    activities: {
+      type: Array,
+      required: true,
+    },
+
     // Carousel background color
     carouselBgColor: {
       type: String,
       default: '#333333', // Dark gray for carousel background
     },
 
-    // Active pagination dot color
-    activeDotColor: {
+    // Optional font color
+    fontColor: {
       type: String,
-      default: '#FFFFFF', // White for active pagination dot
-    },
-
-    // Inactive pagination dot color
-    inactiveDotColor: {
-      type: String,
-      default: '#555555', // Darker gray for inactive pagination dot
+      default: '#FFFFFF', // Default white font color
     },
   },
   data() {
@@ -116,10 +114,7 @@ export default {
       windowWidth: 0,
       startIndex: 0,
       indexPage: 1,
-      isNext: false,
       itemActivities: [],
-      paginationDots: Array(5).fill(0), // Example array for pagination dots
-      activeDot: 2, // Example of an active dot index
       originalItemActivities: [
         {
           title: 'Mandalawangi Camping',
@@ -160,7 +155,6 @@ export default {
     window.removeEventListener('resize', this.getWindowWidth)
     this.$refs.carouselActivities.$off('pageChange', this.onPageChange)
   },
-
   computed: {
     dotsTotal() {
       this.windowWidth = window.innerWidth
@@ -183,7 +177,6 @@ export default {
       }
     },
   },
-
   methods: {
     onPageChange(page) {
       this.currentPage = page // Update the current page
@@ -210,7 +203,6 @@ export default {
     },
     getWindowWidth() {
       this.windowWidth = window.innerWidth
-
       if (this.dotsTotal > 7) {
         this.itemActivities = this.originalItemActivities.slice(
           this.startIndex,

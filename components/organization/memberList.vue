@@ -1,10 +1,10 @@
 <template>
   <v-container class="py-4">
-    <span :style="{ color: textColor }" class="text-4xl font-bold mb-5"
+    <span :style="{ color: textColor }" class="text-4xl font-bold mb-9"
       >Members Lists</span
     >
     <!-- Member List (Single Column) -->
-    <v-row class="justify-center" v-if="members.length">
+    <v-row class="mt-4 justify-center" v-if="members.length">
       <v-col v-for="(member, index) in displayedMembers" :key="index" cols="12">
         <v-card class="rounded-lg border px-4 py-1" :class="cardColor">
           <v-row>

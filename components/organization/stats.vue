@@ -3,15 +3,15 @@
     <div class="flex justify-around space-x-6 text-center">
       <div>
         <p :style="{ color: numberColor }" class="text-3xl font-semibold">
-          {{ anggota }}
+          {{ member }}
         </p>
-        <p :style="{ color: labelColor }" class="text-sm">Anggota</p>
+        <p :style="{ color: labelColor }" class="text-sm">Members</p>
       </div>
       <div>
         <p :style="{ color: numberColor }" class="text-3xl font-semibold">
-          {{ generasi }}
+          {{ generation }}
         </p>
-        <p :style="{ color: labelColor }" class="text-sm">Generasi</p>
+        <p :style="{ color: labelColor }" class="text-sm">Generations</p>
       </div>
       <div>
         <p :style="{ color: numberColor }" class="text-3xl font-semibold">
@@ -26,11 +26,11 @@
 <script>
 export default {
   props: {
-    anggota: {
+    member: {
       type: String,
       default: '300',
     },
-    generasi: {
+    generation: {
       type: String,
       default: '1023',
     },
