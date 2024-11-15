@@ -34,7 +34,10 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: '~/plugins/firebase.js', mode: 'client' }],
+  plugins: [
+    { src: '~/plugins/firebase.js', mode: 'client' },
+    { src: '~/plugins/vue-quill-editor.js' }
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

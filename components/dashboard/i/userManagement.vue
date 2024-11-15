@@ -22,6 +22,26 @@
               required
             />
           </div>
+          <div class="mb-4">
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              v-model="newUser.password"
+              class="block w-full rounded-lg p-2 mt-1 bg-gray-300 text-black"
+              required
+              color="black"
+              bg-color="#FF0000"
+              icon
+              outlined
+              append-icon="mdi-eye"
+            />
+          </div>
 
           <div class="mb-4">
             <label
@@ -236,6 +256,7 @@ export default {
       showModal: false,
       newUser: {
         name: '',
+        password: '',
         leaderAt: '',
       },
       orgsCard: [
