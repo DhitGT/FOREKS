@@ -3,22 +3,65 @@
     <!-- Hero Section -->
     <div class="hero p-8">
       <div class="flex">
-        <img :src="profilePic" width="300" class="rounded-circle" alt="" />
+        <img
+          :src="
+            profileInfo && profileInfo.data && profileInfo.data[0]?.img_profile
+              ? 'http://localhost:8000/storage/' +
+                profileInfo.data[0]?.img_profile
+              : '/assets/img/group-users.png'
+          "
+          width="300"
+          height="300"
+          class="rounded-circle object-cover aspect-square"
+          alt=""
+        />
         <div class="flex flex-col ms-10 px-5 items-start justify-center">
           <div class="w-full">
-            <p class="text-6xl font-bold">{{ name }}</p>
+            <p class="text-6xl font-bold">
+              {{ profileInfo && profileInfo.data && profileInfo.data[0]?.nama }}
+            </p>
             <div class="flex justify-start gap-6">
               <div>
-                <p class="text-xl font-bold">Organizazion: 8</p>
+                <p class="text-xl font-bold">
+                  Organizazion:
+                  {{
+                    profileInfo &&
+                    profileInfo.data &&
+                    profileInfo.data[0]?.total_organization
+                  }}
+                </p>
               </div>
               <div>
-                <p class="text-xl font-bold">All Member: 358</p>
+                <p class="text-xl font-bold">
+                  All Member:
+                  {{
+                    profileInfo &&
+                    profileInfo.data &&
+                    profileInfo.data[0]?.total_member
+                  }}
+                </p>
               </div>
               <div>
-                <p class="text-xl font-bold">Followers: 358</p>
+                <p class="text-xl font-bold">
+                  Followers:
+                  {{
+                    profileInfo &&
+                    profileInfo.data &&
+                    profileInfo.data[0]?.total_followers
+                  }}
+                </p>
               </div>
             </div>
           </div>
+          <div
+            class="text-lg"
+            v-html="
+              profileInfo &&
+              profileInfo.data &&
+              profileInfo.data[0]?.description
+            "
+          ></div>
+
           <div class="max-h-14 items-center w-full flex gap-4">
             <v-btn color="blue" class="px-8">Follow</v-btn>
             <v-btn color="green" @click="showEditModal = true">Edit</v-btn>
@@ -103,6 +146,7 @@
 export default {
   data() {
     return {
+      profileInfo: [],
       profilePic: 'https://dheep.site/me.jpg',
       name: 'SMKN 2 BEKASI',
       badge: [
@@ -152,7 +196,19 @@ export default {
       editBadge: [],
     }
   },
+  mounted() {
+    this.getProfileInfo()
+  },
   methods: {
+    async getProfileInfo() {
+      const { data } = await this.$store.dispatch(
+        'Dashboard/instansi/getProfileInfo'
+      )
+      this.profileInfo = data
+
+      this.badge = JSON.parse(this.profileInfo.data[0]?.badge)
+      console.log(this.profileInfo)
+    },
     cardclick(org) {
       this.$router.push(`${this.$route.path}/${org.name}`)
     },

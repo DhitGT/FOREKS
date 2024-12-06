@@ -1,7 +1,7 @@
 <template>
   <div>
     <apexchart
-      type="bar"
+      type="line"
       class="text-black"
       :options="chartOptions"
       :series="chartData"
@@ -39,7 +39,7 @@ export default {
       ],
       chartOptions: {
         chart: {
-          type: 'bar',
+          type: 'line',
           height: 350,
         },
         plotOptions: {
