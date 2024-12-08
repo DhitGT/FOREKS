@@ -150,13 +150,8 @@ export default {
       profilePic: 'https://dheep.site/me.jpg',
       name: 'SMKN 2 BEKASI',
       badge: [
-        { name: 'Lingkungan Hidup', color: '#A7F3D0' },
-        { name: 'Voly', color: '#FEF3C7' },
-        { name: 'Futsal', color: '#BFDBFE' },
-        { name: 'English Club', color: '#FECACA' },
-        { name: 'Japanese Club', color: '#E9D5FF' },
-        { name: 'Software Community', color: '#D9F99D' },
-        { name: 'Tenro', color: '#FDE68A' },
+        { name: 'qweqe', color: '#A7F3D0' },
+        { name: 'sad', color: '#f2a6da' },
       ],
       orgsCard: [
         {
@@ -206,8 +201,9 @@ export default {
       )
       this.profileInfo = data
 
-      this.badge = JSON.parse(this.profileInfo.data[0]?.badge)
+      this.badge = JSON.parse(this.profileInfo.data[0].badge)
       console.log(this.profileInfo)
+      console.log('badge', this.badge)
     },
     cardclick(org) {
       this.$router.push(`${this.$route.path}/${org.name}`)

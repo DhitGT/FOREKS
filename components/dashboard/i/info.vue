@@ -385,7 +385,9 @@ export default {
   methods: {
     openModal() {
       this.form.description = this.profileInfo.data[0].description
-      this.form.badge = JSON.parse(this.profileInfo.data[0].badge)
+      const badge_from_api = JSON.parse(this.profileInfo.data[0].badge)
+      this.badgeInput.color = '#A7F3D0'
+      this.form.badge = badge_from_api != null ? badge_from_api : []
       // this.form.img_profile = this.profileInfo.data[0].img_profile
       this.isModalOpen = true
     },
