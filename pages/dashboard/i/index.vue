@@ -124,7 +124,7 @@
           <div>
             <p class="text-2xl font-bold">User Management</p>
           </div>
-          <dashboard-i-user-management />
+          <dashboard-i-user-management :eskulInstansiList="eskulInstansiList" />
           <hr />
           <div>
             <p class="text-2xl font-bold">Charts</p>
@@ -199,6 +199,7 @@ export default {
 
       console.log('eskul instansi :', this.eskulInstansiList)
     },
+
     handleEditEskul(item) {
       this.itemEskulEdit = item
       console.log('itme edit : ', item)

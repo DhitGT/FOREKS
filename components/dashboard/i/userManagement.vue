@@ -1,5 +1,107 @@
 <template>
   <div>
+    <!-- Edit User Modal -->
+    <div
+      v-if="showEditModal"
+      class="fixed z-40 inset-0 flex items-center justify-center bg-black bg-opacity-50"
+    >
+      <div class="bg-white rounded-lg w-96 p-6">
+        <h2 class="text-xl text-gray-800 font-semibold mb-4">Edit User</h2>
+        <form @submit.prevent="updateUser">
+          <div class="mb-4">
+            <label
+              for="edit_profile_image"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Profile Image
+            </label>
+            <input
+              type="file"
+              id="edit_profile_image"
+              @change="handleImageUpload"
+              accept="image/*"
+              class="block w-full bg-gray-300 p-2 border text-gray-700 border-gray-600 rounded-lg mt-1"
+            />
+            <div v-if="selectedUser?.profileImagePreview" class="mt-2">
+              <img
+                :src="selectedUser.profileImagePreview"
+                alt="Profile Preview"
+                class="w-24 h-24 object-cover rounded-full"
+              />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label
+              for="edit_name"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Name
+            </label>
+            <input
+              type="text"
+              id="edit_name"
+              v-model="selectedUser.name"
+              class="block bg-gray-300 w-full p-2 border text-gray-700 border-gray-600 rounded-lg mt-1"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label
+              for="edit_email"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              id="edit_email"
+              v-model="selectedUser.email"
+              class="block bg-gray-300 w-full p-2 border text-gray-700 border-gray-600 rounded-lg mt-1"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label
+              for="edit_leaderAt"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Leader At
+            </label>
+            <select
+              id="edit_leaderAt"
+              v-model="selectedUser.eskul_id"
+              class="block w-full bg-gray-300 p-2 border text-gray-700 border-gray-600 rounded-lg mt-1"
+              required
+            >
+              <option value="" disabled>Select Organization</option>
+              <option
+                v-for="org in organizations"
+                :key="org.id"
+                :value="org.id"
+              >
+                {{ org.name }}
+              </option>
+            </select>
+          </div>
+          <div class="flex justify-end mt-6">
+            <button
+              type="button"
+              @click="showEditModal = false"
+              class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+            >
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <!-- modal add user -->
     <div
       v-if="showModal"
@@ -10,6 +112,29 @@
 
         <!-- Form for Adding User -->
         <form @submit.prevent="addUser">
+          <!-- Profile Image Upload -->
+          <div class="mb-4">
+            <label
+              for="profile_image"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Profile Image
+            </label>
+            <input
+              type="file"
+              id="profile_image"
+              @change="handleImageUploadAddUser"
+              accept="image/*"
+              class="block w-full bg-gray-300 p-2 border text-gray-700 border-gray-600 rounded-lg mt-1"
+            />
+            <div v-if="newUser.profileImagePreview" class="mt-2">
+              <img
+                :src="newUser.profileImagePreview"
+                alt="Profile Preview"
+                class="w-24 h-24 object-cover rounded-full"
+              />
+            </div>
+          </div>
           <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-gray-700">
               Name
@@ -18,6 +143,18 @@
               type="text"
               id="name"
               v-model="newUser.name"
+              class="block bg-gray-300 w-full p-2 border text-gray-700 border-gray-600 rounded-lg mt-1"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-700">
+              email
+            </label>
+            <input
+              type="email"
+              id="email"
+              v-model="newUser.email"
               class="block bg-gray-300 w-full p-2 border text-gray-700 border-gray-600 rounded-lg mt-1"
               required
             />
@@ -60,9 +197,9 @@
               <option
                 v-for="(org, index) in organizations"
                 :key="index"
-                :value="org"
+                :value="org.id"
               >
-                {{ org }}
+                {{ org.name }}
               </option>
             </select>
           </div>
@@ -135,8 +272,8 @@
             >
               <tr>
                 <th scope="col" class="px-6 py-3">Name</th>
-                <th scope="col" class="px-6 py-3">Username</th>
-                <th scope="col" class="px-6 py-3">Password</th>
+                <th scope="col" class="px-6 py-3">Email</th>
+                <th scope="col" class="px-6 py-3">Role</th>
                 <th scope="col" class="px-6 py-3">Leader At</th>
                 <th scope="col" class="px-6 py-3">Access</th>
                 <th scope="col" class="px-6 py-3">
@@ -146,7 +283,7 @@
             </thead>
             <tbody>
               <tr
-                v-for="(item, i) in orgsCard"
+                v-for="(item, i) in userLists"
                 :key="i"
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
               >
@@ -155,16 +292,24 @@
                   class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   <div class="flex gap-4 items-center">
-                    <v-avatar><img :src="item.logo" alt="logo" /></v-avatar>
+                    <v-avatar
+                      ><img
+                        class="object-cover object-center"
+                        :src="
+                          'http://localhost:8000/storage/' + item.profile_image
+                        "
+                        alt="logo"
+                    /></v-avatar>
                     {{ item.name }}
                   </div>
                 </td>
+
                 <td
                   scope="row"
                   class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   <div class="flex gap-4 items-center">
-                    {{ item.username }}
+                    {{ item.email }}
                   </div>
                 </td>
                 <td
@@ -172,7 +317,7 @@
                   class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                 >
                   <div class="flex gap-4 items-center">
-                    {{ item.password }}
+                    {{ item.role }}
                   </div>
                 </td>
                 <!-- Leader At Select Dropdown -->
@@ -180,18 +325,16 @@
                   <form class="max-w-sm mx-auto">
                     <select
                       id="organizations"
-                      v-model="item.leaderAt"
+                      v-model="item.eskul_id"
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option value="" disabled selected>
-                        Choose an organization
-                      </option>
+                      <option value="" disabled selected>Choose</option>
                       <option
-                        v-for="(org, index) in organizations"
-                        :key="index"
-                        :value="org"
+                        v-for="org in organizations"
+                        :key="org.id"
+                        :value="org.id"
                       >
-                        {{ org }}
+                        {{ org.name }}
                       </option>
                     </select>
                   </form>
@@ -208,37 +351,26 @@
                       </div>
                     </template>
                     <v-list>
-                      <v-list-item>
+                      <v-list-item
+                        v-for="(itemHakAkses, iakses) in masterHakAkses"
+                        :key="iakses"
+                      >
                         <v-checkbox
-                          v-model="item.accessAdmin"
-                          label="Admin Access"
-                          @change="
-                            updateAccess(i, 'Admin Access', item.accessAdmin)
-                          "
-                        />
-                      </v-list-item>
-                      <v-list-item>
-                        <v-checkbox
-                          v-model="item.accessDashboard"
-                          label="Dashboard Access"
-                          @change="
-                            updateAccess(
-                              i,
-                              'Dashboard Access',
-                              item.accessDashboard
-                            )
-                          "
+                          :input-value="getAccessValue(item, itemHakAkses)"
+                          :label="itemHakAkses.Nama"
+                          @change="updateAccess(item, itemHakAkses)"
                         />
                       </v-list-item>
                     </v-list>
                   </v-menu>
                 </td>
                 <td class="px-6 py-4 text-right">
-                  <a
-                    href="#"
+                  <button
+                    @click="editUser(item)"
                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                    >Edit</a
                   >
+                    Edit
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -251,61 +383,178 @@
 
 <script>
 export default {
+  props: {
+    eskulInstansiList: {
+      Type: Array,
+    },
+  },
+  async mounted() {
+    await this.getEskulInstansi()
+    await this.getUserInstansi()
+    await this.getMasterHakAkses()
+  },
   data() {
     return {
       showModal: false,
+      showEditModal: false,
+      masterHakAkses: [],
+      selectedUser: null,
       newUser: {
         name: '',
+        email: '',
         password: '',
         leaderAt: '',
+        profileImage: null,
+        profileImagePreview: null,
       },
-      orgsCard: [
-        {
-          name: 'Aditya Dwi Saputra',
-          username: 'dheep',
-          password: '123',
-          logo: 'https://koppling.site/bgJumbo2.jpg',
-          leaderAt: 'Koppling',
-          accessAdmin: false,
-          accessDashboard: false,
-        },
-        {
-          name: 'Aditya Dwi Saputra',
-          username: 'dheep',
-          password: '123',
-          logo: 'https://koppling.site/bgJumbo2.jpg',
-          leaderAt: 'Koppling',
-          accessAdmin: false,
-          accessDashboard: false,
-        },
-        {
-          name: 'Aditya Dwi Saputra',
-          username: 'dheep',
-          password: '123',
-          logo: 'https://koppling.site/bgJumbo2.jpg',
-          leaderAt: 'Koppling',
-          accessAdmin: false,
-          accessDashboard: false,
-        },
+      userLists: [
         // Add other users if needed
       ],
-      organizations: ['Koppling', 'Nature Club', 'Green Peace', 'Wildlife Org'],
+
+      organizations: [],
     }
   },
-  methods: {
-    updateAccess(index, type, isEnabled) {
-      console.log(`Access ${type} for ${this.orgsCard[index].name}:`, isEnabled)
+  watch: {
+    eskulInstansiList(val) {
+      this.organizations = val
     },
-    addUser() {
+  },
+  methods: {
+    async updateAccess(userItem, itemHakAkses) {
+      const formData = new FormData()
+      formData.append('user_id', userItem.id)
+      formData.append('hak_akses_kode', itemHakAkses.Kode)
+
+      const existingAccess = userItem.access.find(
+        (access) => access.name === itemHakAkses.kode
+      )
+      const flag = existingAccess
+        ? existingAccess.value
+          ? 'remove'
+          : 'add'
+        : 'add'
+
+      formData.append('flag', flag)
+
+      const { data } = await this.$store.dispatch(
+        'Dashboard/instansi/updateHakAkses',
+        formData
+      )
+      if (data) {
+        await this.getUserInstansi()
+      }
+    },
+    getAccessValue(item, itemHakAkses) {
+      const access = item.access.find(
+        (element) => element.kode === itemHakAkses.Kode
+      )
+      return access ? access.value : false
+    },
+    editUser(user) {
+      this.selectedUser = { ...user, profileImagePreview: user.profileImage }
+      this.showEditModal = true
+    },
+    async updateUser() {
+      try {
+        // Example API call to update user
+        const formData = new FormData()
+        formData.append('id', this.selectedUser.id)
+        formData.append('username', this.selectedUser.name)
+        formData.append('email', this.selectedUser.email)
+        formData.append('password', this.selectedUser.password)
+        formData.append('leader_eskul_id', this.selectedUser.leaderAt)
+
+        if (this.selectedUser.profileImage) {
+          formData.append('profile_image', this.selectedUser.profileImage)
+        }
+        const { data } = await this.$store.dispatch('editUser', formData)
+        if (data) {
+          this.showEditModal = false
+          // Refresh the user list after update
+          await this.getUserInstansi()
+        }
+      } catch (error) {
+        console.error('Failed to update user:', error)
+      }
+    },
+    handleImageUpload(event) {
+      const file = event.target.files[0]
+      if (file) {
+        this.selectedUser.profileImage = file
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          this.selectedUser.profileImagePreview = e.target.result
+        }
+        reader.readAsDataURL(file)
+      }
+    },
+
+    handleImageUploadAddUser(event) {
+      const file = event.target.files[0]
+      if (file) {
+        this.newUser.profileImage = file
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          this.newUser.profileImagePreview = e.target.result
+        }
+        reader.readAsDataURL(file)
+      }
+    },
+    async getUserInstansi() {
+      this.itemEskulEdit = null
+
+      const { data } = await this.$store.dispatch(
+        'Dashboard/instansi/getUserInstansi'
+      )
+      this.userLists = data.data
+    },
+    async getMasterHakAkses() {
+      // this.itemEskulEdit = null
+
+      const { data } = await this.$store.dispatch(
+        'Dashboard/instansi/getMasterHakAkses'
+      )
+      this.masterHakAkses = data.data
+      console.log('master hak akses : ', this.masterHakAkses)
+    },
+    async getEskulInstansi(isTrash = false) {
+      this.itemEskulEdit = null
+
+      const { data } = await this.$store.dispatch(
+        'Dashboard/instansi/getEskulInstansi',
+        isTrash
+      )
+      this.organizations = data.data
+
+      console.log('eskul instansi :', this.organizations)
+
+      // this.getEskulInstansi()
+    },
+    async addUser() {
       // Handle the form submission
       console.log('Adding user:', this.newUser)
 
+      const formData = new FormData()
+      formData.append('username', this.newUser.name)
+      formData.append('email', this.newUser.email)
+      formData.append('password', this.newUser.password)
+      formData.append('leader_eskul_id', this.newUser.leaderAt)
+      formData.append('profile_image', this.newUser.profileImage)
+
+      const { data } = await this.$store.dispatch('addUser', formData)
+
+      if (data) {
+      }
+
       // Reset the form
-      this.newUser = { name: '', leaderAt: '' }
+      this.newUser = { name: '', leaderAt: '', email: '', password: '' }
 
       // Close the modal
       this.showModal = false
+      this.getUserInstansi()
     },
   },
 }
 </script>
+
+

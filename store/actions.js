@@ -51,6 +51,27 @@ export default {
       console.log("errror : ", error)
     }
   },
+  async addUser({ commit, state }, formData) {
+    try {
+      const data = await this.$axios.$post("/dashboard/i/addUser", formData)
+
+      console.log(data)
+      return data
+    } catch (error) {
+      console.log("errror : ", error)
+    }
+  },
+  async editUser({ commit, state }, formData) {
+    try {
+      const data = await this.$axios.$post("/dashboard/i/editUser", formData)
+
+      console.log(data)
+      return data
+
+    } catch (error) {
+      console.log("errror : ", error)
+    }
+  },
 
   fetchCookie({ dispatch, commit }, isLogin) {
     if (process.client) {

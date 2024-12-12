@@ -83,6 +83,34 @@ export default {
       }
     }
   },
+  async getUserInstansi(_, isTrash) {
+    try {
+      // console.log("STATE TOKEN action: ", this.$store.state.token)
+
+      const data = await this.$axios.$get(
+        "/dashboard/i/getUserInstansi"
+      );
+      return {
+        status: true,
+        message: "Berhasil mendapatkan data",
+        data: data,
+      };
+    } catch (e) {
+      if (e.message.toLowerCase().includes("network")) {
+        return {
+          status: false,
+          message: "Koneksi bermasalah, silakan cek koneksi internet.",
+        };
+      } else {
+        const { errors, message } = e.response.data;
+        return {
+          status: false,
+          errors,
+          message,
+        };
+      }
+    }
+  },
   async setWebProfile(_, formData) {
     try {
       // console.log("STATE TOKEN action: ", this.$store.state.token)
@@ -173,6 +201,62 @@ export default {
 
       const data = await this.$axios.$post(
         "/eskul/restore", formData
+      );
+      return {
+        status: true,
+        message: "Berhasil",
+        data: data,
+      };
+    } catch (e) {
+      if (e.message.toLowerCase().includes("network")) {
+        return {
+          status: false,
+          message: "Koneksi bermasalah, silakan cek koneksi internet.",
+        };
+      } else {
+        const { errors, message } = e.response.data;
+        return {
+          status: false,
+          errors,
+          message,
+        };
+      }
+    }
+  },
+  async getMasterHakAkses(_, formData) {
+    try {
+      // console.log("STATE TOKEN action: ", this.$store.state.token)
+
+      const data = await this.$axios.$get(
+        "/dashboard/i/getMasterHakAkses"
+      );
+      return {
+        status: true,
+        message: "Berhasil",
+        data: data,
+      };
+    } catch (e) {
+      if (e.message.toLowerCase().includes("network")) {
+        return {
+          status: false,
+          message: "Koneksi bermasalah, silakan cek koneksi internet.",
+        };
+      } else {
+        const { errors, message } = e.response.data;
+        return {
+          status: false,
+          errors,
+          message,
+        };
+      }
+    }
+  },
+  async updateHakAkses(_, formData) {
+    try {
+      // console.log("STATE TOKEN action: ", this.$store.state.token)
+
+      const data = await this.$axios.$post(
+        "/dashboard/i/updateHakAkses", formData
       );
       return {
         status: true,
