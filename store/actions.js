@@ -13,10 +13,16 @@ export default {
         "app_id",
         CryptoJS.AES.encrypt(data.token, "token").toString()
       );
+
+      // console.log("data login :", data)
+      const baseUrl = window.location.origin; // Dynamically get the base URL
       if (data.token) {
-        const baseUrl = window.location.origin; // Dynamically get the base URL
+        if (data.data.role === "Manager") {
+          this.$router.push({ name: "dashboard-i" });
+        } else if (data.data.role === "Leader") {
+          this.$router.push({ name: "dashboard-o" });
+        }
         // window.location.href = `${baseUrl}/dashboard/i`;
-        this.$router.push({ name: "dashboard-i" });
       } else {
         console.log("gagal href")
       }

@@ -16,13 +16,23 @@
           style="max-width: fit-content"
         >
           <img
-            src="https://koppling.site/kopplingLogo.png"
-            class="h-8 rounded-full"
-            alt="Foresk Logo"
+            :src="
+              preview.logo
+                ? preview.logo
+                : `http://localhost:8000/storage/${profileInfo?.logo}`
+            "
+            class="h-8 w-8 aspect-square object-cover rounded-full"
+            alt="Nav Logo"
           />
           <span
             class="self-center text-2xl font-semibold whitespace-nowrap text-white"
-            >FORESK</span
+            >{{
+              preview.slogan
+                ? preview.slogan
+                : profileInfo?.web_pages?.navbar_title != null
+                ? profileInfo?.web_pages?.navbar_title
+                : 'Foresk'
+            }}</span
           >
         </a>
         <button
@@ -52,13 +62,7 @@
                 ><span class="text-white">Activities</span></a
               >
             </li>
-            <li>
-              <a
-                href="#alumni"
-                class="block nav-link py-2 px-3 rounded md:border-0 md:p-0 text-white hover:text-blue-500 hover:bg-gray-700 md:hover:bg-transparent"
-                ><span class="text-white">Alumni</span></a
-              >
-            </li>
+
             <li>
               <a
                 href="#gallery"
@@ -117,14 +121,6 @@
             </li>
             <li>
               <a
-                href="#alumni"
-                class="block nav-link py-2 px-3 rounded"
-                @click="isSidebarOpen = false"
-                ><span class="text-white">Alumni</span></a
-              >
-            </li>
-            <li>
-              <a
                 href="#gallery"
                 class="block nav-link py-2 px-3 rounded"
                 @click="isSidebarOpen = false"
@@ -148,6 +144,14 @@
 
 <script>
 export default {
+  props: {
+    profileInfo: {
+      type: Object,
+    },
+    preview: {
+      type: Object,
+    },
+  },
   data() {
     return {
       isTop: true,

@@ -11,12 +11,18 @@
             <v-avatar class="w-20">
               <img
                 class="w-24"
-                src="https://koppling.site/kopplingLogo.png"
+                :src="
+                  preview.navbar.logo
+                    ? preview.navbar.logo
+                    : `http://localhost:8000/storage/${profileInfo?.logo}`
+                "
                 alt=""
               />
             </v-avatar>
             <input
               type="file"
+              accept="image/*"
+              @change="handleFileUpload($event, 'navbar')"
               class="rounded-lg max-w-sm w-sm text-black bg-gray-300"
             />
           </div>
@@ -27,15 +33,23 @@
           </label>
           <input
             type="text"
+            v-model="preview.navbar.slogan"
             class="rounded-lg max-w-sm text-black bg-gray-300"
           />
         </div>
-        <v-btn outlined color="green" class="btn px-4 py-2 rounded-lg"
+        <v-btn
+          outlined
+          color="green"
+          @click="storeNavbar"
+          class="btn px-4 py-2 rounded-lg"
           >Save</v-btn
         >
         <p class="text-gray-700">Preview</p>
         <div class="example bg-gray-500">
-          <dashboard-o-example-navbar />
+          <dashboard-o-example-navbar
+            :preview="preview.navbar"
+            :profileInfo="profileInfo"
+          />
         </div>
       </div>
     </div>
@@ -47,13 +61,19 @@
         <div>
           <label for="" class="text-gray-800"> Background Image </label>
           <div class="flex gap-4">
-            <input type="file" class="rounded-lg text-black bg-gray-300" />
+            <input
+              accept="image/*"
+              @change="handleFileUpload($event, 'jumbotron')"
+              type="file"
+              class="rounded-lg text-black bg-gray-300"
+            />
           </div>
         </div>
         <div class="flex flex-col gap 4">
           <label for="" class="text-gray-800"> Jumbotron Title </label>
           <input
             type="text"
+            v-model="preview.jumbotron.title"
             class="rounded-lg max-w-sm text-black bg-gray-300"
           />
         </div>
@@ -61,6 +81,7 @@
           <label for="" class="text-gray-800"> Jumbotron SubTitle </label>
           <input
             type="text"
+            v-model="preview.jumbotron.subtitle"
             class="rounded-lg max-w-sm text-black bg-gray-300"
           />
         </div>
@@ -69,7 +90,7 @@
             <input
               id="default-checkbox"
               type="checkbox"
-              value=""
+              v-model="preview.jumbotron.isFormRegister"
               class="w-4 h-4 text-blue-600 bg-gray-600 rounded"
             />
             <label for="" class="text-gray-800">
@@ -78,10 +99,16 @@
           </div>
           <input
             type="text"
+            @onChange="handleFormLinkChange"
+            v-model="preview.jumbotron.formLink"
             class="rounded-lg max-w-sm text-black bg-gray-300"
           />
         </div>
-        <v-btn outlined color="green" class="btn px-4 py-2 rounded-lg"
+        <v-btn
+          @click="storeJumbotron"
+          outlined
+          color="green"
+          class="btn px-4 py-2 rounded-lg"
           >Save</v-btn
         >
       </div>
@@ -91,6 +118,8 @@
           :JumboImageList="dummyJumboImages"
           :JumboTittle="dummyJumboTitle"
           :JumboSubTittle="dummyJumboDescript"
+          :preview="preview.jumbotron"
+          :profileInfo="profileInfo"
         />
       </div>
     </div>
@@ -103,18 +132,25 @@
           <label for="" class="text-gray-800"> Content </label>
           <quill-editor
             class="text-black"
-            v-model="content"
+            v-model="preview.aboutUs"
             :options="editorOptions"
           />
         </div>
 
-        <v-btn outlined color="green" class="btn px-4 py-2 rounded-lg"
+        <v-btn
+          @click="storeAboutUs"
+          outlined
+          color="green"
+          class="btn px-4 py-2 rounded-lg"
           >Save</v-btn
         >
       </div>
       <p class="text-gray-700">Preview</p>
       <div class="example bg-gray-800">
-        <dashboard-o-example-about class="rounded-lg" />
+        <dashboard-o-example-about
+          :preview="preview.aboutUs"
+          class="rounded-lg"
+        />
       </div>
     </div>
     <div class="p-4 bg-white rounded-lg shadow-lg">
@@ -477,24 +513,76 @@
 <script>
 import { Carousel, Slide } from 'vue-carousel'
 export default {
+  mounted() {
+    this.getProfileInfo()
+  },
+
   data() {
     return {
+      preview: {
+        navbar: {
+          logo: '',
+          logoForUpload: '',
+          slogan: '',
+        },
+        jumbotron: {
+          jumboBg: '',
+          jumboBgUpload: '',
+          title: '',
+          subtitle: '',
+          isFormRegister: '',
+          formLink: '',
+        },
+        aboutUs: '',
+      },
+      profileInfo: [],
+      webPage: [],
       dialog: false,
       dummyJumboImages: ['bgJumbo2.jpg'],
       dummyJumboTitle: 'Welcome to Our Organization',
       dummyJumboDescription: 'We are committed to making a difference.',
       content: '', // Holds the editor content
       editorOptions: {
-        theme: 'snow', // Options: 'snow', 'bubble', etc.
+        theme: 'snow', // Available themes: 'snow', 'bubble'
         placeholder: 'Write something...',
         modules: {
           toolbar: [
-            [{ header: [1, 2, false] }],
-            ['bold', 'italic', 'underline'],
-            ['image', 'code-block'],
+            // Font settings
+            [{ font: [] }],
+            [{ size: ['small', false, 'large', 'huge'] }], // Font size
+
+            // Text formatting
+            ['bold', 'italic', 'underline', 'strike'], // Bold, italic, underline, strikethrough
+
+            // Script
+            [{ script: 'sub' }, { script: 'super' }], // Subscript, superscript
+
+            // Header formatting
+            [{ header: [1, 2, 3, 4, 5, 6, false] }], // Heading levels
+            [{ color: [] }, { background: [] }], // Text color and background color
+
+            // Alignment
+            [{ align: [] }],
+
+            // List formatting
+            [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }], // Ordered, unordered, checklist
+            [{ indent: '-1' }, { indent: '+1' }], // Indent, outdent
+
+            // Direction
+            [{ direction: 'rtl' }], // Right-to-left text direction
+
+            // Links, Images, Video
+            ['link', 'image', 'video'],
+
+            // Code blocks and blockquote
+            ['code-block', 'blockquote'],
+
+            // Clean formatting
+            ['clean'], // Remove formatting
           ],
         },
       },
+
       dummyGallery: ['bgJumbo.jpg', 'bgJumbo2.jpg', 'bgJumbo3.jpg'],
       dummyCardActivities: [
         {
@@ -522,9 +610,121 @@ export default {
     }
   },
   methods: {
+    handleFormLinkChange() {
+      // Check if the formLink has content, if so, set isFormRegister to true
+      this.preview.jumbotron.isFormRegister =
+        this.preview.jumbotron.formLink.length > 0
+      console.log('WOIIIII')
+      console.log('WOIIIII', this.preview.jumbotron)
+    },
     saveActivity() {
       // Add save logic here
       this.dialog = false // Close the modal after saving
+    },
+    handleFileUpload(event, isFor) {
+      const file = event.target.files[0]
+      if (file) {
+        switch (isFor) {
+          case 'navbar': {
+            this.preview.navbar.logoForUpload = file
+            this.preview.navbar.logo = file
+            const reader = new FileReader()
+            reader.onload = (e) => {
+              this.preview.navbar.logo = e.target.result
+            }
+            reader.readAsDataURL(file)
+            break // Break added to prevent fall-through to 'jumbotron' case
+          }
+          case 'jumbotron': {
+            console.log('is for JUMBOTRONNN')
+            this.preview.jumbotron.jumboBgUpload = file
+            this.preview.jumbotron.jumboBg = file
+
+            console.log(this.preview.jumbotron)
+            const reader = new FileReader()
+            reader.onload = (e) => {
+              this.preview.jumbotron.jumboBg = e.target.result
+            }
+            reader.readAsDataURL(file)
+            break // Break added to prevent fall-through
+          }
+        }
+      }
+    },
+    async getProfileInfo() {
+      const { data } = await this.$store.dispatch(
+        'Dashboard/organization/getProfileInfo'
+      )
+      this.profileInfo = data.data
+      this.webPage = data.data.web_pages
+      this.preview.navbar.slogan = this.webPage.navbar_title
+      this.preview.jumbotron.title = this.webPage.jumbotron_title
+      this.preview.jumbotron.subtitle = this.webPage.jumbotron_subtitle
+      this.preview.jumbotron.formLink = this.webPage.form_register_link
+      this.preview.jumbotron.isFormRegister =
+        this.webPage.form_register_link != null ? true : false
+      this.preview.aboutUs = this.webPage.about_desc
+    },
+    async storeNavbar() {
+      const formData = new FormData()
+      if (this.preview.navbar.logoForUpload != '') {
+        formData.append('logo', this.preview.navbar.logoForUpload)
+      }
+      if (this.preview.navbar.slogan != '') {
+        formData.append('navbar_title', this.preview.navbar.slogan)
+      }
+
+      const { data, message } = await this.$store.dispatch(
+        'Dashboard/organization/storeNavbar',
+        formData
+      )
+
+      console.log('store nav : ', message)
+
+      this.getProfileInfo()
+    },
+    async storeAboutUs() {
+      const formData = new FormData()
+      if (this.preview.aboutUs != '') {
+        formData.append('about_desc', this.preview.aboutUs)
+      }
+
+      const { data, message } = await this.$store.dispatch(
+        'Dashboard/organization/storeAboutUs',
+        formData
+      )
+
+      console.log('store nav : ', message)
+
+      this.getProfileInfo()
+    },
+    async storeJumbotron() {
+      const formData = new FormData()
+      if (this.preview.jumbotron.jumboBgUpload != '') {
+        formData.append('jumbotron_image', this.preview.jumbotron.jumboBgUpload)
+      }
+      if (this.preview.navbar.title != '') {
+        formData.append('jumbotron_title', this.preview.jumbotron.title)
+      }
+      if (this.preview.navbar.subtitle != '') {
+        formData.append('jumbotron_subtitle', this.preview.jumbotron.subtitle)
+      }
+      if (this.preview.navbar.formLink != '') {
+        formData.append('form_register_link', this.preview.jumbotron.formLink)
+      }
+      formData.append(
+        'is_form_register_link',
+        this.preview.jumbotron.isFormRegister
+      )
+
+      const { data, message } = await this.$store.dispatch(
+        'Dashboard/organization/storeJumbotron',
+        formData
+      )
+
+      console.log('store nav : ', message)
+
+      this.getProfileInfo()
     },
   },
 }

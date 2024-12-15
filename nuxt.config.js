@@ -1,6 +1,11 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
+
+  server: {
+    host: 'localhost', // Set the server host
+    port: 3000 // You can specify the port if needed (default is 3000)
+  },
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
@@ -18,7 +23,12 @@ export default {
         href: 'https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://cdn.quilljs.com/1.3.7/quill.snow.css' },
+      { rel: 'stylesheet', href: 'https://cdn.quilljs.com/1.3.7/quill.core.css' },
+      { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css' },
+    ],
     script: [
       {
         src: 'https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js',
@@ -30,13 +40,15 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '~/assets/css/tailwind.css',
-    'vuetify/dist/vuetify.min.css'  // Vuetify styles
+    'vuetify/dist/vuetify.min.css',
+    'quill/dist/quill.snow.css', // Snow theme
+    'quill/dist/quill.bubble.css', // Vuetify styles
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/firebase.js', mode: 'client' },
-    { src: '~/plugins/vue-quill-editor.js' },
+    { src: '~/plugins/vue-quill-editor.js', ssr: false },
     { src: '~/plugins/axios.js' }
   ],
 
@@ -62,7 +74,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: 'http://127.0.0.1:8000/api',
+    baseURL: 'http://localhost:8000/api',
 
     credentials: false,
 

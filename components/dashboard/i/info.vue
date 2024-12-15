@@ -4,9 +4,25 @@
       v-if="isModalOpen"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
     >
-      <div class="bg-gray-800 rounded-lg shadow-lg w-96 p-6">
+      <div
+        class="bg-gray-800 rounded-lg max-h-[80vh] overflow-y-scroll overflow-x-hidden shadow-lg w-96 p-6"
+      >
         <h2 class="text-lg font-bold mb-4">Create Web Profile</h2>
         <form @submit.prevent="submitForm">
+          <div class="mb-4">
+            <label for="description" class="block mb-1 text-sm font-medium">
+              Custom Domain Name
+            </label>
+            <div class="flex items-center border border-gray-300 rounded-lg">
+              <span class="ps-3 text-gray-500">http://localhost:3000/i/</span>
+              <input
+                type="text"
+                class="text-white bg-transparent border-none focus:ring-0 p-2"
+                v-model="form.domain"
+                required
+              />
+            </div>
+          </div>
           <div class="mb-4">
             <label for="description" class="block mb-1 text-sm font-medium">
               Description
@@ -99,80 +115,30 @@
       </div>
     </div>
 
-    <div class="flex justify-evenly gap-4">
+    <div class="flex lg:flex-row flex-col justify-evenly gap-4">
       <div
-        class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+        class="w-full lg:max-w-md bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
       >
-        <div class="flex justify-end px-4 pt-4">
-          <button
-            id="dropdownButton"
-            data-dropdown-toggle="dropdown"
-            class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
-            type="button"
-          >
-            <span class="sr-only">Open dropdown</span>
-            <svg
-              class="w-5 h-5"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 16 3"
-            >
-              <path
-                d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"
-              />
-            </svg>
-          </button>
-          <!-- Dropdown menu -->
-          <div
-            id="dropdown"
-            class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-          >
-            <ul class="py-2" aria-labelledby="dropdownButton">
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                  >Edit</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                  >Export Data</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                  >Delete</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="flex flex-col items-center pb-10">
+        <div class="flex flex-col justify-center mt-auto items-center py-10">
           <img
             class="w-24 h-24 mb-3 rounded-full shadow-lg"
             :src="
-              profileInfo.data[0].img_profile
+              profileInfo.data.img_profile
                 ? 'http://localhost:8000/storage/' +
-                  profileInfo.data[0].img_profile
+                  profileInfo.data.img_profile
                 : '/assets/img/group-users.png'
             "
             alt=""
           />
           <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-            {{ profileInfo?.data[0].nama }}
+            {{ profileInfo?.data.nama }}
           </h5>
           <span class="text-sm text-gray-500 dark:text-gray-400">{{
-            profileInfo.data[0].owner_name
+            profileInfo.data.owner_name
           }}</span>
           <div
             class="flex mt-4 md:mt-6"
-            v-if="profileInfo.data[0].instansi_wp_id != null"
+            v-if="profileInfo.data.instansi_wp_id != null"
           >
             <button
               @click="hrefToWebPage()"
@@ -236,7 +202,7 @@
         </ul>
         <div
           id="defaultTabContent"
-          v-if="profileInfo.data[0].instansi_wp_id != null"
+          v-if="profileInfo.data.instansi_wp_id != null"
         >
           <div
             class="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800"
@@ -247,7 +213,7 @@
             <h2
               class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white"
             >
-              {{ profileInfo.data[0].nama }}
+              {{ profileInfo.data.nama }}
             </h2>
 
             <div class="flex justify-start gap-6">
@@ -257,7 +223,7 @@
                   {{
                     profileInfo &&
                     profileInfo.data &&
-                    profileInfo.data[0]?.total_organization
+                    profileInfo.data?.total_organization
                   }}
                 </p>
               </div>
@@ -267,7 +233,7 @@
                   {{
                     profileInfo &&
                     profileInfo.data &&
-                    profileInfo.data[0]?.total_member
+                    profileInfo.data?.total_member
                   }}
                 </p>
               </div>
@@ -277,14 +243,14 @@
                   {{
                     profileInfo &&
                     profileInfo.data &&
-                    profileInfo.data[0]?.total_followers
+                    profileInfo.data?.total_followers
                   }}
                 </p>
               </div>
             </div>
             <div
-              class="mb-3 text-gray-500 dark:text-gray-400"
-              v-html="profileInfo.data[0].description"
+              class="mb-3 max-h-28 overflow-y-scroll overflow-x-hidden text-gray-500 dark:text-gray-400"
+              v-html="profileInfo.data.description"
             ></div>
           </div>
           <div
@@ -295,7 +261,7 @@
           >
             <dashboard-i-instansi-stats
               v-if="profileInfo && profileInfo.data"
-              :profileInfo="profileInfo.data[0]"
+              :profileInfo="profileInfo.data"
             />
             <!-- <h2
               class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white"
@@ -362,6 +328,7 @@ export default {
         description: '',
         instansi_id: '',
         img_profile: '',
+        domain: '',
         badge: [],
       },
       editorOptions: {
@@ -379,16 +346,16 @@ export default {
   },
   props: {
     profileInfo: {
-      type: Array,
+      type: Object,
     },
   },
   methods: {
     openModal() {
-      this.form.description = this.profileInfo.data[0].description
-      const badge_from_api = JSON.parse(this.profileInfo.data[0].badge)
+      this.form.description = this.profileInfo.data.description
+      const badge_from_api = JSON.parse(this.profileInfo.data.badge)
       this.badgeInput.color = '#A7F3D0'
       this.form.badge = badge_from_api != null ? badge_from_api : []
-      // this.form.img_profile = this.profileInfo.data[0].img_profile
+      // this.form.img_profile = this.profileInfo.data.img_profile
       this.isModalOpen = true
     },
     closeModal() {
@@ -419,12 +386,14 @@ export default {
         img_profile: '',
         badge: [],
       }
-      this.badgeInput = ''
+      this.badgeInput.name = ''
+      this.badgeInput.color = '#A7F3D0'
     },
 
     handleFileUpload(event) {
       const file = event.target.files[0]
       if (file) {
+        // Validate file type and size if needed
         this.form.img_profile = file
       }
     },
@@ -435,6 +404,7 @@ export default {
       formData.append('description', this.form.description)
       formData.append('instansi_id', this.form.instansi_id)
       formData.append('img_profile', this.form.img_profile)
+      formData.append('custom_domain_name', this.form.domain)
 
       // Convert badges to a JSON string before appending to FormData
       formData.append('badge', JSON.stringify(this.form.badge))
@@ -458,7 +428,7 @@ export default {
       }
     },
     hrefToWebPage() {
-      this.$router.push(`/i/${this.profileInfo.data[0].nama}`)
+      this.$router.push(`/i/${this.profileInfo.data.custom_domain_name}`)
     },
   },
 }

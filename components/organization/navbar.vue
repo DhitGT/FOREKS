@@ -88,18 +88,19 @@
 export default {
   props: {
     NavTittle: {
-      required: true,
+      required: false,
       default: 'FORESK',
     },
     NavLogoSrc: {
-      required: true,
+      required: false,
       default: 'https://koppling.site/kopplingLogo.png',
     },
     NavList: {
-      required: true,
+      required: false,
       default: [
         { tittle: 'Home', href: '#home' },
         { tittle: 'About', href: '#about' },
+        { tittle: 'Activities', href: '#activities' },
         { tittle: 'Gallery', href: '#galery' },
         { tittle: 'Contact', href: '#contact' },
       ],

@@ -62,6 +62,9 @@
             <v-btn @click="handleEdit(eskul)" icon fab plain x-small>
               <v-icon color="black">mdi-pencil</v-icon>
             </v-btn>
+            <v-btn @click="handleHrefEskul(eskul)" icon fab plain x-small>
+              <v-icon color="black">mdi-earth</v-icon>
+            </v-btn>
           </div>
         </div>
       </div>
@@ -74,7 +77,7 @@ export default {
   props: {
     eskul: {
       Type: Object,
-      required: true,
+      required: false,
     },
     isTrash: {
       Type: Boolean,
@@ -100,6 +103,9 @@ export default {
     },
     handleRestore(item) {
       this.$emit('handleRestore', item)
+    },
+    handleHrefEskul(item) {
+      this.$emit('handleHrefEskul', item)
     },
   },
   mounted() {

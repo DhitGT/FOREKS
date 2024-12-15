@@ -1,25 +1,24 @@
 <template>
   <div class="my-12 pa-6 rounded-xl">
-    <v-container>
-      <div class="flex flex-col items-center justify-center">
-        <span class="text-4xl font-bold mb-5">Tentang Kami</span>
-        <p class="mb-3 font-normal text-lg text-gray-300">
-          KOPPLING adalah singkatan dari Komunitas Pelajar Pecinta Lingkungan,
-          sebuah organisasi ekstrakurikuler di
-          <a
-            class="underline"
-            href="https://www.smkn2kotabekasi.sch.id/"
-            target="_blank"
-          >
-            SMK Negeri 2 Kota Bekasi</a
-          >
-          yang dibentuk oleh dan untuk pelajar yang memiliki kepedulian tinggi
-          terhadap isu-isu lingkungan. Kami bertujuan untuk meningkatkan
-          kesadaran dan pengetahuan lingkungan di kalangan pelajar serta
-          menginspirasi aksi nyata dalam pelestarian alam.
-        </p>
+    <div class="container">
+      <div class="text-4xl text-center font-bold mb-5">Tentang Kami</div>
+
+      <div>
+        <div class="ql-editor" v-html="preview"></div>
       </div>
-    </v-container>
+    </div>
     <visimisi />
   </div>
 </template>
+<script>
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+export default {
+  props: {
+    preview: {
+      type: String,
+      default: '',
+    },
+  },
+}
+</script>

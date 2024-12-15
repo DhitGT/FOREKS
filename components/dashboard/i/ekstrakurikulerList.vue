@@ -5,6 +5,7 @@
         <dashboard-i-eskul-card
           @handleTrash="handleTrash"
           @handleRestore="handleRestore"
+          @handleHrefEskul="handleHrefEskul"
           @handleEdit="handleEdit"
           :isTrash="isTrash"
           v-for="(item, i) in eskulInstansiList"
@@ -42,6 +43,9 @@ export default {
     },
     handleTrash(item) {
       this.$emit('handleTrash', item)
+    },
+    handleHrefEskul(item) {
+      this.$emit('handleHrefEskul', item)
     },
   },
   data() {

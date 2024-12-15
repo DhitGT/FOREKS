@@ -99,12 +99,12 @@ export default {
     // Prop to control modal visibility externally
     isVisible: {
       type: Boolean,
-      required: true,
+      required: false,
     },
     // Data for the modal
     data: {
       type: Object,
-      required: true,
+      required: false,
     },
   },
   data() {

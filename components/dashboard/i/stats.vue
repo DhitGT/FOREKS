@@ -1,7 +1,7 @@
 <template>
   <div>
     <apexchart
-      type="line"
+      type="bar"
       class="text-black"
       :options="chartOptions"
       :series="chartData"
@@ -16,30 +16,18 @@ export default {
   components: {
     apexchart: VueApexCharts,
   },
+  props: {
+    eskulInstansiList: {
+      Type: Array,
+    },
+    
+  },
   data() {
     return {
-      // Dummy data for each category and 5 eskuls
-      chartData: [
-        {
-          name: 'Member Total',
-          data: [25, 30, 20, 15, 10], // Example member totals for each eskul
-        },
-        {
-          name: 'Kas Total (in thousands)',
-          data: [50, 75, 30, 40, 60], // Example kas totals for each eskul in thousands
-        },
-        {
-          name: 'Achievements',
-          data: [3, 4, 1, 5, 2], // Example achievements count for each eskul
-        },
-        {
-          name: 'Absensi (%)',
-          data: [90, 85, 95, 80, 88], // Absensi percentage for each eskul
-        },
-      ],
+      chartData: [],
       chartOptions: {
         chart: {
-          type: 'line',
+          type: 'bar',
           height: 350,
         },
         plotOptions: {
@@ -52,7 +40,12 @@ export default {
           enabled: false,
         },
         xaxis: {
-          categories: ['Eskul 1', 'Eskul 2', 'Eskul 3', 'Eskul 4', 'Eskul 5'],
+          categories: [
+            'Member Total',
+            'Kas Total (in thousands)',
+            'Achievements',
+            'Alumni',
+          ],
         },
         yaxis: {
           title: {
@@ -63,9 +56,45 @@ export default {
           text: 'Eskul Statistics',
           align: 'center',
         },
-        colors: ['#1E90FF', '#32CD32', '#FFD700', '#FF6347'], // Colors for each category
+        colors: [], // Colors for each category
       },
     }
+  },
+  mounted() {
+    this.updateChartData()
+  },
+  watch: {
+    eskulInstansiList() {
+      this.updateChartData()
+    },
+  },
+  methods: {
+    updateChartData() {
+      if (this.eskulInstansiList) {
+        this.chartData = []
+        this.chartOptions.colors = []
+        this.eskulInstansiList.forEach((eskul, index) => {
+          this.chartData.push({
+            name: eskul.name,
+            data: [
+              eskul.total_member,
+              eskul.total_kas,
+              eskul.total_achievement,
+              eskul.alumni,
+            ],
+          })
+          this.chartOptions.colors.push(this.getRandomColor())
+        })
+      }
+    },
+    getRandomColor() {
+      var letters = '0123456789ABCDEF'
+      var color = '#'
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)]
+      }
+      return color
+    },
   },
 }
 </script>

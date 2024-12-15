@@ -13,7 +13,7 @@
         <!-- Modal Header -->
         <div class="flex justify-between items-center p-4 border-b">
           <h2 class="text-lg font-medium text-gray-800">
-            {{ isEditMode ? 'Edit' : 'Create' }} Form Modal
+            {{ isEditMode ? 'Edit' : 'Create' }} Organization
           </h2>
           <button
             @click="closeModal"
@@ -51,6 +51,28 @@
                 placeholder="Enter logo URL"
                 class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               />
+            </div>
+            <div class="mb-4">
+              <label
+                for="custom_domain_name"
+                class="block mb-1 text-gray-700 text-sm font-medium"
+              >
+                Custom Domain Name
+              </label>
+              <div class="flex items-center border border-gray-300 rounded-lg">
+                <span class="ps-3 text-gray-500"
+                  >http://localhost:3000/i/{{
+                    profileInfo.data.custom_domain_name
+                  }}/</span
+                >
+                <input
+                  type="text"
+                  id="custom_domain_name"
+                  class="text-white bg-transparent border-none focus:ring-0 p-2"
+                  v-model="form.custom_domain_name"
+                  required
+                />
+              </div>
             </div>
 
             <div class="mb-4">
@@ -192,6 +214,15 @@ export default {
       type: Object,
       default: null,
     },
+    profileInfo: {
+      type: Object,
+      required: false,
+    },
+  },
+  watch: {
+    profileInfo(val) {
+      console.log('profill infoo : ', val)
+    },
   },
   data() {
     return {
@@ -200,6 +231,7 @@ export default {
       form: {
         name: '',
         logo: '',
+        custom_domain_name: '',
         badge: [],
         gen: '',
         alumni: null,
@@ -226,6 +258,7 @@ export default {
 
       formData.append('name', this.form.name)
       formData.append('badge', JSON.stringify(this.form.badge))
+      formData.append('custom_domain_name', this.form.custom_domain_name)
       formData.append('gen', this.form.gen)
       formData.append('alumni', this.form.alumni)
       formData.append('instagram_url', this.form.instagram_url)
@@ -272,14 +305,17 @@ export default {
         if (this.editData) {
           this.isEditMode = true
           this.form.id = this.editData.id
+          this.form.custom_domain_name = this.editData.custom_domain_name
           this.form.badge = [...JSON.parse(this.editData.badge)]
           this.form = { ...this.editData, badge: this.form.badge }
           this.form.logo = null
+          console.log('EDIT DATA : ', this.form)
         } else {
           this.isEditMode = false
           this.form = {
             name: '',
             logo: '',
+            custom_domain_name: '',
             badge: [],
             gen: '',
             alumni: null,

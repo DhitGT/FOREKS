@@ -41,7 +41,7 @@ export default {
   props: {
     members: {
       type: Array,
-      required: true,
+      required: false,
       default: [
         { name: 'Alice', gen: 'A1' },
         { name: 'Bob', gen: 'B2' },

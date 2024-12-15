@@ -82,19 +82,19 @@ export default {
     // Dynamic content for title, description, footer, and activities
     title: {
       type: String,
-      required: true,
+      required: false,
     },
     description: {
       type: String,
-      required: true,
+      required: false,
     },
     footerText: {
       type: String,
-      required: true,
+      required: false,
     },
     activities: {
       type: Array,
-      required: true,
+      required: false,
     },
 
     // Carousel background color

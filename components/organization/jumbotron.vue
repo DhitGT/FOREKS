@@ -84,25 +84,25 @@
 export default {
   props: {
     JumboTittle: {
-      required: true,
+      required: false,
       default: 'FORESK - FORUM EKSTRAKURIKULER',
     },
     JumboSubTittle: {
-      required: true,
+      required: false,
       default: 'Lorem ipsum dolor sit amet',
     },
     JumboImageList: {
-      required: true,
+      required: false,
     },
     OrganizationItem: {
       required: false,
     },
     LearnMoreHref: {
-      required: true,
+      required: false,
       default: '#about',
     },
     FormHref: {
-      required: true,
+      required: false,
       default:
         'https://docs.google.com/forms/d/e/1FAIpQLSdH5ainp7B7cj1kLM4UuAsTtGDs5U2RwPFDc1kRVJUoPLDn9g/viewform',
     },

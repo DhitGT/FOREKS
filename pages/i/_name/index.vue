@@ -3,22 +3,25 @@
     <!-- Hero Section -->
     <div class="hero p-8">
       <div class="flex">
-        <img
-          :src="
-            profileInfo && profileInfo.data && profileInfo.data[0]?.img_profile
-              ? 'http://localhost:8000/storage/' +
-                profileInfo.data[0]?.img_profile
-              : '/assets/img/group-users.png'
-          "
-          width="300"
-          height="300"
-          class="rounded-circle object-cover aspect-square"
-          alt=""
-        />
-        <div class="flex flex-col ms-10 px-5 items-start justify-center">
+        <div class="min-w-72 h-72 rounded-full overflow-hidden">
+          <img
+            :src="
+              profileInfo && profileInfo.data && profileInfo.data?.img_profile
+                ? 'http://localhost:8000/storage/' +
+                  profileInfo.data?.img_profile
+                : '/assets/img/group-users.png'
+            "
+            class="w-full h-full object-cover"
+            alt=""
+          />
+        </div>
+
+        <div
+          class="max-w-[60%] flex flex-col ms-10 px-5 items-start justify-center"
+        >
           <div class="w-full">
             <p class="text-6xl font-bold">
-              {{ profileInfo && profileInfo.data && profileInfo.data[0]?.nama }}
+              {{ profileInfo && profileInfo.data && profileInfo.data?.nama }}
             </p>
             <div class="flex justify-start gap-6">
               <div>
@@ -27,7 +30,7 @@
                   {{
                     profileInfo &&
                     profileInfo.data &&
-                    profileInfo.data[0]?.total_organization
+                    profileInfo.data?.total_organization
                   }}
                 </p>
               </div>
@@ -37,7 +40,7 @@
                   {{
                     profileInfo &&
                     profileInfo.data &&
-                    profileInfo.data[0]?.total_member
+                    profileInfo.data?.total_member
                   }}
                 </p>
               </div>
@@ -47,7 +50,7 @@
                   {{
                     profileInfo &&
                     profileInfo.data &&
-                    profileInfo.data[0]?.total_followers
+                    profileInfo.data?.total_followers
                   }}
                 </p>
               </div>
@@ -56,15 +59,17 @@
           <div
             class="text-lg"
             v-html="
-              profileInfo &&
-              profileInfo.data &&
-              profileInfo.data[0]?.description
+              profileInfo && profileInfo.data && profileInfo.data?.description
             "
           ></div>
 
           <div class="max-h-14 items-center w-full flex gap-4">
-            <v-btn color="blue" class="px-8">Follow</v-btn>
-            <v-btn color="green" @click="showEditModal = true">Edit</v-btn>
+            <v-btn v-if="!profileInfo.isOwner" color="blue" class="px-8"
+              >Follow</v-btn
+            >
+            <v-btn v-else color="green" @click="goToDashboard"
+              >Go To Dashboard</v-btn
+            >
           </div>
         </div>
       </div>
@@ -89,13 +94,13 @@
       <div class="orgs-card max-h-fit">
         <div>
           <div class="grid grid-cols-1 p-5 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div v-for="(org, index) in orgsCard" :key="index">
+            <div v-for="(org, index) in eskulInstansiList" :key="index">
               <div
                 @click="cardclick(org)"
                 class="bg-white cursor-pointer rounded-lg shadow-lg min-h-full hover:shadow-xl transition-shadow"
               >
                 <img
-                  :src="org.logo"
+                  :src="'http://localhost:8000/storage/' + org.logo"
                   :alt="org.name"
                   class="w-full rounded-lg h-44 mx-auto object-cover"
                 />
@@ -144,69 +149,60 @@
 
 <script>
 export default {
+  watch: {
+    $route(to, from) {
+      // This allows you to reactively watch the route changes
+      this.name_custom_domain = to.params.name
+      console.log(this.name_custom_domain)
+    },
+  },
   data() {
     return {
       profileInfo: [],
       profilePic: 'https://dheep.site/me.jpg',
       name: 'SMKN 2 BEKASI',
-      badge: [
-        { name: 'qweqe', color: '#A7F3D0' },
-        { name: 'sad', color: '#f2a6da' },
-      ],
-      orgsCard: [
-        {
-          name: 'Koppling',
-          logo: 'https://koppling.site/bgJumbo2.jpg',
-          description:
-            'Loremm ipsum dolor sit amet fugus amigo fabulous sir ametin jala rekame',
-        },
-        {
-          name: 'Eco Warriors',
-          logo: 'https://koppling.site/bgJumbo3.jpg',
-          description:
-            'Dedicated to preserving the environment through sustainable practices.',
-        },
-        {
-          name: 'Tech Innovators',
-          logo: 'https://koppling.site/bgJumbo4.jpg',
-          description:
-            'Exploring cutting-edge technology and innovation for a better future.',
-        },
-        {
-          name: 'Sports Club',
-          logo: 'https://koppling.site/bgJumbo5.jpg',
-          description:
-            'A community for all sports enthusiasts and aspiring athletes.',
-        },
-        {
-          name: 'Art and Design Hub',
-          logo: 'https://koppling.site/bgJumbo.jpg',
-          description: 'Fostering creativity and design in various art forms.',
-        },
-      ],
+      badge: [],
+
       // Modal and edit form data
       showEditModal: false,
       editProfilePic: '',
       editName: '',
       editBadge: [],
+      name_custom_domain: '',
+      eskulInstansiList: [],
     }
   },
   mounted() {
     this.getProfileInfo()
+    this.getEskulInstansi()
   },
+
   methods: {
-    async getProfileInfo() {
+    async getEskulInstansi(isTrash = false) {
+      const nameRoute = this.$route.params.name
       const { data } = await this.$store.dispatch(
-        'Dashboard/instansi/getProfileInfo'
+        'Dashboard/instansi/getEskulInstansiPublic',
+        { custom_domain_name: nameRoute }
+      )
+      this.eskulInstansiList = data.data
+
+      console.log('eskul instansi :', this.eskulInstansiList)
+    },
+    async getProfileInfo() {
+      const nameRoute = this.$route.params.name
+      console.log('name route ', nameRoute)
+      const { data } = await this.$store.dispatch(
+        'Dashboard/instansi/getProfileInfoWithDomain',
+        nameRoute
       )
       this.profileInfo = data
 
-      this.badge = JSON.parse(this.profileInfo.data[0].badge)
+      this.badge = JSON.parse(this.profileInfo.data.badge)
       console.log(this.profileInfo)
       console.log('badge', this.badge)
     },
     cardclick(org) {
-      this.$router.push(`${this.$route.path}/${org.name}`)
+      this.$router.push(`${this.$route.path}/${org.custom_domain_name}`)
     },
     openEditModal() {
       this.editProfilePic = this.profilePic

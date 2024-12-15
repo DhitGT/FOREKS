@@ -74,10 +74,12 @@
               required
             >
               <option value="" disabled>Select Organization</option>
+              <option value="0">Not Leader In Any Organization</option>
               <option
                 v-for="org in organizations"
                 :key="org.id"
                 :value="org.id"
+                :disabled="org.leader_name != null"
               >
                 {{ org.name }}
               </option>
@@ -194,9 +196,11 @@
               required
             >
               <option value="" disabled selected>Select Organization</option>
+              <option value="0">Not Leader In Any Organization</option>
               <option
                 v-for="(org, index) in organizations"
                 :key="index"
+                :disabled="org.leader_name != null"
                 :value="org.id"
               >
                 {{ org.name }}
@@ -225,7 +229,7 @@
     <div class="pt-4">
       <div class="flex gap-4 items-center">
         <div class="w-2/4 flex gap-4 justify-start items-center">
-          <form class="max-w-xl w-2/4">
+          <div class="max-w-xl w-2/4">
             <label
               for="default-search"
               class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -241,19 +245,19 @@
               </div>
               <input
                 type="search"
+                v-model="userSearchQuery"
                 id="default-search"
                 class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search Mockups, Logos..."
-                required
+                placeholder="Search..."
               />
               <button
-                type="submit"
+                @click="handleSearch"
                 class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Search
               </button>
             </div>
-          </form>
+          </div>
           <button
             @click="showModal = true"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -320,24 +324,14 @@
                     {{ item.role }}
                   </div>
                 </td>
-                <!-- Leader At Select Dropdown -->
                 <td class="px-6 py-4 text-black">
-                  <form class="max-w-sm mx-auto">
-                    <select
-                      id="organizations"
-                      v-model="item.eskul_id"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                      <option value="" disabled selected>Choose</option>
-                      <option
-                        v-for="org in organizations"
-                        :key="org.id"
-                        :value="org.id"
-                      >
-                        {{ org.name }}
-                      </option>
-                    </select>
-                  </form>
+                  <div class="flex gap-4 items-center">
+                    {{
+                      item.eskul_id != '0'
+                        ? item.eskul_name
+                        : 'Not Leader In Any Organization'
+                    }}
+                  </div>
                 </td>
                 <td class="px-6 py-4 text-right">
                   <v-menu offset-y>
@@ -399,6 +393,7 @@ export default {
       showEditModal: false,
       masterHakAkses: [],
       selectedUser: null,
+      userSearchQuery: '',
       newUser: {
         name: '',
         email: '',
@@ -418,8 +413,16 @@ export default {
     eskulInstansiList(val) {
       this.organizations = val
     },
+    userSearchQuery(val) {
+      if (val == '') {
+        this.getUserInstansi()
+      }
+    },
   },
   methods: {
+    async handleSearch() {
+      await this.getUserInstansi(this.userSearchQuery)
+    },
     async updateAccess(userItem, itemHakAkses) {
       const formData = new FormData()
       formData.append('user_id', userItem.id)
@@ -461,8 +464,8 @@ export default {
         formData.append('id', this.selectedUser.id)
         formData.append('username', this.selectedUser.name)
         formData.append('email', this.selectedUser.email)
-        formData.append('password', this.selectedUser.password)
-        formData.append('leader_eskul_id', this.selectedUser.leaderAt)
+        // formData.append('password', this.selectedUser.password)
+        formData.append('leader_eskul_id', this.selectedUser.eskul_id)
 
         if (this.selectedUser.profileImage) {
           formData.append('profile_image', this.selectedUser.profileImage)
@@ -500,11 +503,12 @@ export default {
         reader.readAsDataURL(file)
       }
     },
-    async getUserInstansi() {
+    async getUserInstansi(userSearchQuery) {
       this.itemEskulEdit = null
 
       const { data } = await this.$store.dispatch(
-        'Dashboard/instansi/getUserInstansi'
+        'Dashboard/instansi/getUserInstansi',
+        userSearchQuery
       )
       this.userLists = data.data
     },

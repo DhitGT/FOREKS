@@ -17,51 +17,41 @@
       class="z-20 sm:translate-x-0"
     >
       <div class="h-full px-3 py-4 overflow-y-auto">
-        <p class="text-2xl font-bold text-gray-300">Dashboard</p>
+        <div class="flex items-center gap-2">
+          <button
+            @click="toggleSidebar"
+            class="inline-flex items-center p-2 ml-3 text-gray-300 rounded-lg sm:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600"
+          >
+            <i class="mdi mdi-close text-2xl"></i>
+          </button>
+          <div class="text-2xl font-bold text-gray-300">Dashboard</div>
+        </div>
         <ul class="space-y-2">
           <li>
             <nuxt-link
-              to="/"
+              to="/dashboard/o"
               class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
             >
               <i class="mdi mdi-home-outline text-xl"></i>
-              <span class="ml-3">Home</span>
+              <span class="ml-3">Dashboard</span>
             </nuxt-link>
           </li>
           <li>
             <nuxt-link
-              to="/profile"
+              :to="`/i/${profileInfo?.data?.instansi.instansi_web_page.custom_domain_name}/${profileInfo?.data?.web_pages.custom_domain_name}`"
               class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
             >
-              <i class="mdi mdi-account-outline text-xl"></i>
-              <span class="ml-3">Profile</span>
+              <i class="mdi mdi-card-outline text-xl"></i>
+              <span class="ml-3">Web Profile</span>
             </nuxt-link>
           </li>
           <li>
             <nuxt-link
-              to="/messages"
+              to="/dashboard/o/webprofile"
               class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
             >
-              <i class="mdi mdi-email-outline text-xl"></i>
-              <span class="ml-3">Messages</span>
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link
-              to="/settings"
-              class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
-            >
-              <i class="mdi mdi-cog-outline text-xl"></i>
-              <span class="ml-3">Settings</span>
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link
-              to="/logout"
-              class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
-            >
-              <i class="mdi mdi-logout text-xl"></i>
-              <span class="ml-3">Logout</span>
+              <i class="mdi mdi-pencil-outline text-xl"></i>
+              <span class="ml-3">Edit Web Profile</span>
             </nuxt-link>
           </li>
         </ul>
@@ -72,6 +62,11 @@
 
 <script>
 export default {
+  props: {
+    profileInfo: {
+      type: Object,
+    },
+  },
   data() {
     return {
       isSidebarOpen: false,

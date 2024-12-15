@@ -1,6 +1,9 @@
 <template>
   <div>
-    <dashboard-i-sidebar />
+    <dashboard-i-sidebar
+      :profileInfo="profileInfo"
+      :eskulList="eskulInstansiList"
+    />
     <div class="container md:ml-52">
       <div class="md:pl-52 flex flex-col gap-4">
         <div v-if="profileInfo.isFound">
@@ -23,14 +26,14 @@
             >Create New Instansi Profile</v-btn
           >
         </div>
-        <div v-if="profileInfo.isFound">
+        <div v-if="profileInfo.data?.custom_domain_name != null">
           <hr />
           <div>
             <p class="text-2xl font-bold">Organization</p>
           </div>
-          <div class="flex gap-4 my-3 items-center">
-            <div class="w-2/4">
-              <div class="max-w-xl mx-auto">
+          <div class="flex gap-4 my-3 max-h-fit items-center">
+            <div class="w-full">
+              <div class="max-w-full mx-auto">
                 <label
                   for="default-search"
                   class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -44,12 +47,13 @@
                   </div>
                   <input
                     type="search"
+                    v-model="eskulSearchQuery"
                     id="default-search"
                     class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Search"
                   />
                   <button
-                    type="submit"
+                    @click="getEskulInstansi"
                     class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
                     Search
@@ -63,12 +67,13 @@
                 :isShowModal="newEskulModal"
                 :editData="itemEskulEdit"
                 @getEskulInstansi="getEskulInstansi"
+                :profileInfo="profileInfo"
               />
               <button
                 @click="showNewEskulModal"
-                class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="block w-full h-12 px-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
-                Add New Organization
+                + New
               </button>
             </div>
           </div>
@@ -103,6 +108,7 @@
               :eskulInstansiList="eskulInstansiList"
               @handleTrash="handleTrash"
               @handleEdit="handleEditEskul"
+              @handleHrefEskul="handleHrefEskul"
             />
           </div>
           <div v-else-if="viewMode === 'trash'">
@@ -129,7 +135,7 @@
           <div>
             <p class="text-2xl font-bold">Charts</p>
           </div>
-          <dashboard-i-stats />
+          <dashboard-i-stats :eskulInstansiList="eskulInstansiList" />
         </div>
       </div>
     </div>
@@ -137,7 +143,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
+  // computed: {
+  //   ...mapState({
+  //     eskulSearchQuery: (state) => state.dashboard.instansi.eskulSearchQuery,
+  //   }),
+  // },
   data() {
     return {
       viewMode: 'list', // default view mode
@@ -146,6 +158,7 @@ export default {
       profileInfo: [],
       newEskulModal: false,
       itemEskulEdit: null,
+      eskulSearchQuery: '',
     }
   },
   mounted() {
@@ -193,7 +206,7 @@ export default {
 
       const { data } = await this.$store.dispatch(
         'Dashboard/instansi/getEskulInstansi',
-        isTrash
+        { isTrash: isTrash, search: this.eskulSearchQuery }
       )
       this.eskulInstansiList = data.data
 
@@ -205,6 +218,11 @@ export default {
       console.log('itme edit : ', item)
       this.showNewEskulModal()
     },
+    handleHrefEskul(item) {
+      this.$router.push(
+        `/i/${this.profileInfo.data.custom_domain_name}/${item.custom_domain_name}`
+      )
+    },
   },
   watch: {
     async viewMode(val) {
@@ -212,6 +230,11 @@ export default {
         await this.getEskulInstansi(true)
       } else {
         await this.getEskulInstansi(false)
+      }
+    },
+    eskulSearchQuery(val) {
+      if (val == '') {
+        this.getEskulInstansi()
       }
     },
   },

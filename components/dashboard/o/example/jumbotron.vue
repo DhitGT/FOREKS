@@ -9,10 +9,16 @@
       <!-- Main background image div with fading animation -->
       <div
         :style="{
-          backgroundImage: `url(/assets/img/bgJumbo/${currentBackground})`,
+          backgroundImage: preview.jumboBg
+            ? 'url(' + preview.jumboBg + ')'
+            : profileInfo.web_pages?.jumbotron_image
+            ? 'url(' +
+              'http://localhost:8000/storage/' +
+              profileInfo.web_pages?.jumbotron_image +
+              ')'
+            : '',
         }"
-        class="absolute inset-0 bg-center bg-no-repeat bg-cover bg-gray-700 bg-blend-multiply transition-opacity duration-1000 ease-in-out"
-        :class="{ 'opacity-0': fadingOut, 'opacity-100': !fadingOut }"
+        class="absolute inset-0 bg-center opacity-100 bg-no-repeat bg-cover bg-gray-700 bg-blend-multiply transition-opacity duration-1000 ease-in-out"
       ></div>
 
       <div
@@ -21,18 +27,35 @@
         <h1
           class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl"
         >
-          {{ JumboTittle }}
+          {{
+            preview?.title
+              ? preview?.title
+              : profileInfo?.web_pages?.jumbotron_title
+              ? profileInfo?.web_pages?.jumbotron_title
+              : 'Lorem ipsum Dolor Sit'
+          }}
         </h1>
         <p
           class="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48"
         >
-          {{ JumboSubTittle }}
+          {{
+            preview?.subtitle
+              ? preview?.subtitle
+              : profileInfo?.web_pages?.jumbotron_subtitle
+              ? profileInfo?.web_pages?.jumbotron_subtitle
+              : 'Lorem ipsum Dolor Sit'
+          }}
         </p>
+
         <div
           class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0"
         >
           <a
-            :href="FormHref"
+            v-if="
+              profileInfo?.web_pages?.form_register_link != null &&
+              preview?.isFormRegister
+            "
+            :href="profileInfo?.web_pages?.form_register_link"
             target="_blank"
             style="color: white"
             class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-gray-800 hover:bg-[#1b1d2b]"
@@ -84,27 +107,38 @@
 </template>
 <script>
 export default {
+  watch: {
+    preview(newVal, oldVal) {
+      console.log('preview changed from:', oldVal, 'to:', newVal)
+    },
+  },
   props: {
     JumboTittle: {
-      required: true,
+      required: false,
       default: 'FORESK - FORUM EKSTRAKURIKULER',
     },
     JumboSubTittle: {
-      required: true,
+      required: false,
       default: 'Lorem ipsum dolor sit amet',
     },
     JumboImageList: {
-      required: true,
+      required: false,
     },
     OrganizationItem: {
       required: false,
     },
     LearnMoreHref: {
-      required: true,
+      required: false,
       default: '#about',
     },
+    profileInfo: {
+      type: Object,
+    },
+    preview: {
+      type: Object,
+    },
     FormHref: {
-      required: true,
+      required: false,
       default:
         'https://docs.google.com/forms/d/e/1FAIpQLSdH5ainp7B7cj1kLM4UuAsTtGDs5U2RwPFDc1kRVJUoPLDn9g/viewform',
     },
@@ -134,23 +168,8 @@ export default {
       const encodedMessage = encodeURIComponent(this.message)
       return `https://wa.me/${this.phoneNumber}?text=${encodedMessage}`
     },
-    currentBackground() {
-      return this.JumboImageList[this.currentBackgroundIndex]
-    },
   },
-  methods: {
-    changeBackground() {
-      this.fadingOut = true
-      setTimeout(() => {
-        this.currentBackgroundIndex =
-          (this.currentBackgroundIndex + 1) % this.JumboImageList.length
-        this.fadingOut = false
-      }, 1000) // Match this duration with the CSS animation duration
-    },
-  },
-  mounted() {
-    setInterval(this.changeBackground, 5000) // Change background every 10 seconds
-  },
+  methods: {},
 }
 </script>
 <style>
