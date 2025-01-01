@@ -24,38 +24,38 @@
                 'bg-cover',
                 'bg-blend-multiply',
               ]"
-              :style="{ backgroundImage: `url(${item.imgUrl})` }"
-              @click="openImageDialog(item.imgUrl)"
+              :style="{
+                backgroundImage: `url(http://localhost:8000/storage/${item?.cover_image})`,
+              }"
+              @click="openImageDialog(item?.cover_image)"
             >
               <div
                 class="absolute rounded-t-xl inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.2)] to-black"
               ></div>
-              <v-img
+              <!-- <v-img
                 class="fixed top-4 rounded-full w-8 h-8 left-4"
                 color="grey"
-                src="kopplingLogo.png"
-              />
+                :src="item"
+              /> -->
               <div
                 class="flex flex-col px-4 mx-auto max-w-screen-xl h-full py-24 lg:py-56 relative"
               >
                 <span
                   class="text-xl mt-auto absolute bottom-7 opacity-90 font-extrabold tracking-tight leading-none text-white md:text-3xl lg:text-4xl"
                 >
-                  {{ item.title }}
+                  {{ item?.title }}
                 </span>
               </div>
             </section>
             <div class="detail">
-              <div>
-                <span :class="textColorClass">{{ item.descript }}</span>
-              </div>
+              <div class="ql-editor" v-html="item?.description"></div>
               <div class="flex gap-2 mt-2" :class="textColorClass">
                 <v-icon small>mdi-map-marker</v-icon>
-                <span>{{ item.location }}</span>
+                <span>{{ item?.location }}</span>
               </div>
               <div class="flex gap-2" :class="textColorClass">
                 <v-icon small>mdi-calendar-outline</v-icon>
-                <span>{{ item.date }}</span>
+                <span>{{ item?.date }}</span>
               </div>
             </div>
           </div>
@@ -65,6 +65,27 @@
               :class="textColorClass"
             >
               Gallery
+            </div>
+            <div class="gallery grid grid-cols-3 gap-2 md:grid-cols-4">
+              <div
+                :key="`dialog-gallery-${i}`"
+                class="relative rounded-lg border border-gray-800 cursor-pointer"
+                v-for="(item, i) in item.web_page_activities_galery"
+              >
+                <v-img
+                  class="rounded-lg object-cover aspect-square"
+                  :src="'http://localhost:8000/storage/' + item.image"
+                  @click="openImageDialog(item.image)"
+                >
+                  <template #placeholder>
+                    <v-skeleton-loader
+                      type="image"
+                      width="100%"
+                      height="100%"
+                    ></v-skeleton-loader>
+                  </template>
+                </v-img>
+              </div>
             </div>
           </div>
         </v-container>
@@ -80,7 +101,12 @@
       </v-toolbar>
       <v-card>
         <div class="flex items-center justify-center min-h-[85vh]">
-          <v-img :src="selectedImage" contain max-height="90vh"> </v-img>
+          <v-img
+            :src="'http://localhost:8000/storage/' + selectedImage"
+            contain
+            max-height="90vh"
+          >
+          </v-img>
         </div>
       </v-card>
     </v-dialog>

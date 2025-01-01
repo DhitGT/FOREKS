@@ -10,8 +10,12 @@
       style="z-index: 999"
     >
       <div class="max-w-screen-xl flex items-center justify-evenly mx-auto p-4">
-        <a href="" class="flex items-center" style="max-width: fit-content">
-          <img :src="NavLogoSrc" class="h-8 rounded-full" alt="Foresk Logo" />
+        <a
+          href=""
+          class="flex gap-3 items-center"
+          style="max-width: fit-content"
+        >
+          <img :src="NavLogoSrc" class="h-9 rounded-full" alt="Foresk Logo" />
           <span
             :class="NavColors.textPrimary"
             class="self-center text-2xl font-semibold whitespace-nowrap"

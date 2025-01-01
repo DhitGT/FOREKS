@@ -9,42 +9,33 @@
       <div class="ma-2 overflow-hidden rounded-lg">
         <img
           class="object-cover w-full aspect-square rounded-lg"
-          :src="item.imgUrl"
+          :src="'http://localhost:8000/storage/' + item?.cover_image"
           alt=""
         />
       </div>
-      <div class="flex flex-col justify-start p-4 leading-normal">
+      <div class="flex flex-col justify-start min-w-full p-4 leading-normal">
         <div class="flex justify-between" style="max-height: fit-content">
           <p
             :style="{ color: textColor }"
             class="font-normal md:text-sm text-xs"
           >
-            Gen {{ item.gen }}
+            Gen {{ item?.gen }}
           </p>
           <p
             :style="{ color: textColor }"
             class="font-normal md:text-sm text-xs"
           >
-            {{ item.date }}
+            {{ item?.date }}
           </p>
         </div>
         <h5
           :style="{ color: titleColor }"
           class="md:mb-2 md:text-2xl text-lg font-bold tracking-tight"
         >
-          {{ item.title }}
+          {{ item?.title }}
         </h5>
         <div class="overflow-y-hidden max-h-[5vh] md:max-h-max">
-          <p
-            :style="{ color: textColor }"
-            class="mb-3 font-normal md:text-sm text-xs"
-          >
-            {{
-              item.descript.length > 50
-                ? item.descript.slice(0, 50) + ' Baca Selengkapnya..'
-                : item.descript
-            }}
-          </p>
+          <!-- <div class="ql-editor" v-html="item?.description"></div> -->
         </div>
         <button
           @click="handleClick"

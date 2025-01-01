@@ -26,7 +26,7 @@
           <div
             v-if="eskul.about"
             v-html="eskul.about"
-            class="mb-3 font-normal text-gray-700 dark:text-gray-400"
+            class="mb-3 overflow-y-hidden max-h-24 font-normal text-gray-700 dark:text-gray-400"
           ></div>
           <div v-else class="mb-3 font-normal text-gray-500 dark:text-gray-400">
             No description added yet.

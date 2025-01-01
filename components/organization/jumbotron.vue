@@ -9,10 +9,10 @@
       <!-- Main background image div with fading animation -->
       <div
         :style="{
-          backgroundImage: `url(/assets/img/bgJumbo/${currentBackground})`,
+          backgroundImage: `url(http://localhost:8000/storage/${JumboImage})`,
         }"
-        class="absolute inset-0 bg-center bg-no-repeat bg-cover bg-gray-700 bg-blend-multiply transition-opacity duration-1000 ease-in-out"
-        :class="{ 'opacity-0': fadingOut, 'opacity-100': !fadingOut }"
+        ref="bgJumbo"
+        class="absolute inset-0 opacity-100 bg-center bg-no-repeat bg-cover bg-gray-700 bg-blend-multiply transition-opacity duration-1000 ease-in-out"
       ></div>
 
       <div
@@ -32,6 +32,7 @@
           class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0"
         >
           <a
+            v-if="FormHref != ''"
             :href="FormHref"
             target="_blank"
             style="color: white"
@@ -91,8 +92,8 @@ export default {
       required: false,
       default: 'Lorem ipsum dolor sit amet',
     },
-    JumboImageList: {
-      required: false,
+    JumboImage: {
+      required: true,
     },
     OrganizationItem: {
       required: false,
@@ -103,24 +104,16 @@ export default {
     },
     FormHref: {
       required: false,
-      default:
-        'https://docs.google.com/forms/d/e/1FAIpQLSdH5ainp7B7cj1kLM4UuAsTtGDs5U2RwPFDc1kRVJUoPLDn9g/viewform',
+      default: '',
     },
     badge: {
       default: [
-        { name: 'Lingkungan Hidup', color: '#A7F3D0' }, // Light green
-        { name: 'Voly', color: '#FEF3C7' }, // Light yellow
-        { name: 'Futsal', color: '#BFDBFE' }, // Light blue
-        { name: 'English Club', color: '#FECACA' }, // Light red
-        { name: 'Japanese Club', color: '#E9D5FF' }, // Light purple
-        { name: 'Software Community', color: '#D9F99D' }, // Light lime
-        { name: 'Tenro', color: '#FDE68A' }, // Light amber
+        , // Light amber
       ],
     },
   },
   data() {
     return {
-      currentBackgroundIndex: 0,
       fadingOut: false,
       phoneNumber: '6285718251092', // Replace with your phone number
       message: 'Saya mau join Koppling',
@@ -132,23 +125,9 @@ export default {
       const encodedMessage = encodeURIComponent(this.message)
       return `https://wa.me/${this.phoneNumber}?text=${encodedMessage}`
     },
-    currentBackground() {
-      return this.JumboImageList[this.currentBackgroundIndex]
-    },
   },
-  methods: {
-    changeBackground() {
-      this.fadingOut = true
-      setTimeout(() => {
-        this.currentBackgroundIndex =
-          (this.currentBackgroundIndex + 1) % this.JumboImageList.length
-        this.fadingOut = false
-      }, 1000) // Match this duration with the CSS animation duration
-    },
-  },
-  mounted() {
-    setInterval(this.changeBackground, 5000) // Change background every 10 seconds
-  },
+  methods: {},
+  mounted() {},
 }
 </script>
 <style>

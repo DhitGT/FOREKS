@@ -36,9 +36,9 @@
               <span class="ml-3">Dashboard</span>
             </nuxt-link>
           </li>
-          <li>
+          <li v-if="profileInfo?.data?.web_pages?.custom_domain_name">
             <nuxt-link
-              :to="`/i/${profileInfo?.data?.instansi.instansi_web_page.custom_domain_name}/${profileInfo?.data?.web_pages.custom_domain_name}`"
+              :to="`/i/${profileInfo?.data?.instansi.instansi_web_page.custom_domain_name}/${profileInfo?.data?.web_pages?.custom_domain_name}`"
               class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
             >
               <i class="mdi mdi-card-outline text-xl"></i>

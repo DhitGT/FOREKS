@@ -15,46 +15,23 @@
         <div class="grid grid-cols-1 gap-8 sm:gap-6 sm:grid-cols-3">
           <div>
             <h2 class="mb-6 text-sm font-semibold" :class="fontColor">
-              {{ followUsText }}
+              Connect With Us
             </h2>
             <ul>
-              <li
-                class="mb-4 flex items-center"
-                v-for="(social, index) in socialLinks"
-                :key="index"
-              >
-                <v-icon :class="iconColor" class="mr-2">{{
-                  social.icon
-                }}</v-icon>
-                <a
-                  :href="social.url"
-                  :class="fontColor"
-                  class="hover:underline"
-                >
-                  <span>{{ social.name }}</span>
+              <li class="mb-4 flex items-center">
+                <v-icon :class="iconColor" class="mr-2">mdi-instagram</v-icon>
+                <a :href="instaLink" :class="fontColor" class="hover:underline">
+                  <span>Instagram</span>
                 </a>
               </li>
-            </ul>
-          </div>
-          <div>
-            <h2 class="mb-6 text-sm font-semibold" :class="fontColor">
-              {{ contactText }}
-            </h2>
-            <ul>
-              <li
-                class="mb-4 flex items-center"
-                v-for="(contact, index) in contactLinks"
-                :key="index"
-              >
-                <v-icon :class="iconColor" class="mr-2">{{
-                  contact.icon
-                }}</v-icon>
+              <li class="mb-4 flex items-center">
+                <v-icon :class="iconColor" class="mr-2">mdi-whatsapp</v-icon>
                 <a
-                  :href="contact.url"
+                  :href="'wa.me/' + whatsapp_number"
                   :class="fontColor"
                   class="hover:underline"
                 >
-                  <span>{{ contact.text }}</span>
+                  <span>{{ whatsapp_number }}</span>
                 </a>
               </li>
             </ul>
@@ -70,7 +47,7 @@
         <span class="text-sm text-center" :class="fontColor">
           © 2024
           <a :href="footerLink" class="hover:underline">
-            <span>{{ footerText }}</span>
+            <span>Foresk.site</span>
           </a>
           . All Rights Reserved.
         </span>
@@ -115,35 +92,11 @@ export default {
       type: String,
       default: 'Contact Us',
     },
-    socialLinks: {
-      type: Array,
-      default: () => [
-        {
-          icon: 'mdi-instagram',
-          name: '@koppling_smkn2bks',
-          url: 'https://www.instagram.com/koppling_smkn2bks/?hl=en',
-        },
-        {
-          icon: 'mdi-youtube',
-          name: 'Koppling Smkn2bks',
-          url: 'https://www.youtube.com/channel/UCXBwakJL8YeL-4-D7qhu4RQ',
-        },
-      ],
+    instaLink: {
+      type: String,
     },
-    contactLinks: {
-      type: Array,
-      default: () => [
-        {
-          icon: 'mdi-whatsapp',
-          text: '+62 85718251092',
-          url: 'https://wa.me/+6285718251092',
-        },
-        {
-          icon: 'mdi-email-outline',
-          text: 'kopplingsmkn2bks@gmail.com',
-          url: 'mailto:kopplingsmkn2bks@gmail.com',
-        },
-      ],
+    whatsapp_number: {
+      type: String,
     },
   },
 }

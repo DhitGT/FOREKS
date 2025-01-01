@@ -315,7 +315,9 @@ export default {
       }
     },
     hrefToWebPage() {
-      this.$router.push(`/i/${this.profileInfo.data.custom_domain_name}`)
+      this.$router.push(
+        `/i/${this.profileInfo.data.instansi.instansi_web_page.custom_domain_name}/${this.profileInfo.data.web_pages.custom_domain_name}`
+      )
     },
   },
 }

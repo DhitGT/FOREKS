@@ -4,27 +4,10 @@
       <v-container>
         <div class="flex flex-col items-center justify-center">
           <span :style="{ color: fontColor }" class="text-4xl font-bold mb-5">
-            {{ title }}
+            Our Activities
           </span>
           <div>
-            <p :style="{ color: fontColor }" class="mb-3 font-normal text-lg">
-              {{ description }}
-            </p>
-
-            <ul>
-              <li
-                class="list-disc mb-2"
-                v-for="(activity, i) in activities"
-                :key="i"
-              >
-                <span class="font-bold">{{ activity.title }}: </span>
-                {{ activity.description }}
-              </li>
-            </ul>
-
-            <p :style="{ color: fontColor }" class="mb-3 font-normal text-lg">
-              {{ footerText }}
-            </p>
+            <div v-html="data?.activities_desc" class="ql-editor"></div>
           </div>
         </div>
       </v-container>
@@ -48,7 +31,7 @@
 
           <slide
             style="padding: 10px"
-            v-for="(item, i) in itemActivities"
+            v-for="(item, i) in data?.web_page_activities"
             :key="`activity-${i}`"
           >
             <organization-card-activity
@@ -95,6 +78,10 @@ export default {
     activities: {
       type: Array,
       required: false,
+    },
+    data: {
+      type: Object,
+      required: true,
     },
 
     // Carousel background color

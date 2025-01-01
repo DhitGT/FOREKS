@@ -1,11 +1,24 @@
 <template>
-  <div>
-    <dashboard-i-sidebar
-      :profileInfo="profileInfo"
-      :eskulList="eskulInstansiList"
-    />
-    <div class="container md:ml-52">
-      <div class="md:pl-52 flex flex-col gap-4">
+  <div class="flex">
+    <div
+      class="flex-shrink-0"
+      :class="[
+        ' transition-all duration-300 z-30',
+        sidebar ? 'w-64' : 'w-16',
+        'fixed sm:relative',
+        sidebar ? 'translate-x-0' : '-translate-x-full sm:translate-x-0',
+        'h-full',
+      ]"
+    >
+      <dashboard-i-sidebar
+        class="h-screen"
+        :profileInfo="profileInfo"
+        :eskulList="eskulInstansiList"
+        @isSidebarOpen="isSidebarOpen"
+      />
+    </div>
+    <div class="p-4 sm:container flex-1" :class="['flex-1 p-4 ']">
+      <div class="flex flex-col gap-4">
         <div v-if="profileInfo.isFound">
           <p class="text-2xl font-bold">Activity</p>
           <dashboard-i-status v-if="eskulReportActivity.report_length > 0" />
@@ -159,6 +172,7 @@ export default {
       newEskulModal: false,
       itemEskulEdit: null,
       eskulSearchQuery: '',
+      sidebar: false,
     }
   },
   mounted() {
@@ -167,6 +181,9 @@ export default {
     this.getEskulReportActivity()
   },
   methods: {
+    isSidebarOpen(val) {
+      this.sidebar = val
+    },
     showNewEskulModal() {
       this.newEskulModal = !this.newEskulModal
       console.log('muncul ', this.newEskulModal)

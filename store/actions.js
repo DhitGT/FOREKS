@@ -31,6 +31,31 @@ export default {
       console.log("errror : ", error)
     }
   },
+  async logout({ commit, state }) {
+    try {
+      // Make a POST request to logout
+      const data = await this.$axios.$post("/logout");
+
+      // Clear user and token from the Vuex store
+      commit("SET_USER", null);
+      commit("SET_TOKEN", null);
+
+      // Delete the "app_id" cookie
+      Cookies.remove("app_id");
+
+      console.log("Logout successful");
+
+      // Redirect based on user role
+      if (data) {
+        this.$router.push({ name: "auth-login" });
+      } else {
+        console.log("fails");
+      }
+    } catch (error) {
+      console.error("Error during logout: ", error);
+    }
+  }
+  ,
   async register({ commit, state }, { email, username, instansiName, password }) {
     try {
       const data = await this.$axios.$post("/register", { email: email, username: username, instansiName: instansiName, password: password })

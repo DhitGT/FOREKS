@@ -1,58 +1,66 @@
 <template>
   <div>
-    <!-- Organization Navbar -->
-    <organization-navbar :navLinks="dummyNavLinks" :logoSrc="dummyLogoSrc" />
-
-    <!-- Organization Jumbotron -->
-    <organization-jumbotron
-      :JumboImageList="dummyJumboImages"
-      :JumboTittle="dummyJumboTitle"
-      :JumboSubTittle="dummyJumboDescription"
-    />
-
-    <v-container>
-      <!-- Organization About -->
-      <organization-about :aboutText="dummyAboutText" />
-
-      <!-- Organization Stats -->
-      <organization-stats
-        :member="'350'"
-        :generation="'2025'"
-        :alumni="'1.5k'"
-        :bgColor="'#333333'"
-        :textColor="'#ffffff'"
-        :numberColor="'#d1d5db'"
-        :labelColor="'#6b7280'"
+    <div v-if="!ewp" class="h-screen w-screen flex justify-center items-center">
+      <!-- <v-skeleton-loader type="card" /> -->
+      <!-- Alternatively, you can use a progress circular -->
+      <v-progress-circular
+        indeterminate
+        color="primary"
+        size="50"
+      ></v-progress-circular>
+    </div>
+    <div v-else>
+      <!-- Organization Navbar -->
+      <organization-navbar
+        :logoSrc="ewp?.logo"
+        :NavTittle="ewp?.web_pages?.navbar_title"
       />
 
-      <!-- Organization Activity -->
-      <organization-activity
-        :title="'Our Activities'"
-        :description="'Adapun kegiataw yang kami lakukan adalah kegiatan yang berkontribusi pada pelestarian lingkungan dan pengembangan diri.'"
-        :footerText="'Nah dibawah inis ada detail beberapa kegiatan yang pernah kita lakukan.'"
-        :activities="activitiesData"
-        :carouselBgColor="'#222'"
-        :fontColor="'#ffffff'"
+      <!-- Organization Jumbotron -->
+      <organization-jumbotron
+        id="home"
+        :JumboImage="ewp?.web_pages?.jumbotron_image"
+        :JumboTittle="ewp?.web_pages?.jumbotron_title"
+        :JumboSubTittle="ewp?.web_pages?.jumbotron_subtitle"
+        :FormHref="ewp?.web_pages?.form_register_link"
+        :badge="ewp ? JSON.parse(ewp.badge) : []"
       />
 
-      <!-- Organization Member List -->
-      <organization-memberList :members="dummyMembers" />
+      <v-container>
+        <!-- Organization About -->
+        <organization-about
+          id="about"
+          :aboutText="ewp?.web_pages?.about_desc"
+        />
 
-      <!-- Organization Gallery -->
-      <organization-gallery :galleryImages="dummyGalleryImages" />
-    </v-container>
+        <!-- Organization Stats -->
+        <organization-stats
+          :member="ewp?.eskul_members_count"
+          :generation="ewp?.gen"
+          :alumni="ewp?.alumni"
+        />
 
-    <!-- Organization Footer -->
-    <organization-footer
-      :footerBgColor="dummyFooterBgColor"
-      :fontColor="dummyFontColor"
-      :iconColor="dummyIconColor"
-      :footerText="dummyFooterText"
-      :footerLink="dummyFooterLink"
-      :logoSrc="dummyLogoSrc"
-      :socialLinks="dummySocialLinks"
-      :contactLinks="dummyContactLinks"
-    />
+        <!-- Organization Activity -->
+        <organization-activity id="activities" :data="ewp?.web_pages" />
+
+        <!-- Organization Gallery -->
+        <organization-gallery
+          id="galery"
+          :gallery="[]"
+          :wpgallery="ewp?.web_pages?.web_page_galery"
+        />
+      </v-container>
+
+      <!-- Organization Footer -->
+      <organization-footer
+        id="contact"
+        :footerText="ewp?.web_pages?.custom_domain_name"
+        :footerLink="ewp?.web_pages?.custom_domain_name"
+        :logoSrc="'http://localhost:8000/storage/' + ewp?.logo"
+        :instaLink="ewp?.instagram_url"
+        :whatsapp_number="ewp?.whatsapp_number"
+      />
+    </div>
   </div>
 </template>
 
@@ -60,114 +68,21 @@
 export default {
   data() {
     return {
-      activitiesData: [
-        {
-          title: 'Mendaki Gunung',
-          description:
-            'Mendaki gunung untuk merasakan keindahan alam dan meningkatkan keterampilan bertahan hidup.',
-        },
-        {
-          title: 'Pembelajaran Hidroponik',
-          description:
-            'Mengenal teknik bertani modern yang ramah lingkungan dan berkontribusi pada ketahanan pangan.',
-        },
-        {
-          title: 'Pembelajaran tentang Lingkungan Hidup',
-          description:
-            'Memahami isu-isu lingkungan dan mencari solusi inovatif untuk mengatasi tantangan yang dihadapi.',
-        },
-        {
-          title: 'Kunjungan Studi',
-          description:
-            'Mengunjungi tempat-tempat yang memiliki praktik terbaik dalam pengelolaan lingkungan dan belajar dari pengalaman mereka.',
-        },
-      ],
-
-      // Dummy data for Navbar
-      dummyNavLinks: [
-        { text: 'Home', url: '/' },
-        { text: 'About', url: '/about' },
-        { text: 'Services', url: '/services' },
-        { text: 'Contact', url: '/contact' },
-      ],
-      dummyLogoSrc: 'logo.png',
-
-      // Dummy data for Jumbotron
-      dummyJumboImages: ['bgJumbo2.jpg'],
-      dummyJumboTitle: 'Welcome to Our Organization',
-      dummyJumboDescription: 'We are committed to making a difference.',
-
-      // Dummy data for About
-      dummyAboutText:
-        'We are an organization focused on community development and environmental sustainability.',
-      dummyAboutImage: 'about-image.jpg',
-
-      // Dummy data for Stats
-      dummyStats: [
-        { title: 'Members', value: 500 },
-        { title: 'Projects', value: 120 },
-        { title: 'Events', value: 30 },
-      ],
-
-      // Dummy data for Activities
-      dummyActivities: [
-        {
-          title: 'Community Outreach',
-          description:
-            'Engaging with the community through various initiatives.',
-        },
-        {
-          title: 'Environmental Awareness',
-          description:
-            'Promoting sustainable practices and environmental education.',
-        },
-      ],
-
-      // Dummy data for Member List
-      dummyMembers: [
-        { name: 'John Doe', role: 'President', image: 'member1.jpg' },
-        { name: 'Jane Smith', role: 'Vice President', image: 'member2.jpg' },
-        { name: 'Emily White', role: 'Secretary', image: 'member3.jpg' },
-      ],
-
-      // Dummy data for Gallery
-      dummyGalleryImages: [
-        'gallery-image1.jpg',
-        'gallery-image2.jpg',
-        'gallery-image3.jpg',
-      ],
-
-      // Dummy data for Footer
-      dummyFooterBgColor: 'bg-[#333333]',
-      dummyFontColor: '#FFFFFF',
-      dummyIconColor: 'text-white',
-      dummyFooterText: 'Organization Name',
-      dummyFooterLink: 'https://organization.website',
-      dummySocialLinks: [
-        {
-          icon: 'mdi-instagram',
-          name: '@organization',
-          url: 'https://www.instagram.com/organization',
-        },
-        {
-          icon: 'mdi-youtube',
-          name: 'Organization Channel',
-          url: 'https://www.youtube.com/channel/organization',
-        },
-      ],
-      dummyContactLinks: [
-        {
-          icon: 'mdi-whatsapp',
-          text: '+123456789',
-          url: 'https://wa.me/+123456789',
-        },
-        {
-          icon: 'mdi-email-outline',
-          text: 'contact@organization.com',
-          url: 'mailto:contact@organization.com',
-        },
-      ],
+      ewp: null,
     }
+  },
+  methods: {
+    async getEskulWebPageUrl() {
+      let cdn = this.$route.params.o
+      const { data } = await this.$store.dispatch(
+        'Dashboard/organization/getEskulWebPageUrl',
+        { cdn: cdn }
+      )
+      this.ewp = data.data
+    },
+  },
+  mounted() {
+    this.getEskulWebPageUrl()
   },
 }
 </script>

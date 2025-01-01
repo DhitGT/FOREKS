@@ -15,12 +15,12 @@
             :key="`dialog-gallery-${i}`"
             class="relative rounded-lg border cursor-pointer"
             :class="borderColor"
-            v-for="(item, i) in displayedImages"
-            @click="openImageDialog(imgUrls[item])"
+            v-for="(item, i) in gallery"
+            @click="openImageDialog(item.imageView)"
           >
             <v-img
               class="rounded-lg object-cover aspect-square"
-              :src="imgUrls[item]"
+              :src="item.imageView"
             >
               <template #placeholder>
                 <v-skeleton-loader
@@ -29,30 +29,31 @@
                   height="100%"
                 ></v-skeleton-loader>
               </template>
-              <!-- Share icon -->
-              <router-link
-                :to="`/s/${item.split('.')[0]}`"
-                class="absolute top-2 right-2"
-              >
-                <v-icon
-                  :color="iconColor"
-                  size="20"
-                  class="text-xs rounded-full p-1"
-                  >mdi-share-variant</v-icon
-                >
-              </router-link>
             </v-img>
           </div>
-        </div>
-        <div class="w-full flex items-center">
-          <v-btn
-            v-if="displayedImages.length < itemGallery.length"
-            class="mt-4 mx-auto px-9"
-            :color="buttonColor"
-            @click="loadMoreImages"
+
+          <div
+            :key="`dialog-gallery-${i}`"
+            class="relative rounded-lg border cursor-pointer"
+            :class="borderColor"
+            v-for="(item, i) in wpgallery"
+            @click="
+              openImageDialog('http://localhost:8000/storage/' + item.image)
+            "
           >
-            <span :class="buttonTextColor"> Load More </span>
-          </v-btn>
+            <v-img
+              class="rounded-lg object-cover aspect-square"
+              :src="'http://localhost:8000/storage/' + item.image"
+            >
+              <template #placeholder>
+                <v-skeleton-loader
+                  type="image"
+                  width="100%"
+                  height="100%"
+                ></v-skeleton-loader>
+              </template>
+            </v-img>
+          </div>
         </div>
       </div>
       <!-- Dialog for fullscreen image -->
@@ -107,68 +108,18 @@ export default {
       type: String,
       default: '#333333', // Dark toolbar color
     },
+    gallery: {
+      type: Array,
+      default: [], // Dark toolbar color
+    },
+    wpgallery: {
+      type: Array,
+      default: [], // Dark toolbar color
+    },
   },
   data() {
     return {
-      itemGallery: [
-        'fest3.jpg',
-        'fest4.jpg',
-        'fest5.jpg',
-        'mandala3.jpg',
-        'mandala4.jpg',
-        'mandala5.jpg',
-        'mandala6.jpg',
-        'mandala7.jpg',
-        'mandala8.jpg',
-        'mandala9.jpg',
-        'mandala10.jpg',
-        'mandala11.jpg',
-        'mandala12.jpg',
-        'mandala13.jpg',
-        'outb2.jpg',
-        'outb3.jpg',
-        'outb4.jpg',
-        'outb5.jpg',
-        'outb6.jpg',
-        'outb7.jpg',
-        'outb8.jpg',
-        'w4c_cleanup.jpg',
-        'w4c_cleanup_2.jpg',
-        'w4c_cleanup_3.jpg',
-        'w4c_cleanup_5.jpg',
-        'w4c_cleanup_6.jpg',
-        'w4c_cleanup_7.jpg',
-        'w4c_cleanup_8.jpg',
-        'kuta.jpg',
-        'goa_tawanan.jpg',
-        'goa_tawanan_2.jpg',
-        'goa_tawanan_3.jpg',
-        'goa_tawanan_4.jpg',
-        'goa_tawanan_5.jpg',
-        'goa_tawanan_6.jpg',
-        'goa_tawanan_7.jpg',
-        'kinifarm1.jpg',
-        'kinifarm2.jpg',
-        'kinifarm3.jpg',
-        'kinifarm4.jpg',
-        'kinifarm6.jpg',
-        'kinifarm7.jpg',
-        'kinifarm8.jpg',
-        'plogging1.jpg',
-        'plogging2.jpg',
-        'plogging3.jpg',
-        'plogging4.jpg',
-        'plogging5.jpg',
-        'plogging6.jpg',
-        'plogging7.jpg',
-        'plogging8.jpg',
-        'plogging9.jpg',
-        'plogging10.jpg',
-        'kariki.jpg',
-        'kafatur.jpg',
-        'kadaffa.jpg',
-        'karizal.jpg',
-      ],
+      itemGallery: [],
       imageDialog: false,
       selectedImage: '',
       imageCache: {},
@@ -178,8 +129,8 @@ export default {
   },
   async created() {
     // await this.preFetchImageUrls()
-    this.shuffleArray(this.itemGallery)
-    this.displayedImages = this.itemGallery.slice(0, 10)
+    this.shuffleArray(this.wpgallery)
+    this.displayedImages = this.wpgallery.slice(0, 10)
   },
   methods: {
     openImageDialog(imageUrl) {
