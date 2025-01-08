@@ -1,48 +1,69 @@
 <template>
   <v-container class="flex justify-center items-center min-h-screen">
-    <v-card class="pa-5 w-full max-w-sm">
-      <v-card-title class="text-center">{{
-        user ? `Welcome, ${user.displayName || user.email}` : 'Login'
-      }}</v-card-title>
+    <v-card class="pa-5 max-w-lg min-w-md elevation-10 rounded-lg dark-card">
+      <v-card-title
+        class="text-center mx-auto text-h5 font-weight-bold text-white"
+        >Login</v-card-title
+      >
       <v-card-text>
-        <v-form ref="loginForm" v-model="valid">
-          <v-text-field
-            v-model="email"
-            label="Email"
-            color="black"
-            required
-            dark
-            :rules="emailRules"
-            prepend-icon="mdi-email"
-            class="text-black"
-            style="color: black"
-          ></v-text-field>
-          <v-text-field
-            v-model="password"
-            label="Password"
-            type="password"
-            required
-            class="text-black"
-            color="black"
-            :rules="passwordRules"
-            prepend-icon="mdi-lock"
-          ></v-text-field>
-          <v-btn
-            class="w-full mt-4"
-            color="primary"
-            @click="login"
+        <form @submit.prevent="login">
+          <div class="mb-4">
+            <label for="email" class="text-white">Email</label>
+            <input
+              type="email"
+              id="email"
+              v-model="email"
+              required
+              class="input-field"
+              placeholder="Enter your email"
+            />
+            <span v-if="!valid && !email" class="error-text"
+              >Email is required</span
+            >
+            <span
+              v-if="!valid && email && !/.+@.+\..+/.test(email)"
+              class="error-text"
+              >E-mail must be valid</span
+            >
+          </div>
+          <div class="mb-4">
+            <label for="password" class="text-white">Password</label>
+            <input
+              type="password"
+              id="password"
+              v-model="password"
+              required
+              class="input-field"
+              placeholder="Enter your password"
+            />
+            <span v-if="!valid && !password" class="error-text"
+              >Password is required</span
+            >
+          </div>
+          <button
+            type="submit"
+            class="w-full mt-4 btn-primary"
             :disabled="!valid"
-            >Login with Email</v-btn
           >
-        </v-form>
+            Login with Email
+          </button>
+        </form>
+        <v-divider class="my-4"></v-divider>
+        <div
+          id="g_id_onload"
+          data-client_id="303497307410-ccjldo3va228ubi019n681dskuaso9nd.apps.googleusercontent.com"
+          data-login_uri="/auth/callback"
+          data-auto_select="true"
+          data-callback="handleCredentialResponse"
+        ></div>
+        <div id="google-signin-button" class="text-black my-4"></div>
       </v-card-text>
-      <v-btn @click="getUser"> GetUsers </v-btn>
     </v-card>
   </v-container>
 </template>
 
 <script>
-import { mapState, dispatch } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   computed: {
@@ -50,29 +71,48 @@ export default {
       user: (state) => state.user,
     }),
   },
+  mounted() {
+    // Initialize Google Sign-In
+    window.handleCredentialResponse = this.handleCredentialResponse
+
+    window.google.accounts.id.initialize({
+      client_id:
+        '303497307410-ccjldo3va228ubi019n681dskuaso9nd.apps.googleusercontent.com',
+      callback: this.handleCredentialResponse,
+    })
+
+    window.google.accounts.id.renderButton(
+      document.getElementById('google-signin-button'),
+      {
+        theme: 'dark', // Set theme to dark
+        size: 'large',
+      }
+    )
+  },
   data() {
     return {
       email: '',
       password: '',
       valid: true,
-      emailRules: [
-        (v) => !!v || 'Email is required',
-        (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      passwordRules: [(v) => !!v || 'Password is required'],
     }
   },
   methods: {
-    async getUser() {
+    async handleCredentialResponse(response) {
+      console.log('Google response:', response)
+      await this.googleSignIn(response)
+    },
+    async googleSignIn(payload) {
       try {
-        const res = await this.$store.dispatch('Auth/getUser')
+        const res = await this.$store.dispatch('googleSignIn', payload)
         console.log(res)
-        alert(JSON.stringify(res.data))
       } catch (error) {
         console.error('Error:', error)
       }
     },
     async login() {
+      this.valid = this.email && this.password // Validate fields
+      if (!this.valid) return // Prevent submission if invalid
+
       try {
         const res = await this.$store.dispatch('login', {
           email: this.email,
@@ -80,39 +120,10 @@ export default {
         })
         console.log('res', res)
         console.log('state', this.user)
-        // alert(JSON.stringify(res.data))
       } catch (error) {
         console.error('Error:', error)
       }
     },
-    // async loginWithEmail() {
-    //   try {
-    //     const { user } = await this.$firebase.signInWithEmailAndPassword(
-    //       this.$firebase.auth,
-    //       this.email,
-    //       this.password
-    //     )
-    //     this.$store.commit('setUser', user) // Update user in Vuex
-    //     this.$router.push('/') // Navigate to home on success
-    //   } catch (error) {
-    //     console.error('Error logging in with email:', error)
-    //     alert('Login failed. Please check your credentials.')
-    //   }
-    // },
-    // async loginWithGoogle() {
-    //   try {
-    //     const provider = this.$firebase.googleProvider
-    //     const { user } = await this.$firebase.signInWithPopup(
-    //       this.$firebase.auth,
-    //       provider
-    //     )
-    //     this.$store.commit('setUser', user) // Update user in Vuex
-    //     this.$router.push('/crud') // Navigate to desired route
-    //   } catch (error) {
-    //     console.error('Error logging in with Google:', error)
-    //     alert('Google login failed. Please try again.')
-    //   }
-    // },
   },
 }
 </script>
@@ -120,5 +131,52 @@ export default {
 <style scoped>
 .min-h-screen {
   min-height: 100vh;
+}
+
+.dark-card {
+  background-color: #1e1e1e; /* Dark background for the card */
+  color: #ffffff; /* White text color */
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #333; /* Dark background for input */
+  color: #fff; /* White text color for input */
+}
+
+.input-field:focus {
+  border-color: #6200ea; /* Highlight border on focus */
+  outline: none; /* Remove default outline */
+}
+
+.error-text {
+  color: red; /* Red color for error messages */
+  font-size: 12px; /* Smaller font size for error messages */
+}
+
+.btn-primary {
+  background-color: #6200ea; /* Primary button color */
+  color: white; /* Button text color */
+  border: none; /* Remove border */
+  padding: 10px; /* Button padding */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.btn-primary:disabled {
+  background-color: #444; /* Darker color when disabled */
+  cursor: not-allowed; /* Not-allowed cursor when disabled */
+}
+
+.v-divider {
+  background-color: #444; /* Darker divider color */
+}
+
+#google-signin-button {
+  margin-top: 20px; /* Spacing above the Google Sign-In button */
 }
 </style>

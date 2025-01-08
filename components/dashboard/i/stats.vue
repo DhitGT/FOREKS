@@ -2,7 +2,7 @@
   <div>
     <apexchart
       type="bar"
-      class="text-black"
+      class="text-white"
       :options="chartOptions"
       :series="chartData"
     />
@@ -20,7 +20,6 @@ export default {
     eskulInstansiList: {
       Type: Array,
     },
-    
   },
   data() {
     return {

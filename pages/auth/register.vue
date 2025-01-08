@@ -1,63 +1,32 @@
 <template>
   <v-container class="flex justify-center items-center min-h-screen">
-    <v-card color="#565656" class="pa-5 w-full max-w-sm">
-      <v-card-title class="text-center">Register</v-card-title>
+    <v-card
+      color="rgb(31 41 55)"
+      class="pa-5 max-w-lg bg-gray-900 min-w-md elevation-10 rounded-lg"
+    >
+      <v-card-title class="text-center w-full mx-auto text-h5 font-weight-bold"
+        >Register</v-card-title
+      >
       <v-card-text>
-        <v-form ref="registerForm" light v-model="valid">
-          <v-text-field
-            v-model="email"
-            label="Email"
-            color="black"
-            required
-            light
-            :rules="emailRules"
-            prepend-icon="mdi-email"
-            class="text-white"
-          ></v-text-field>
-          <v-text-field
-            v-model="username"
-            label="Userame"
-            color="black"
-            required
-            light
-            prepend-icon="mdi-account"
-            class="text-white"
-          ></v-text-field>
-          <v-text-field
-            v-model="instansiName"
-            label="Instansi Name"
-            color="black"
-            required
-            light
-            prepend-icon="mdi-account"
-            class="text-white"
-          ></v-text-field>
-          <v-text-field
-            v-model="password"
-            label="Password"
-            type="password"
-            light
-            required
-            class="text-white"
-            color="black"
-            :rules="passwordRules"
-            prepend-icon="mdi-lock"
-          ></v-text-field>
-          <v-btn
-            class="w-full mt-4"
-            color="primary"
-            @click="register"
-            :disabled="!valid"
-            >Create</v-btn
-          >
-        </v-form>
+        <div
+          id="g_id_onload"
+          data-client_id="303497307410-ccjldo3va228ubi019n681dskuaso9nd.apps.googleusercontent.com"
+          data-login_uri="/auth/callback"
+          data-auto_select="true"
+          data-callback="handleCredentialResponse"
+          style="background-color: rgb(17, 24, 39)"
+        ></div>
+        <div
+          id="google-signin-button"
+          class="text-black bg-gray-900 my-4"
+        ></div>
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 
 <script>
-import { mapState, dispatch } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   computed: {
@@ -65,32 +34,33 @@ export default {
       user: (state) => state.user,
     }),
   },
-  data() {
-    return {
-      email: '',
-      username: '',
-      instansiName: '',
-      password: '',
-      valid: true,
-      emailRules: [
-        (v) => !!v || 'Email is required',
-        (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      passwordRules: [(v) => !!v || 'Password is required'],
-    }
+  mounted() {
+    // Initialize Google Sign-In
+    window.handleCredentialResponse = this.handleCredentialResponse
+
+    window.google.accounts.id.initialize({
+      client_id:
+        '303497307410-ccjldo3va228ubi019n681dskuaso9nd.apps.googleusercontent.com',
+      callback: this.handleCredentialResponse,
+    })
+
+    window.google.accounts.id.renderButton(
+      document.getElementById('google-signin-button'),
+      {
+        theme: 'dark',
+        size: 'large',
+      }
+    )
   },
   methods: {
-    async register() {
+    async handleCredentialResponse(response) {
+      console.log('Google response:', response)
+      await this.googleSignIn(response)
+    },
+    async googleSignIn(payload) {
       try {
-        const res = await this.$store.dispatch('register', {
-          email: this.email,
-          username: this.username,
-          instansiName: this.instansiName,
-          password: this.password,
-        })
-        console.log('res', res)
-        console.log('state', this.user)
-        // alert(JSON.stringify(res.data))
+        const res = await this.$store.dispatch('googleSignIn', payload)
+        console.log(res)
       } catch (error) {
         console.error('Error:', error)
       }
@@ -102,5 +72,19 @@ export default {
 <style scoped>
 .min-h-screen {
   min-height: 100vh;
+}
+
+.v-card {
+  /* Light background for the card */
+  border-radius: 12px; /* Rounded corners */
+}
+
+.text-black {
+  color: #333; /* Darker text color for better readability */
+}
+
+#google-signin-button {
+  background-color: rgb(17 24 39) !important;
+  margin-top: 20px; /* Spacing above the Google Sign-In button */
 }
 </style>

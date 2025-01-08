@@ -2,42 +2,48 @@
   <div class="container mx-auto p-4">
     <button
       @click="showModal = true"
-      class="mb-4 bg-blue-500 text-white px-4 py-2 rounded"
+      class="mb-4 bg-blue-500 text-white px-4 py-2 rounded flex items-center"
     >
-      Add Member
+      <i class="mdi mdi-plus mr-2"></i> Add Member
     </button>
 
     <table class="min-w-full bg-gray-800 rounded-lg border border-gray-900">
       <thead>
         <tr>
-          <th class="py-2 px-4 border-b">Index</th>
-          <th class="py-2 px-4 border-b">Name</th>
-          <th class="py-2 px-4 border-b">Gen</th>
-          <th class="py-2 px-4 border-b">Actions</th>
+          <th class="py-2 px-4 border-b text-left text-gray-300">Index</th>
+          <th class="py-2 px-4 border-b text-left text-gray-300">Name</th>
+          <th class="py-2 px-4 border-b text-left text-gray-300">Gen</th>
+          <th class="py-2 px-4 border-b text-left text-gray-300">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(member, index) in eskulMembers" :key="member.id">
-          <td class="py-2 px-4 border-b">
+        <tr
+          v-for="(member, index) in eskulMembers"
+          :key="member.id"
+          class="hover:bg-gray-700"
+        >
+          <td class="py-2 px-4 border-b text-gray-300">
             {{
               (pagination.current_page - 1) * pagination.per_page + (index + 1)
             }}
           </td>
-          <td class="py-2 px-4 border-b">{{ member.name }}</td>
-          <td class="py-2 px-4 border-b">{{ member.gen }}</td>
+          <td class="py-2 px-4 border-b text-gray-300">{{ member.name }}</td>
+          <td class="py-2 px-4 border-b text-gray-300">{{ member.gen }}</td>
           <td class="py-2 px-4 border-b">
-            <button
-              @click="editMember(member)"
-              class="bg-yellow-500 text-white px-2 py-1 rounded"
-            >
-              Edit
-            </button>
-            <button
-              @click="deleteMember(member.id)"
-              class="bg-red-500 text-white px-2 py-1 rounded"
-            >
-              Delete
-            </button>
+            <div class="flex items-center gap-2" style="max-width: fit-content">
+              <button
+                @click="editMember(member)"
+                class="text-white px-2 py-1 rounded flex items-center"
+              >
+                <i class="mdi mdi-pencil mr-1"></i>
+              </button>
+              <button
+                @click="deleteMember(member.id)"
+                class="text-white px-2 py-1 rounded flex items-center ml-2"
+              >
+                <i class="mdi mdi-delete mr-1"></i>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -48,7 +54,7 @@
       <button
         @click="changePage(pagination.current_page - 1)"
         :disabled="pagination.current_page === 1"
-        class="bg-blue-500 text-white px-4 py-2 rounded"
+        class="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
       >
         Previous
       </button>
@@ -60,7 +66,7 @@
       <button
         @click="changePage(pagination.current_page + 1)"
         :disabled="pagination.current_page === pagination.last_page"
-        class="bg-blue-500 text-white px-4 py-2 rounded"
+        class="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
       >
         Next
       </button>
@@ -72,13 +78,10 @@
       class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
     >
       <div class="bg-gray-900 rounded-lg p-6 w-96">
-        <h2 class="text-lg font-bold mb-4">
+        <h2 class="text-lg font-bold mb-4 text-white">
           {{ isEditing ? 'Edit Member' : 'Add Member' }}
         </h2>
-        <form
-          class=""
-          @submit.prevent="isEditing ? updateMember() : createMember()"
-        >
+        <form @submit.prevent="isEditing ? updateMember() : createMember()">
           <div class="mb-4">
             <label class="block text-gray-100">Name</label>
             <input
@@ -190,7 +193,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchMembers()
+    // this.fetchMembers()
   },
 }
 </script>

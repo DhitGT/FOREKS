@@ -4,35 +4,31 @@
     <nav
       :class="{
         'bg-transparent': isTop && !isSidebarOpen,
-        'bg-[#1b1d2b]': !isTop || isSidebarOpen,
+        'bg-gray-950': !isTop || isSidebarOpen,
       }"
       class="fixed w-full top-0 transition-colors duration-500 ease-in-out"
       style="z-index: 999"
     >
       <div class="max-w-screen-xl flex items-center justify-evenly mx-auto p-4">
-        <a href="" class="flex items-center" style="max-width: fit-content">
+        <a
+          href=""
+          class="flex items-center max-h-16 overflow-y-hidden"
+          style="max-width: fit-content"
+        >
           <img
-            src="https://koppling.site/kopplingLogo.png"
-            class="h-8 rounded-full"
+            src="/assets/img/foresk white.png"
+            class="h-32"
             alt="Foresk Logo"
           />
-          <span
+          <!-- <span
             class="self-center text-2xl font-semibold whitespace-nowrap text-white"
             >FORESK</span
-          >
+          > -->
         </a>
-        <button
-          @click="toggleSidebar"
-          type="button"
-          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden text-gray-400"
-        >
-          <span class="sr-only">Open main menu</span>
-          <v-icon large color="white" v-if="!isSidebarOpen">mdi-menu</v-icon>
-          <v-icon large color="white" v-else>mdi-close</v-icon>
-        </button>
+
         <div class="hidden w-full md:block md:w-auto" id="navbar-default">
           <ul
-            class="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0"
+            class="font-medium flex flex-col p-4 md:p-0 border rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0"
           >
             <li>
               <a
@@ -41,25 +37,12 @@
                 ><span class="text-white">About</span></a
               >
             </li>
+
             <li>
               <a
-                href="#activities"
+                href="#faq"
                 class="block nav-link py-2 px-3 rounded md:border-0 md:p-0 text-white hover:text-blue-500 hover:bg-gray-700 md:hover:bg-transparent"
-                ><span class="text-white">Activities</span></a
-              >
-            </li>
-            <li>
-              <a
-                href="#alumni"
-                class="block nav-link py-2 px-3 rounded md:border-0 md:p-0 text-white hover:text-blue-500 hover:bg-gray-700 md:hover:bg-transparent"
-                ><span class="text-white">Alumni</span></a
-              >
-            </li>
-            <li>
-              <a
-                href="#gallery"
-                class="block nav-link py-2 px-3 rounded md:border-0 md:p-0 text-white hover:text-blue-500 hover:bg-gray-700 md:hover:bg-transparent"
-                ><span class="text-white">Gallery</span></a
+                ><span class="text-white">Faq</span></a
               >
             </li>
             <li>
@@ -71,11 +54,30 @@
             </li>
           </ul>
         </div>
-        <div class="">
-          <div class="flex mt-4 ms-auto gap-4 items-center">
-            <div>Login</div>
-            <div class="rounded-lg bg-gray-600 py-2 px-5">Create Managers</div>
+        <div
+          class="flex gap-2 items-center flex-shrink"
+          style="max-width: fit-content"
+        >
+          <div>
+            <div class="flex ms-auto gap-4 items-center">
+              <div @click="handleLogin" class="cursor-pointer">Sign In</div>
+              <div
+                @click="handleRegister"
+                class="rounded-lg cursor-pointer bg-blue-900 py-2 px-5"
+              >
+                Sign Up
+              </div>
+            </div>
           </div>
+          <button
+            @click="toggleSidebar"
+            type="button"
+            class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden text-gray-400"
+          >
+            <span class="sr-only">Open main menu</span>
+            <v-icon large color="white" v-if="!isSidebarOpen">mdi-menu</v-icon>
+            <v-icon large color="white" v-else>mdi-close</v-icon>
+          </button>
         </div>
       </div>
     </nav>
@@ -92,7 +94,7 @@
         }"
       >
         <div
-          class="absolute top-0 right-0 w-full h-full bg-[#1a531977] pt-24 backdrop-blur-xl backdrop:blur-xl shadow-md p-4 transform"
+          class="absolute top-0 right-0 w-full h-full bg-gray-950 pt-24 backdrop-blur-xl backdrop:blur-xl shadow-md p-4 transform"
           :class="{
             'translate-x-0': isSidebarOpen,
             'translate-x-full': !isSidebarOpen,
@@ -111,26 +113,10 @@
             </li>
             <li>
               <a
-                href="#activities"
+                href="#faq"
                 class="block nav-link py-2 px-3 rounded"
                 @click="isSidebarOpen = false"
-                ><span class="text-white">Activities</span></a
-              >
-            </li>
-            <li>
-              <a
-                href="#alumni"
-                class="block nav-link py-2 px-3 rounded"
-                @click="isSidebarOpen = false"
-                ><span class="text-white">Alumni</span></a
-              >
-            </li>
-            <li>
-              <a
-                href="#gallery"
-                class="block nav-link py-2 px-3 rounded"
-                @click="isSidebarOpen = false"
-                ><span class="text-white">Gallery</span></a
+                ><span class="text-white">Faq</span></a
               >
             </li>
             <li>
@@ -158,6 +144,12 @@ export default {
     }
   }, //sdfsdfsdfsdfsdfsdf
   methods: {
+    handleRegister() {
+      this.$router.push('/auth/register')
+    },
+    handleLogin() {
+      this.$router.push('/auth/login')
+    },
     handleScroll() {
       this.isTop = window.scrollY === 0
     },

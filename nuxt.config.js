@@ -34,6 +34,11 @@ export default {
         src: 'https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js',
         body: true,
       },
+      {
+        src: 'https://accounts.google.com/gsi/client',
+        async: true,
+        defer: true,
+      },
     ],
   },
 
@@ -49,7 +54,8 @@ export default {
   plugins: [
     { src: '~/plugins/firebase.js', mode: 'client' },
     { src: '~/plugins/vue-quill-editor.js', ssr: false },
-    { src: '~/plugins/axios.js' }
+    { src: '~/plugins/axios.js' },
+    { src: '~/plugins/google.js' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="bg-[#0d1117]">
     <home-navbar />
     <home-jumbotron />
-    <div class="container">
-      <home-about-us />
-      <home-stats />
-      <home-faq />
-    </div>
-    <home-footer />
+
+    <home-about-us id="about-us" />
+    <home-stats id="stats" />
+    <home-faq id="faq" />
+
+    <home-footer id="cusFooter" />
   </div>
 </template>

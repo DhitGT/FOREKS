@@ -4,11 +4,11 @@
       <div class="md:flex md:justify-between">
         <div class="mb-6 md:mb-0">
           <a href="https://koppling.site" class="flex items-center">
-            <img src="logo.png" class="mr-3 h-8 rounded-full" alt="Logo" />
-            <span
-              class="self-center text-2xl font-semibold whitespace-nowrap text-white"
-              >Foresk</span
-            >
+            <img
+              src="/assets/img/foresk white.png"
+              class="h-32"
+              alt="Foresk Logo"
+            />
           </a>
         </div>
       </div>

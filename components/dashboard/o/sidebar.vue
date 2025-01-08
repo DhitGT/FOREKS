@@ -54,6 +54,56 @@
               <span class="ml-3">Edit Web Profile</span>
             </nuxt-link>
           </li>
+          <li>
+            <nuxt-link
+              to="/dashboard/o/members"
+              class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
+            >
+              <i class="mdi mdi-account-multiple-outline text-xl"></i>
+              <!-- Members Icon -->
+              <span class="ml-3">Members</span>
+            </nuxt-link>
+          </li>
+          <li>
+            <nuxt-link
+              to="/dashboard/o/reportActivity"
+              class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
+            >
+              <i class="mdi mdi-note-text text-xl"></i>
+              <!-- Activity Report Icon -->
+              <span class="ml-3">Activity Report</span>
+            </nuxt-link>
+          </li>
+          <li>
+            <nuxt-link
+              to="/dashboard/o/absent"
+              class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
+            >
+              <i class="mdi mdi-calendar-check text-xl"></i>
+              <!-- Absent Icon -->
+              <span class="ml-3">Absent</span>
+            </nuxt-link>
+          </li>
+          <li>
+            <nuxt-link
+              to="/dashboard/o/kas"
+              class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
+            >
+              <i class="mdi mdi-cash-multiple text-xl"></i>
+              <!-- Kas (Cash) Icon -->
+              <span class="ml-3">Kas</span>
+            </nuxt-link>
+          </li>
+
+          <li v-if="token">
+            <div
+              @click="handleLogout"
+              class="flex cursor-pointer items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
+            >
+              <i class="mdi mdi-logout text-xl"></i>
+              <span class="ml-3">Logout</span>
+            </div>
+          </li>
         </ul>
       </div>
     </aside>
@@ -61,7 +111,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
+  computed: {
+    ...mapState({
+      token: (state) => state.token,
+    }),
+  },
   props: {
     profileInfo: {
       type: Object,
@@ -75,6 +131,13 @@ export default {
   methods: {
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen
+    },
+    async handleLogout() {
+      try {
+        const res = await this.$store.dispatch('logout')
+      } catch (error) {
+        console.error('Error:', error)
+      }
     },
   },
 }

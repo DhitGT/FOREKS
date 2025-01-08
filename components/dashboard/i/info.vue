@@ -11,6 +11,19 @@
         <form @submit.prevent="submitForm">
           <div class="mb-4">
             <label for="description" class="block mb-1 text-sm font-medium">
+              Instansi Name
+            </label>
+            <div class="flex items-center border border-gray-300 rounded-lg">
+              <input
+                type="text"
+                class="text-white bg-transparent border-none focus:ring-0 p-2"
+                v-model="form.name"
+                required
+              />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label for="description" class="block mb-1 text-sm font-medium">
               Custom Domain Name
             </label>
             <div class="flex items-center border border-gray-300 rounded-lg">
@@ -123,9 +136,9 @@
           <img
             class="w-24 h-24 mb-3 rounded-full shadow-lg"
             :src="
-              profileInfo.data.img_profile
+              profileInfo?.data?.img_profile
                 ? 'http://localhost:8000/storage/' +
-                  profileInfo.data.img_profile
+                  profileInfo?.data?.img_profile
                 : '/assets/img/group-users.png'
             "
             alt=""
@@ -134,11 +147,11 @@
             {{ profileInfo?.data.nama }}
           </h5>
           <span class="text-sm text-gray-500 dark:text-gray-400">{{
-            profileInfo.data.owner_name
+            profileInfo?.data.owner_name
           }}</span>
           <div
             class="flex mt-4 md:mt-6"
-            v-if="profileInfo.data.instansi_wp_id != null"
+            v-if="profileInfo?.data.instansi_wp_id != null"
           >
             <button
               @click="hrefToWebPage()"
@@ -202,7 +215,7 @@
         </ul>
         <div
           id="defaultTabContent"
-          v-if="profileInfo.data.instansi_wp_id != null"
+          v-if="profileInfo?.data.instansi_wp_id != null"
         >
           <div
             class="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800"
@@ -213,7 +226,7 @@
             <h2
               class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white"
             >
-              {{ profileInfo.data.nama }}
+              {{ profileInfo?.data.nama }}
             </h2>
 
             <div class="flex justify-start gap-6">
@@ -222,8 +235,8 @@
                   Organizazion:
                   {{
                     profileInfo &&
-                    profileInfo.data &&
-                    profileInfo.data?.total_organization
+                    profileInfo?.data &&
+                    profileInfo?.data?.total_organization
                   }}
                 </p>
               </div>
@@ -232,8 +245,8 @@
                   All Member:
                   {{
                     profileInfo &&
-                    profileInfo.data &&
-                    profileInfo.data?.total_member
+                    profileInfo?.data &&
+                    profileInfo?.data?.total_member
                   }}
                 </p>
               </div>
@@ -242,15 +255,15 @@
                   Followers:
                   {{
                     profileInfo &&
-                    profileInfo.data &&
-                    profileInfo.data?.total_followers
+                    profileInfo?.data &&
+                    profileInfo?.data?.total_followers
                   }}
                 </p>
               </div>
             </div>
             <div
               class="mb-3 max-h-28 overflow-y-scroll overflow-x-hidden text-gray-500 dark:text-gray-400"
-              v-html="profileInfo.data.description"
+              v-html="profileInfo?.data.description"
             ></div>
           </div>
           <div
@@ -260,8 +273,8 @@
             aria-labelledby="statistic-tab"
           >
             <dashboard-i-instansi-stats
-              v-if="profileInfo && profileInfo.data"
-              :profileInfo="profileInfo.data"
+              v-if="profileInfo && profileInfo?.data"
+              :profileInfo="profileInfo?.data"
             />
             <!-- <h2
               class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white"
@@ -325,6 +338,7 @@ export default {
         color: '#A7F3D0', // Default color
       },
       form: {
+        name: '',
         description: '',
         instansi_id: '',
         img_profile: '',
@@ -351,8 +365,8 @@ export default {
   },
   methods: {
     openModal() {
-      this.form.description = this.profileInfo.data.description
-      const badge_from_api = JSON.parse(this.profileInfo.data.badge)
+      this.form.description = this.profileInfo?.data.description
+      const badge_from_api = JSON.parse(this.profileInfo?.data.badge)
       this.badgeInput.color = '#A7F3D0'
       this.form.badge = badge_from_api != null ? badge_from_api : []
       // this.form.img_profile = this.profileInfo.data.img_profile
@@ -401,6 +415,7 @@ export default {
       const formData = new FormData()
 
       // Append description, instansi_id, and img_profile to formData
+      formData.append('name', this.form.name)
       formData.append('description', this.form.description)
       formData.append('instansi_id', this.form.instansi_id)
       formData.append('img_profile', this.form.img_profile)
@@ -428,7 +443,7 @@ export default {
       }
     },
     hrefToWebPage() {
-      this.$router.push(`/i/${this.profileInfo.data.custom_domain_name}`)
+      this.$router.push(`/i/${this.profileInfo?.data?.custom_domain_name}`)
     },
   },
 }

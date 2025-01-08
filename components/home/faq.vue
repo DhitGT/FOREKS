@@ -1,24 +1,28 @@
 <template>
-  <section class="my-24 py-16 bg-gray-900" id="faq">
-    <div class="flex p-7">
-      <div class="mr-28">
-        <h2 class="text-3xl font-bold">Beberapa Hal Yang Perlu Diketahui</h2>
-        <p>
-          Masih ragu dengan SMK Coding, beberapa hal ini mungkin bisa menjawab
+  <section class="my-24 py-16" id="faq">
+    <div class="flex flex-col md:flex-row p-7 container">
+      <div class="md:mr-28">
+        <h2
+          class="text-3xl xs:text-center sm:text-center md:text-left font-bold"
+        >
+          Things You Need to Know
+        </h2>
+        <p class="xs:text-center sm:text-center md:text-left">
+          Still unsure about FORESK? These points might answer your questions.
         </p>
       </div>
       <div class="container mx-auto">
-        <div class="accordion">
+        <div class="accordion flex flex-col gap-2">
           <div
-            class="mb-4 border border-gray-300 rounded"
+            class="border bg-gray-900 border-gray-900 rounded"
             v-for="(item, index) in faqs"
             :key="index"
           >
             <button
               @click="toggle(index)"
-              class="w-full flex justify-between items-center px-4 py-2 text-left text-gray-900 bg-white border-b border-gray-300 focus:outline-none"
+              class="w-full flex justify-between items-center px-4 h-full py-2 text-left text-gray-100 bg-gray-800 border-b border-gray-900 focus:outline-none"
             >
-              <span class="text-lg font-medium">{{ item.question }}</span>
+              <span class="text-lg font-medium">{{ item?.question }}</span>
               <svg
                 :class="{
                   'rotate-180': activeIndex === index,
@@ -43,9 +47,10 @@
               :class="{ open: activeIndex === index }"
               ref="content"
             >
-              <p class="px-4 py-2 bg-gray-50 text-gray-700">
-                {{ item.answer }}
-              </p>
+              <div
+                v-html="item?.answer"
+                class="px-4 py-2 bg-gray-900 text-gray-100"
+              ></div>
             </div>
           </div>
         </div>
@@ -61,19 +66,34 @@ export default {
       activeIndex: null,
       faqs: [
         {
-          question: 'Apa itu sambal Pecel Mbak Ika?',
+          question: 'What is FORESK?',
           answer:
-            'Sambal Pecel Mbak Ika adalah sambal khas yang terbuat dari              bahan-bahan alami pilihan. Sambal ini menjamin kualitas,              kebersihan, dan tentunya kelezatan autentik. Setiap rasa dalam              sambal ini berasal dari perpaduan rempah-rempah lokal berkualitas              yang menciptakan sensasi rasa yang tidak terlupakan.',
+            ' FORESK stands for <strong>Forum Extracurricular</strong>. It is an application designed to help schools manage extracurricular organizations efficiently. FORESK empowers organization leaders with tools to streamline operations and provides a platform to showcase their activities online.',
         },
         {
-          question: 'Bagaimana cara memesan nya?',
+          question: 'Who can use FORESK?',
           answer:
-            'Anda bisa langsung menghubungi ke kontak whatsapp yang tertera, dan beritahu anda ingin memesan sambal',
+            "FORESK is designed for:<ul class='list-disc pl-5'><li><strong>Extracurricular Leaders</strong>: To manage their clubs and promote them online.</li><li><strong>Students</strong>: To explore and join various extracurricular activities.</li><li><strong>School Administrators</strong>: To oversee and support all school organizations.</li></ul>",
         },
         {
-          question: 'Berapa lama waktu pengiriman?',
+          question: 'What are the main features of FORESK?',
           answer:
-            'Waktu pengiriman biasanya antara 2-5 hari kerja tergantung lokasi pengiriman.',
+            "FORESK offers a range of features, including:<ul class='list-disc pl-5'><li><strong>Organization Management</strong>: Manage schedules, activities, and members.</li><li><strong>Online Showcase</strong>: Promote extracurricular activities and attract new members.</li><li><strong>Reporting Tools</strong>: Generate reports for progress and achievements.</li></ul>",
+        },
+        {
+          question: 'How does FORESK benefit extracurricular leaders?',
+          answer:
+            "FORESK simplifies the responsibilities of extracurricular leaders by providing:<ul class='list-disc pl-5'><li>A centralized platform to manage activities.</li><li>Increased visibility for their clubs through online promotion.</li></ul>",
+        },
+        {
+          question:
+            'Can FORESK help recruit new members for my extracurricular club?',
+          answer:
+            'Yes! FORESK allows leaders to create a compelling online presence for their clubs, making it easier for students to discover and join organizations that match their interests.',
+        },
+        {
+          question: 'Is FORESK free to use?',
+          answer: 'for now FORESK still free',
         },
       ],
     }
@@ -91,7 +111,7 @@ export default {
   transition: background-color 0.3s ease;
 }
 .accordion button:hover {
-  background-color: #f3f4f6;
+  background-color: #151515;
 }
 
 .faq-content {
@@ -102,7 +122,7 @@ export default {
 }
 
 .faq-content.open {
-  max-height: 1000px; /* You can adjust this value based on the content */
+  max-height: fit-content; /* You can adjust this value based on the content */
   opacity: 1;
 }
 </style>

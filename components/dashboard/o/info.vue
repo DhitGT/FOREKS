@@ -2,7 +2,7 @@
   <div class="">
     <div class="flex lg:flex-row flex-col justify-evenly gap-4">
       <div
-        class="w-full lg:max-w-md bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+        class="w-full lg:max-w-md bg-gray-800 border text-white border-gray-900 rounded-lg shadow"
       >
         <div class="flex flex-col justify-center mt-auto items-center py-10">
           <img
@@ -14,10 +14,10 @@
             "
             alt=""
           />
-          <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+          <h5 class="mb-1 text-xl font-medium text-gray-100">
             {{ profileInfo?.data?.name }}
           </h5>
-          <span class="text-sm text-gray-500 dark:text-gray-400">{{
+          <span class="text-sm text-gray-200">{{
             profileInfo.data?.leader_name
           }}</span>
           <div
@@ -26,13 +26,13 @@
           >
             <button
               @click="hrefToWebPage()"
-              class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
             >
               View WebPage
             </button>
             <button
               @click="hrefEditWeb"
-              class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+              class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
             >
               Edit Web
             </button>
@@ -48,11 +48,9 @@
         </div>
       </div>
 
-      <div
-        class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-      >
+      <div class="w-full bg-gray-800 border border-gray-900 rounded-lg shadow">
         <ul
-          class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800"
+          class="flex flex-wrap text-sm font-medium text-center text-gray-100 border-b border-gray-950 rounded-t-lg bg-gray-900"
           role="tablist"
         >
           <li class="me-2">
@@ -63,13 +61,13 @@
               role="tab"
               aria-controls="about"
               aria-selected="true"
-              class="inline-block p-4 text-blue-600 rounded-ss-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-blue-500"
+              class="inline-block p-4 text-blue-600 hover:text-gray-300 rounded-ss-lg hover:bg-gray-800"
               onclick="showTab(event, 'about')"
             >
               About
             </button>
           </li>
-          <li class="me-2">
+          <!-- <li class="me-2">
             <button
               id="statistic-tab"
               data-tabs-target="#statistic"
@@ -77,32 +75,32 @@
               role="tab"
               aria-controls="statistic"
               aria-selected="false"
-              class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+              class="inline-block p-4 hover:text-gray-300 hover:bg-gray-800"
               onclick="showTab(event, 'statistic')"
             >
               Charts
             </button>
-          </li>
+          </li> -->
         </ul>
         <div
           id="defaultTabContent"
           v-if="profileInfo.data?.web_pages.id != null"
         >
           <div
-            class="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800"
+            class="p-4 bg-gray-800 rounded-lg md:p-8"
             id="about"
             role="tabpanel"
             aria-labelledby="about-tab"
           >
             <h2
-              class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white"
+              class="mb-3 text-3xl font-extrabold tracking-tight text-gray-100"
             >
               {{ profileInfo.data?.name }}
             </h2>
 
             <div class="flex justify-start gap-6">
               <div>
-                <p class="text-xl font-bold text-gray-600">
+                <p class="text-xl font-bold text-gray-100">
                   Achivement:
                   {{
                     profileInfo &&
@@ -112,7 +110,7 @@
                 </p>
               </div>
               <div>
-                <p class="text-xl font-bold text-gray-600">
+                <p class="text-xl font-bold text-gray-100">
                   All Member:
                   {{
                     profileInfo &&
@@ -122,7 +120,7 @@
                 </p>
               </div>
               <div>
-                <p class="text-xl font-bold text-gray-600">
+                <p class="text-xl font-bold text-gray-100">
                   Kas:
                   {{
                     profileInfo &&
@@ -138,15 +136,15 @@
             ></div>
           </div>
           <div
-            class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800"
+            class="hidden p-4 bg-gray-800 text-white rounded-lg md:p-8"
             id="statistic"
             role="tabpanel"
             aria-labelledby="statistic-tab"
           >
-            <dashboard-i-instansi-stats
+            <!-- <dashboard-i-instansi-stats
               v-if="profileInfo && profileInfo.data"
               :profileInfo="profileInfo.data"
-            />
+            /> -->
             <!-- <h2
               class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white"
             >

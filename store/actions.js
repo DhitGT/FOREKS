@@ -92,9 +92,62 @@ export default {
       console.log("errror : ", error)
     }
   },
+  async googleSignIn({ commit, state }, formData) {
+    try {
+      const data = await this.$axios.$post("/auth/googleSignIn", formData)
+
+      console.log(data)
+      commit("SET_USER", null);
+      commit("SET_TOKEN", null);
+
+      // Delete the "app_id" cookie
+      Cookies.remove("app_id");
+
+      commit("SET_USER", data)
+      commit("SET_TOKEN", data.token)
+      console.log("token fetch: ", data.token)
+      console.log("token state: ", state.token)
+
+      Cookies.set(
+        "app_id",
+        CryptoJS.AES.encrypt(data.token, "token").toString()
+      );
+
+      // console.log("data login :", data)
+
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      const baseUrl = window.location.origin; // Dynamically get the base URL
+      if (data.token && Cookies.get("app_id")) {
+        if (data.user.role === "Manager") {
+          this.$router.push({ name: "dashboard-i" });
+        } else if (data.user.role === "Leader") {
+          this.$router.push({ name: "dashboard-o" });
+        }
+        // window.location.href = `${baseUrl}/dashboard/i`;
+      } else {
+        console.log("gagal href")
+      }
+      console.log(data)
+      return response
+    } catch (error) {
+      console.log("errror : ", error)
+    }
+  },
   async editUser({ commit, state }, formData) {
     try {
       const data = await this.$axios.$post("/dashboard/i/editUser", formData)
+
+      console.log(data)
+      return data
+
+    } catch (error) {
+      console.log("errror : ", error)
+    }
+  },
+  async getAppStats({ commit, state }, formData) {
+    try {
+      const data = await this.$axios.$get("/apps/getAppStats", formData)
 
       console.log(data)
       return data

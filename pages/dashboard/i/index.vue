@@ -18,8 +18,8 @@
       />
     </div>
     <div class="p-4 sm:container flex-1" :class="['flex-1 p-4 ']">
-      <div class="flex flex-col gap-4">
-        <div v-if="profileInfo.isFound">
+      <div class="flex flex-col gap-4" v-if="!loading">
+        <div>
           <p class="text-2xl font-bold">Activity</p>
           <dashboard-i-status v-if="eskulReportActivity.report_length > 0" />
           <div v-else>
@@ -33,12 +33,7 @@
           @fetchProfileInfo="getProfileInfo"
           v-if="profileInfo.isFound"
         />
-        <div v-else>
-          <p>Its Look like you're new here, lets make new instansi profile</p>
-          <v-btn @click="hrefCreateNewInstansi"
-            >Create New Instansi Profile</v-btn
-          >
-        </div>
+
         <div v-if="profileInfo.data?.custom_domain_name != null">
           <hr />
           <div>
@@ -151,6 +146,9 @@
           <dashboard-i-stats :eskulInstansiList="eskulInstansiList" />
         </div>
       </div>
+      <div>
+        <loading-screen :loading="loading" />
+      </div>
     </div>
   </div>
 </template>
@@ -172,6 +170,7 @@ export default {
       newEskulModal: false,
       itemEskulEdit: null,
       eskulSearchQuery: '',
+      loading: false,
       sidebar: false,
     }
   },
@@ -195,19 +194,24 @@ export default {
       this.$router.push({ name: 'create-institution' })
     },
     async getEskulReportActivity() {
+      this.loading = true
       const { data } = await this.$store.dispatch(
         'Dashboard/instansi/getReportActivity'
       )
       this.eskulReportActivity = data
+      this.loading = false
     },
     async getProfileInfo() {
+      this.loading = true
       const { data } = await this.$store.dispatch(
         'Dashboard/instansi/getProfileInfo'
       )
       this.profileInfo = data
+      this.loading = false
     },
 
     async handleTrash(item) {
+      this.loading = true
       const formdata = new FormData()
       formdata.append('id', item.id)
 
@@ -217,8 +221,10 @@ export default {
       )
 
       await this.getEskulInstansi()
+      this.loading = false
     },
     async getEskulInstansi(isTrash = false) {
+      this.loading = true
       this.itemEskulEdit = null
 
       const { data } = await this.$store.dispatch(
@@ -227,6 +233,7 @@ export default {
       )
       this.eskulInstansiList = data.data
 
+      this.loading = false
       console.log('eskul instansi :', this.eskulInstansiList)
     },
 
@@ -243,6 +250,7 @@ export default {
   },
   watch: {
     async viewMode(val) {
+      this.loading = true
       if (val == 'trash') {
         await this.getEskulInstansi(true)
       } else {
