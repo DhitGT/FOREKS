@@ -4,26 +4,32 @@
 
     <div v-if="!loading">
       <div class="filter mb-4">
-        <label for="filter_start" class="block">Start Date:</label>
-        <input
-          type="date"
-          id="filter_start"
-          v-model="filter.startDate"
-          class="input"
-        />
-        <label for="filter_end" class="block mt-2">End Date:</label>
-        <input
-          type="date"
-          id="filter_end"
-          v-model="filter.endDate"
-          class="input"
-        />
-        <button @click="applyFilter" class="btn mt-2">
-          <i class="mdi mdi-filter-variant"></i> Apply Filter
-        </button>
-        <button @click="openModal" class="btn mt-2">
-          <i class="mdi mdi-plus"></i> Create Activity
-        </button>
+        <div class="filter mb-2 flex items-end gap-2">
+          <div class="flex flex-col">
+            <label for="filter_start" class="mr-2">Start Date:</label>
+            <input
+              type="date"
+              id="filter_start"
+              v-model="filter.startDate"
+              class="input mr-2"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label for="filter_end" class="mr-2">End Date:</label>
+            <input
+              type="date"
+              id="filter_end"
+              v-model="filter.endDate"
+              class="input mr-2"
+            />
+          </div>
+          <button @click="applyFilter" class="btn mr-2">
+            <i class="mdi mdi-filter-variant"></i> Apply Filter
+          </button>
+          <button @click="openModal" class="btn">
+            <i class="mdi mdi-plus"></i> Create Activity
+          </button>
+        </div>
       </div>
 
       <hr class="my-6 border-gray-600" />
@@ -35,6 +41,11 @@
           :key="activity.id"
           class="bg-gray-700 rounded-lg p-4 shadow-lg"
         >
+          <img
+            :src="'http://localhost:8000/storage/' + activity?.picture"
+            alt=""
+            class="w-full aspect-square object-cover"
+          />
           <h3 class="text-lg font-bold">{{ activity.title }}</h3>
           <p><strong>Description:</strong> {{ activity.description }}</p>
           <p>
@@ -83,87 +94,89 @@
           <div
             class="modal-container bg-gray-800 rounded-lg overflow-hidden shadow-lg z-50"
           >
-            <div class="modal-header p-4">
-              <button
-                @click="closeModal"
-                class="text-gray-400 hover:text-gray-200"
-              >
-                <i class="mdi mdi-close"></i>
-              </button>
-              <h2 class="text-lg font-bold">
-                {{ editMode ? 'Edit' : 'Create' }} Activity
-              </h2>
-            </div>
-            <div class="modal-body p-4">
-              <form @submit.prevent="handleSubmit">
-                <div class="mb-4">
-                  <label for="title" class="block">Title:</label>
-                  <input
-                    id="title"
-                    v-model="form.title"
-                    required
-                    type="text"
-                    class="input"
-                  />
-                </div>
-                <div class="mb-4">
-                  <label for="location" class="block">Location:</label>
-                  <input
-                    id="location"
-                    v-model="form.location"
-                    required
-                    type="text"
-                    class="input"
-                  />
-                </div>
-                <div class="mb-4">
-                  <label for="picture" class="block">Picture:</label>
-                  <input
-                    type="file"
-                    id="picture"
-                    @change="handleFileUpload"
-                    required
-                    class="input"
-                  />
-                </div>
-                <div class="mb-4">
-                  <label for="description" class="block">Description:</label>
-                  <textarea
-                    id="description"
-                    v-model="form.description"
-                    required
-                    class="input"
-                  ></textarea>
-                </div>
-                <div class="mb-4">
-                  <label for="date_start" class="block">Start Date:</label>
-                  <input
-                    type="date"
-                    id="date_start"
-                    v-model="form.date_start"
-                    required
-                    class="input"
-                  />
-                </div>
-                <div class="mb-4">
-                  <label for="date_end" class="block">End Date:</label>
-                  <input
-                    type="date"
-                    id="date_end"
-                    v-model="form.date_end"
-                    required
-                    class="input"
-                  />
-                </div>
-
-                <button type="submit" class="btn">
-                  <i
-                    class="mdi"
-                    :class="editMode ? 'mdi-pencil' : 'mdi-plus'"
-                  ></i>
-                  {{ editMode ? 'Update' : 'Create' }} Activity
+            <div class="max-h-[80vh] overflow-y-scroll">
+              <div class="modal-header p-4">
+                <button
+                  @click="closeModal"
+                  class="text-gray-400 hover:text-gray-200"
+                >
+                  <i class="mdi mdi-close"></i>
                 </button>
-              </form>
+                <h2 class="text-lg font-bold">
+                  {{ editMode ? 'Edit' : 'Create' }} Activity
+                </h2>
+              </div>
+              <div class="modal-body p-4">
+                <form @submit.prevent="handleSubmit">
+                  <div class="mb-4">
+                    <label for="title" class="block">Title:</label>
+                    <input
+                      id="title"
+                      v-model="form.title"
+                      required
+                      type="text"
+                      class="input"
+                    />
+                  </div>
+                  <div class="mb-4">
+                    <label for="location" class="block">Location:</label>
+                    <input
+                      id="location"
+                      v-model="form.location"
+                      required
+                      type="text"
+                      class="input"
+                    />
+                  </div>
+                  <div class="mb-4">
+                    <label for="picture" class="block">Picture:</label>
+                    <input
+                      type="file"
+                      id="picture"
+                      @change="handleFileUpload"
+                      required
+                      class="input"
+                    />
+                  </div>
+                  <div class="mb-4">
+                    <label for="description" class="block">Description:</label>
+                    <textarea
+                      id="description"
+                      v-model="form.description"
+                      required
+                      class="input"
+                    ></textarea>
+                  </div>
+                  <div class="mb-4">
+                    <label for="date_start" class="block">Start Date:</label>
+                    <input
+                      type="date"
+                      id="date_start"
+                      v-model="form.date_start"
+                      required
+                      class="input"
+                    />
+                  </div>
+                  <div class="mb-4">
+                    <label for="date_end" class="block">End Date:</label>
+                    <input
+                      type="date"
+                      id="date_end"
+                      v-model="form.date_end"
+                      required
+                      class="input"
+                    />
+                  </div>
+
+                  <button type="submit" class="btn">
+                    <i
+                      class="mdi"
+                      :class="editMode ? 'mdi-pencil' : 'mdi-plus'"
+                    ></i>
+                    {{ editMode ? 'Update' : 'Create' }} Activity
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -221,6 +234,7 @@ export default {
       }
       console.log('handle upload img frm : ', this.form)
     },
+    
     async fetchActivities() {
       this.loading = true
       try {

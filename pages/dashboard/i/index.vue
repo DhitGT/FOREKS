@@ -1,27 +1,15 @@
 <template>
-  <div class="flex">
-    <div
-      class="flex-shrink-0"
-      :class="[
-        ' transition-all duration-300 z-30',
-        sidebar ? 'w-64' : 'w-16',
-        'fixed sm:relative',
-        sidebar ? 'translate-x-0' : '-translate-x-full sm:translate-x-0',
-        'h-full',
-      ]"
-    >
-      <dashboard-i-sidebar
-        class="h-screen"
-        :profileInfo="profileInfo"
-        :eskulList="eskulInstansiList"
-        @isSidebarOpen="isSidebarOpen"
-      />
-    </div>
-    <div class="p-4 sm:container flex-1" :class="['flex-1 p-4 ']">
-      <div class="flex flex-col gap-4" v-if="!loading">
+  <div>
+    <dashboard-i-sidebar :profileInfo="profileInfo" />
+
+    <div class="container md:ml-52">
+      <div class="flex md:pl-52 flex-col gap-4" v-if="!loading">
         <div>
           <p class="text-2xl font-bold">Activity</p>
-          <dashboard-i-status v-if="eskulReportActivity.report_length > 0" />
+          <dashboard-i-status
+            :profileInfo="profileInfo"
+            v-if="eskulReportActivity.report_length > 0"
+          />
           <div v-else>
             <p class="text-gray-600">Theres No Eskul Activity For Now</p>
           </div>
@@ -174,10 +162,10 @@ export default {
       sidebar: false,
     }
   },
-  mounted() {
-    this.getProfileInfo()
-    this.getEskulInstansi()
-    this.getEskulReportActivity()
+  async mounted() {
+    await this.getProfileInfo()
+    await this.getEskulInstansi()
+    await this.getEskulReportActivity()
   },
   methods: {
     isSidebarOpen(val) {

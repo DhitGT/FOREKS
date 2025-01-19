@@ -1,7 +1,7 @@
 export default {
-  async GetEskulAbsen(_) {
+  async GetEskulAbsen(_, payload) {
     try {
-      const data = await this.$axios.$get(`/absent/getEskulAbsent`);
+      const data = await this.$axios.$post(`/absent/getEskulAbsent`, payload);
       return {
         status: true,
         message: 'Successfully fetched ',

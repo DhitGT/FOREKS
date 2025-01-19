@@ -94,7 +94,7 @@
               <span
                 v-for="(badge, index) in form.badge"
                 :key="index"
-                class="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg"
+                class="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-200 bg-gray-200 rounded-lg"
                 :style="{ backgroundColor: badge.color }"
               >
                 {{ badge.name }}
@@ -113,7 +113,7 @@
             <button
               @click="closeModal"
               type="button"
-              class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg mr-2"
+              class="px-4 py-2 text-gray-200 bg-gray-200 rounded-lg mr-2"
             >
               Cancel
             </button>
@@ -130,7 +130,7 @@
 
     <div class="flex lg:flex-row flex-col justify-evenly gap-4">
       <div
-        class="w-full lg:max-w-md bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+        class="w-full lg:max-w-md bg-gray-800 border border-gray-900 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
       >
         <div class="flex flex-col justify-center mt-auto items-center py-10">
           <img
@@ -143,10 +143,10 @@
             "
             alt=""
           />
-          <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+          <h5 class="mb-1 text-xl font-medium text-white">
             {{ profileInfo?.data.nama }}
           </h5>
-          <span class="text-sm text-gray-500 dark:text-gray-400">{{
+          <span class="text-sm text-gray-400">{{
             profileInfo?.data.owner_name
           }}</span>
           <div
@@ -178,10 +178,10 @@
       </div>
 
       <div
-        class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+        class="w-full bg-gray-800 border border-gray-900 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
       >
         <ul
-          class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800"
+          class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-700 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800"
           role="tablist"
         >
           <li class="me-2">
@@ -206,7 +206,7 @@
               role="tab"
               aria-controls="statistic"
               aria-selected="false"
-              class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+              class="inline-block p-4 hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-gray-300"
               onclick="showTab(event, 'statistic')"
             >
               Charts
@@ -218,20 +218,20 @@
           v-if="profileInfo?.data.instansi_wp_id != null"
         >
           <div
-            class="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800"
+            class="p-4 bg-gray-800 rounded-lg md:p-8 dark:bg-gray-800"
             id="about"
             role="tabpanel"
             aria-labelledby="about-tab"
           >
             <h2
-              class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white"
+              class="mb-3 text-3xl font-extrabold tracking-tight text-gray-100 dark:text-white"
             >
               {{ profileInfo?.data.nama }}
             </h2>
 
             <div class="flex justify-start gap-6">
               <div>
-                <p class="text-xl font-bold text-gray-600">
+                <p class="text-xl font-bold text-gray-200">
                   Organizazion:
                   {{
                     profileInfo &&
@@ -241,7 +241,7 @@
                 </p>
               </div>
               <div>
-                <p class="text-xl font-bold text-gray-600">
+                <p class="text-xl font-bold text-gray-200">
                   All Member:
                   {{
                     profileInfo &&
@@ -251,7 +251,7 @@
                 </p>
               </div>
               <div>
-                <p class="text-xl font-bold text-gray-600">
+                <p class="text-xl font-bold text-gray-200">
                   Followers:
                   {{
                     profileInfo &&
@@ -262,12 +262,12 @@
               </div>
             </div>
             <div
-              class="mb-3 max-h-28 overflow-y-scroll overflow-x-hidden text-gray-500 dark:text-gray-400"
+              class="mb-3 max-h-28 overflow-y-scroll overflow-x-hidden text-gray-100 dark:text-gray-400"
               v-html="profileInfo?.data.description"
             ></div>
           </div>
           <div
-            class="hidden p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800"
+            class="hidden p-4 bg-gray-800 rounded-lg md:p-8 dark:bg-gray-800"
             id="statistic"
             role="tabpanel"
             aria-labelledby="statistic-tab"
@@ -285,7 +285,7 @@
           </div>
         </div>
         <div v-else class="flex h-[90%] items-center justify-center">
-          <p class="text-gray-500 dark:text-gray-400">
+          <p class="text-gray-100 dark:text-gray-400">
             Instansi Web Profile Not Found
           </p>
         </div>

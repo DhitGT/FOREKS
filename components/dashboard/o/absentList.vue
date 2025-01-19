@@ -1,6 +1,6 @@
 <template>
   <div
-    class="container mx-auto p-6 bg-gray-800 text-gray-200 rounded-lg shadow-lg"
+    class="container mx-auto p-6 bg-transparent text-gray-200 rounded-lg shadow-lg"
   >
     <!-- Edit Modal -->
     <transition name="modal">
@@ -11,7 +11,7 @@
         <div class="modal-overlay absolute inset-0 bg-black opacity-50"></div>
         <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg z-50 p-6">
           <h2 class="text-lg font-bold mb-4">Edit Absen</h2>
-          <div class="mb-4">
+          <div class="mb-4 p-3">
             <input
               type="text"
               v-model="editAbsenName"
@@ -37,13 +37,13 @@
 
     <h1 class="text-2xl font-bold mb-4">Eskul Absen List</h1>
 
-    <div class="mb-4">
+    <div class="mb-4 flex flex-col md:flex-row gap-3">
       <input
         type="text"
         v-model="newAbsenName"
         @input="getUserByName"
         placeholder="Enter member name..."
-        class="input"
+        class="input lg:max-w-lg"
       />
       <div
         v-if="suggestName.length"
@@ -60,22 +60,21 @@
           </li>
         </ul>
       </div>
+      <div class="flex min-h-[90%] min-w-screen md:max-w-lg">
+        <select v-model="newKeterangan" class="input mr-2">
+          <option value="Hadir">Hadir</option>
+          <option value="Izin">Izin</option>
+          <option value="Sakit">Sakit</option>
+        </select>
+        <button @click="addAbsen" class="btn">Add Absen</button>
+      </div>
     </div>
 
-    <div class="flex mb-4">
-      <select v-model="newKeterangan" class="input mr-2">
-        <option value="Hadir">Hadir</option>
-        <option value="Izin">Izin</option>
-        <option value="Sakit">Sakit</option>
-      </select>
-      <button @click="addAbsen" class="btn">Add Absen</button>
-    </div>
-
-    <div class="grid grid-cols-1 gap-4">
+    <div class="grid grid-cols-1 gap-3">
       <div
         v-for="absen in eskulAbsen"
         :key="absen.id"
-        class="bg-gray-700 rounded-lg p-4 shadow-lg flex justify-between items-center"
+        class="bg-gray-800 rounded-lg p-2 shadow-lg flex justify-between items-center"
       >
         <div class="flex justify-between items-center">
           <div class="flex flex-col" style="max-width: fit-content">
@@ -215,7 +214,7 @@ export default {
 <style scoped>
 .input {
   width: 100%;
-  padding: 0 1em;
+  padding: 0.5em 1em;
   border: 1px solid #4b5563;
   border-radius: 0.375rem;
   background-color: #1f2937;

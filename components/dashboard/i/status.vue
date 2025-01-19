@@ -1,15 +1,21 @@
 <template>
   <div class="stories-container flex gap-4 overflow-x-auto px-4 py-4">
     <div
-      v-for="(story, index) in stories"
+      v-for="(story, index) in activities"
       :key="index"
       @click="openStory(story)"
       class="story-item cursor-pointer"
     >
       <v-avatar size="80" class="border-4 border-blue-500">
-        <img class="object-cover" :src="story.image" alt="User Story" />
+        <img
+          class="object-cover"
+          :src="'http://localhost:8000/storage/' + story.picture"
+          alt="User Story"
+        />
       </v-avatar>
-      <p class="text-center text-sm mt-2">{{ story.username }}</p>
+      <p class="text-center text-sm mt-2">
+        {{ story?.eskul?.web_pages?.navbar_title }}
+      </p>
     </div>
 
     <!-- Story Dialog -->
@@ -18,23 +24,38 @@
         <v-card-title class="text-h6">
           <div class="flex gap-3 items-center">
             <img
-              src="https://koppling.site/kopplingLogo.png"
+              :src="
+                'http://localhost:8000/storage/' + currentStory?.eskul?.logo
+              "
               class="w-10 rounded-full"
             />
-            {{ currentStory?.username }}
+            {{ currentStory?.eskul?.web_pages?.navbar_title }}
           </div>
         </v-card-title>
-        <img :src="currentStory?.image" aspect-ratio="16/9" />
+        <img
+          :src="'http://localhost:8000/storage/' + currentStory?.picture"
+          aspect-ratio="16/9"
+        />
         <p>
-          Kegiatan : Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-          Molestias optio ipsa perspiciatis voluptates at doloremque voluptatum,
-          ipsam deserunt placeat aperiam saepe, officiis praesentium magnam
-          corporis tempora non nihil porro aliquam? Eligendi mollitia quia
-          sapiente?
+          {{ currentStory?.title }}
         </p>
-        <p>Tanggal : 12 Januari 2025</p>
-        <p>Jam : 05:00 - 8:00</p>
-        <p>Absensi : <a href="">Daftar Siswa Hadir</a></p>
+        <p>
+          {{ currentStory?.description }}
+        </p>
+        <p>From : {{ currentStory?.date_start }}</p>
+        <p>To : {{ currentStory?.date_end }}</p>
+
+        <p>
+          Absensi :
+          <a
+            @click="
+              {
+                $router.push('/dashboard/i/absent/' + currentStory?.absent_code)
+              }
+            "
+            >Absent</a
+          >
+        </p>
         <v-card-actions>
           <v-btn text color="primary" @click="storyDialog = false">Close</v-btn>
         </v-card-actions>
@@ -45,8 +66,14 @@
 
 <script>
 export default {
+  props: {
+    profileInfo: {
+      required: true,
+    },
+  },
   data() {
     return {
+      activities: [],
       stories: [
         { username: 'User1', image: 'https://placehold.co/150' },
         { username: 'User2', image: '/assets/img/bgJumbo/bgjumbo3.jpg' },
@@ -57,10 +84,36 @@ export default {
       currentStory: null,
     }
   },
+  mounted() {
+    this.getEskulActivityReport()
+  },
   methods: {
     openStory(story) {
       this.currentStory = story
       this.storyDialog = true
+    },
+    async getEskulActivityReport() {
+      this.loading = true
+      console.log('run', this.profileInfo)
+
+      const formData = new FormData()
+      formData.append('instansi_id', this.profileInfo.data.instansi_id)
+
+      console.log('fd : ', formData)
+      try {
+        const response = await this.$store.dispatch(
+          'Dashboard/organization/getEskulActivityReport',
+          formData
+        )
+
+        this.activities = response.data
+        console.log('ACTV : ', this.activities)
+      } catch (e) {
+        // alert(e.message)
+        console.log(e)
+      }
+
+      this.loading = false
     },
   },
 }

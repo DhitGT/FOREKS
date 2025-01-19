@@ -152,6 +152,24 @@ export default {
       }
     }
   },
+  async getEskulActivityReport(_, payload) {
+    try {
+      console.log("EXECUTED")
+      const data = await this.$axios.$post(
+        "/dashboard/i/getEskulActivityReport", payload
+      );
+      return {
+        status: true,
+        message: data.message,
+        data: data,
+      };
+    } catch (e) {
+      return {
+        status: false,
+        message: e?.message,
+      }
+    }
+  },
   async getEskulMembers(_, page = 1) {
     try {
       const data = await this.$axios.$get(

@@ -7,20 +7,20 @@
         <p class="text-2xl md:text-6xl font-bold">{{ formatRp(kas?.total) }}</p>
       </div>
       <div class="flex flex-col md:flex-row items-center justify-evenly">
-        <div
+        <!-- <div
           class="flex gap-2 items-center cursor-pointer hover:text-white text-gray-300"
           @click="showModal('income')"
         >
           <v-icon>mdi-plus</v-icon>
           <div>Income</div>
-        </div>
-        <div
+        </div> -->
+        <!-- <div
           class="flex gap-2 items-center cursor-pointer hover:text-white text-gray-300"
           @click="showModal('expense')"
         >
           <v-icon>mdi-plus</v-icon>
           <div>Expense</div>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -120,14 +120,14 @@ export default {
     }
   },
   async mounted() {
-    await this.getProfileInfo()
+    // await this.getProfileInfo()
     await this.getKas()
   },
   methods: {
     async getProfileInfo() {
       this.loading = true
       const { data } = await this.$store.dispatch(
-        'Dashboard/organization/getProfileInfo'
+        'Dashboard/instansi/getProfileInfo'
       )
       this.profileInfo = data
       this.loading = false
@@ -138,47 +138,48 @@ export default {
         currency: 'IDR',
       }).format(amount)
     },
-    showModal(type) {
-      this.modalType = type
-      this.isModalVisible = true
-    },
-    closeModal() {
-      this.isModalVisible = false
-      this.modalData = {
-        amount: '',
-        description: '',
-      }
-    },
+    // showModal(type) {
+    //   this.modalType = type
+    //   this.isModalVisible = true
+    // },
+    // closeModal() {
+    //   this.isModalVisible = false
+    //   this.modalData = {
+    //     amount: '',
+    //     description: '',
+    //   }
+    // },
 
-    async submitData() {
-      // Handle data submission logic here
-      console.log(this.modalType, this.modalData)
+    // async submitData() {
+    //   // Handle data submission logic here
+    //   console.log(this.modalType, this.modalData)
 
-      const formData = new FormData()
-      formData.append('eskul_id', this.profileInfo.data.eskul_id)
-      formData.append('amount', this.modalData.amount)
-      formData.append('flag', this.modalType)
-      formData.append('description', this.modalData.description)
-      const { data } = await this.$store.dispatch(
-        'Dashboard/organization/kas/storeKas',
-        formData
-      )
+    //   const formData = new FormData()
+    //   formData.append('eskul_id', this.profileInfo.data.eskul_id)
+    //   formData.append('amount', this.modalData.amount)
+    //   formData.append('flag', this.modalType)
+    //   formData.append('description', this.modalData.description)
+    //   const { data } = await this.$store.dispatch(
+    //     'Dashboard/organization/kas/storeKas',
+    //     formData
+    //   )
 
-      await this.getKas()
-      this.closeModal()
-    },
+    //   await this.getKas()
+    //   this.closeModal()
+    // },
 
     async getKas() {
       this.loading = true
-      let eskulId = this.profileInfo.data.eskul_id
+      let eskulId = ''
       console.log('eskul id : ', eskulId)
       const formData = new FormData()
-      formData.append('eskul_id',eskulId)
-      formData.append('flag','all')
-      formData.append('cdn','')
+      formData.append('eskul_id', eskulId)
+      formData.append('flag', 'all')
+      formData.append('cdn', this.$route.params.eskul)
 
       const { data } = await this.$store.dispatch(
-        'Dashboard/organization/kas/getEskulKas',formData
+        'Dashboard/organization/kas/getEskulKas',
+        formData
       )
       if (data.data != {}) {
         this.kas = data.data.kas

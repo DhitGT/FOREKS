@@ -5,7 +5,7 @@
       @click="toggleSidebar"
       class="inline-flex items-center p-2 mt-2 ml-3 text-gray-300 rounded-lg sm:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600"
     >
-      <i class="mdi mdi-menu text-2xl"></i>
+      <i class="text-white mdi mdi-menu text-2xl"></i>
     </button>
 
     <!-- Sidebar -->
@@ -22,9 +22,18 @@
             @click="toggleSidebar"
             class="inline-flex items-center p-2 ml-3 text-gray-300 rounded-lg sm:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600"
           >
-            <i class="mdi mdi-close text-2xl"></i>
+            <i class="text-white mdi mdi-close text-2xl"></i>
           </button>
-          <div class="text-2xl font-bold text-gray-300">Dashboard</div>
+          <div class="flex flex-col">
+            <img
+              src="/assets/img/foresk white.png"
+              class="w-16"
+              alt="Foresk Logo"
+            />
+            <div class="text-2xl font-bold text-gray-300">
+              Intansi Dashboard
+            </div>
+          </div>
         </div>
         <ul class="space-y-2">
           <li>
@@ -32,26 +41,34 @@
               to="/dashboard/o"
               class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
             >
-              <i class="mdi mdi-home-outline text-xl"></i>
-              <span class="ml-3">Dashboard</span>
+              <i class="text-white mdi mdi-home-outline text-xl"></i>
+              <span class="text-white ml-3">Dashboard</span>
             </nuxt-link>
           </li>
-          <li v-if="profileInfo?.data?.web_pages?.custom_domain_name">
+          <li>
             <nuxt-link
+              v-if="profileInfo?.data?.web_pages?.custom_domain_name"
               :to="`/i/${profileInfo?.data?.instansi.instansi_web_page.custom_domain_name}/${profileInfo?.data?.web_pages?.custom_domain_name}`"
               class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
             >
-              <i class="mdi mdi-card-outline text-xl"></i>
-              <span class="ml-3">Web Profile</span>
+              <i class="text-white mdi mdi-card-outline text-xl"></i>
+              <span class="text-white ml-3">Web Profile</span>
             </nuxt-link>
+            <div
+              v-else
+              class="flex items-center p-2 text-gray-600 cursor-progress rounded-lg hover:bg-gray-700"
+            >
+              <i class="text-gray-500 mdi mdi-card-outline text-xl"></i>
+              <span class="text-gray-500 ml-3">Web Profile</span>
+            </div>
           </li>
           <li>
             <nuxt-link
               to="/dashboard/o/webprofile"
               class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
             >
-              <i class="mdi mdi-pencil-outline text-xl"></i>
-              <span class="ml-3">Edit Web Profile</span>
+              <i class="text-white mdi mdi-pencil-outline text-xl"></i>
+              <span class="text-white ml-3">Edit Web Profile</span>
             </nuxt-link>
           </li>
           <li>
@@ -59,9 +76,11 @@
               to="/dashboard/o/members"
               class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
             >
-              <i class="mdi mdi-account-multiple-outline text-xl"></i>
+              <i
+                class="text-white mdi mdi-account-multiple-outline text-xl"
+              ></i>
               <!-- Members Icon -->
-              <span class="ml-3">Members</span>
+              <span class="text-white ml-3">Members</span>
             </nuxt-link>
           </li>
           <li>
@@ -69,9 +88,9 @@
               to="/dashboard/o/reportActivity"
               class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
             >
-              <i class="mdi mdi-note-text text-xl"></i>
+              <i class="text-white mdi mdi-note-text text-xl"></i>
               <!-- Activity Report Icon -->
-              <span class="ml-3">Activity Report</span>
+              <span class="text-white ml-3">Activity Report</span>
             </nuxt-link>
           </li>
           <li>
@@ -79,9 +98,9 @@
               to="/dashboard/o/absent"
               class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
             >
-              <i class="mdi mdi-calendar-check text-xl"></i>
+              <i class="text-white mdi mdi-calendar-check text-xl"></i>
               <!-- Absent Icon -->
-              <span class="ml-3">Absent</span>
+              <span class="text-white ml-3">Absent</span>
             </nuxt-link>
           </li>
           <li>
@@ -89,9 +108,9 @@
               to="/dashboard/o/kas"
               class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
             >
-              <i class="mdi mdi-cash-multiple text-xl"></i>
+              <i class="text-white mdi mdi-cash-multiple text-xl"></i>
               <!-- Kas (Cash) Icon -->
-              <span class="ml-3">Kas</span>
+              <span class="text-white ml-3">Kas</span>
             </nuxt-link>
           </li>
 
@@ -100,8 +119,8 @@
               @click="handleLogout"
               class="flex cursor-pointer items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
             >
-              <i class="mdi mdi-logout text-xl"></i>
-              <span class="ml-3">Logout</span>
+              <i class="text-white mdi mdi-logout text-xl"></i>
+              <span class="text-white ml-3">Logout</span>
             </div>
           </li>
         </ul>
