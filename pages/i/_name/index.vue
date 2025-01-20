@@ -62,7 +62,7 @@
               profileInfo && profileInfo.data && profileInfo.data?.description
             "
           ></div>
-
+          <!--
           <div class="max-h-14 items-center w-full flex gap-4">
             <v-btn v-if="!profileInfo.isOwner" color="blue" class="px-8"
               >Follow</v-btn
@@ -70,7 +70,7 @@
             <v-btn v-else color="green" @click="goToDashboard"
               >Go To Dashboard</v-btn
             >
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -97,7 +97,7 @@
             <div v-for="(org, index) in eskulInstansiList" :key="index">
               <div
                 @click="cardclick(org)"
-                class="bg-white cursor-pointer rounded-lg shadow-lg min-h-full hover:shadow-xl transition-shadow"
+                class="bg-gray-700 cursor-pointer rounded-lg shadow-lg min-h-full hover:shadow-xl transition-shadow"
               >
                 <img
                   :src="'http://localhost:8000/storage/' + org.logo"
@@ -105,10 +105,10 @@
                   class="w-full rounded-lg h-44 mx-auto object-cover"
                 />
                 <div class="px-5">
-                  <h3 class="text-lg text-gray-900 font-semibold text-start">
+                  <h3 class="text-lg text-gray-100 font-semibold text-start">
                     {{ org.name }}
                   </h3>
-                  <p class="text-sm text-gray-600 text-start">
+                  <p class="text-sm text-gray-100 text-start">
                     {{ org.description }}
                   </p>
                 </div>

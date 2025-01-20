@@ -27,7 +27,7 @@
               :src="
                 'http://localhost:8000/storage/' + currentStory?.eskul?.logo
               "
-              class="w-10 rounded-full"
+              class="aspect-1/1 h-10 rounded-full"
             />
             {{ currentStory?.eskul?.web_pages?.navbar_title }}
           </div>
@@ -50,7 +50,12 @@
           <a
             @click="
               {
-                $router.push('/dashboard/i/absent/' + currentStory?.absent_code)
+                $router.push(
+                  '/dashboard/i/absent/' +
+                    currentStory?.eskul?.web_pages?.custom_domain_name +
+                    '/' +
+                    currentStory?.absent_code
+                )
               }
             "
             >Absent</a

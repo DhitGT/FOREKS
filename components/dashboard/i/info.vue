@@ -155,13 +155,13 @@
           >
             <button
               @click="hrefToWebPage()"
-              class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              class="py-2 px-4 ms-2 text-sm font-medium focus:outline-none rounded-lg border focus:z-10 focus:ring-4 focus:ring-gray-700 bg-gray-800 text-gray-400 border-gray-600 hover:text-white hover:bg-gray-700"
             >
               View WebPage
             </button>
             <button
               @click="openModal"
-              class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+              class="py-2 px-4 ms-2 text-sm font-medium focus:outline-none rounded-lg border focus:z-10 focus:ring-4 focus:ring-gray-700 bg-gray-800 text-gray-400 border-gray-600 hover:text-white hover:bg-gray-700"
             >
               Edit Web
             </button>
@@ -181,7 +181,7 @@
         class="w-full bg-gray-800 border border-gray-900 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
       >
         <ul
-          class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-700 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800"
+          class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-800 rounded-t-lg bg-gray-700 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800"
           role="tablist"
         >
           <li class="me-2">
@@ -192,13 +192,13 @@
               role="tab"
               aria-controls="about"
               aria-selected="true"
-              class="inline-block p-4 text-blue-600 rounded-ss-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-blue-500"
+              class="inline-block p-4 bg-gray-700 text-blue-500"
               onclick="showTab(event, 'about')"
             >
               About
             </button>
           </li>
-          <li class="me-2">
+          <!-- <li class="me-2">
             <button
               id="statistic-tab"
               data-tabs-target="#statistic"
@@ -211,7 +211,7 @@
             >
               Charts
             </button>
-          </li>
+          </li> -->
         </ul>
         <div
           id="defaultTabContent"
@@ -250,7 +250,7 @@
                   }}
                 </p>
               </div>
-              <div>
+              <!-- <div>
                 <p class="text-xl font-bold text-gray-200">
                   Followers:
                   {{
@@ -259,7 +259,7 @@
                     profileInfo?.data?.total_followers
                   }}
                 </p>
-              </div>
+              </div> -->
             </div>
             <div
               class="mb-3 max-h-28 overflow-y-scroll overflow-x-hidden text-gray-100 dark:text-gray-400"

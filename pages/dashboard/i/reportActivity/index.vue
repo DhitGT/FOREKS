@@ -1,6 +1,6 @@
 <template>
   <div class="px-8">
-    <p class="text-2xl font-bold">Eskul Absent</p>
+    <p class="text-2xl font-bold">Eskul Report Activity</p>
     <div
       v-if="!loading"
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
@@ -11,7 +11,7 @@
       <div
         v-for="item in eskulInstansiList"
         :key="item?.id"
-        @click="goToAbsentPage(item)"
+        @click="goToKasPage(item)"
         class="bg-gray-700 rounded-lg p-4 shadow-lg hover:bg-gray-800 cursor-pointer"
       >
         <div>
@@ -61,7 +61,7 @@ export default {
       this.loading = false
       console.log('eskul instansi :', this.eskulInstansiList)
     },
-    goToAbsentPage(item) {
+    goToKasPage(item) {
       if (item?.custom_domain_name) {
         this.$router.push(
           `${this.$router.currentRoute.path}/${item.custom_domain_name}`

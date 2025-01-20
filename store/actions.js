@@ -145,6 +145,17 @@ export default {
       console.log("errror : ", error)
     }
   },
+  async deleteUser({ commit, state }, formData) {
+    try {
+      const data = await this.$axios.$post("/dashboard/i/deleteUser", formData)
+
+      console.log(data)
+      return data
+
+    } catch (error) {
+      console.log("errror : ", error)
+    }
+  },
   async getAppStats({ commit, state }, formData) {
     try {
       const data = await this.$axios.$get("/apps/getAppStats", formData)

@@ -8,16 +8,18 @@
       class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50"
     >
       <div
-        class="bg-white rounded-lg max-h-[80vh] shadow-lg w-11/12 max-w-lg overflow-y-scroll"
+        class="bg-gray-600 rounded-lg max-h-[80vh] shadow-lg w-11/12 max-w-lg overflow-y-scroll"
       >
         <!-- Modal Header -->
-        <div class="flex justify-between items-center p-4 border-b">
-          <h2 class="text-lg font-medium text-gray-800">
+        <div
+          class="flex justify-between items-center p-4 border-gray-900 border-b"
+        >
+          <h2 class="text-lg font-medium text-gray-100">
             {{ isEditMode ? 'Edit' : 'Create' }} Organization
           </h2>
           <button
             @click="closeModal"
-            class="text-gray-600 hover:text-gray-900 focus:outline-none"
+            class="text-gray-200 hover:text-gray-100 focus:outline-none"
           >
             ✕
           </button>
@@ -27,7 +29,7 @@
         <div class="p-4">
           <form @submit.prevent="submitForm">
             <div class="mb-4">
-              <label for="name" class="block text-gray-700 font-medium mb-2"
+              <label for="name" class="block text-gray-200 font-medium mb-2"
                 >Name</label
               >
               <input
@@ -35,12 +37,12 @@
                 type="text"
                 id="name"
                 placeholder="Enter name"
-                class="w-full bg-gray-100 text-gray-700 px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                class="w-full bg-gray-700 px-3 py-2 border-gray-900 border rounded-md focus:outline-none text-white focus:ring focus:ring-blue-300"
               />
             </div>
 
             <div class="mb-4">
-              <label for="logo" class="block text-gray-700 font-medium mb-2"
+              <label for="logo" class="block text-gray-200 font-medium mb-2"
                 >Logo</label
               >
               <input
@@ -49,18 +51,20 @@
                 @change="handleFileUpload"
                 accept="image/*"
                 placeholder="Enter logo URL"
-                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                class="w-full px-3 py-2 border-gray-900 border rounded-md focus:outline-none bg-gray-700 text-white focus:ring focus:ring-blue-300"
               />
             </div>
             <div class="mb-4">
               <label
                 for="custom_domain_name"
-                class="block mb-1 text-gray-700 text-sm font-medium"
+                class="block mb-1 text-gray-200 text-sm font-medium"
               >
                 Custom Domain Name
               </label>
-              <div class="flex items-center border border-gray-300 rounded-lg">
-                <span class="ps-3 text-gray-500"
+              <div
+                class="flex items-center bg-gray-700 border-gray-800 border rounded-lg"
+              >
+                <span class="ps-3 text-gray-300"
                   >http://localhost:3000/i/{{
                     profileInfo.data.custom_domain_name
                   }}/</span
@@ -68,7 +72,7 @@
                 <input
                   type="text"
                   id="custom_domain_name"
-                  class="text-white bg-transparent border-none focus:ring-0 p-2"
+                  class="text-white bg-transparent border-gray-900 border-none focus:ring-0 p-2"
                   v-model="form.custom_domain_name"
                   required
                 />
@@ -86,14 +90,14 @@
                   id="badge-name"
                   type="text"
                   placeholder="Enter badge name"
-                  class="w-full p-2 border rounded-lg text-gray-900"
+                  class="w-full p-2 border-gray-900 border bg-gray-700 rounded-lg text-gray-100"
                 />
                 <!-- Input for Badge Color -->
                 <input
                   v-model="badgeInput.color"
                   id="badge-color"
                   type="color"
-                  class="w-12 h-12 p-0 border-2 border-gray-300 rounded-full"
+                  class="w-12 h-12 p-0 border-gray-900 border rounded-full"
                 />
                 <!-- Add Button -->
                 <button
@@ -110,7 +114,7 @@
                 <span
                   v-for="(badge, index) in form.badge"
                   :key="index"
-                  class="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg"
+                  class="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-200 bg-gray-700 rounded-lg"
                   :style="{ backgroundColor: badge.color }"
                 >
                   {{ badge.name }}
@@ -126,7 +130,7 @@
             </div>
 
             <div class="mb-4">
-              <label for="gen" class="block text-gray-700 font-medium mb-2"
+              <label for="gen" class="block text-gray-200 font-medium mb-2"
                 >Generation</label
               >
               <input
@@ -134,12 +138,12 @@
                 type="text"
                 id="gen"
                 placeholder="Enter generation"
-                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                class="w-full px-3 py-2 border-gray-900 border rounded-md focus:outline-none bg-gray-700 text-white focus:ring focus:ring-blue-300"
               />
             </div>
 
             <div class="mb-4">
-              <label for="alumni" class="block text-gray-700 font-medium mb-2"
+              <label for="alumni" class="block text-gray-200 font-medium mb-2"
                 >Alumni</label
               >
               <input
@@ -147,14 +151,14 @@
                 type="number"
                 id="alumni"
                 placeholder="Enter alumni count"
-                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                class="w-full px-3 py-2 border-gray-900 border rounded-md focus:outline-none bg-gray-700 text-white focus:ring focus:ring-blue-300"
               />
             </div>
 
             <div class="mb-4">
               <label
                 for="instagram_url"
-                class="block text-gray-700 font-medium mb-2"
+                class="block text-gray-200 font-medium mb-2"
                 >Instagram URL</label
               >
               <input
@@ -162,14 +166,14 @@
                 type="url"
                 id="instagram_url"
                 placeholder="Enter Instagram URL"
-                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                class="w-full px-3 py-2 border-gray-900 border rounded-md focus:outline-none bg-gray-700 text-white focus:ring focus:ring-blue-300"
               />
             </div>
 
             <div class="mb-4">
               <label
                 for="whatsapp_number"
-                class="block text-gray-700 font-medium mb-2"
+                class="block text-gray-200 font-medium mb-2"
                 >WhatsApp Number</label
               >
               <input
@@ -177,7 +181,7 @@
                 type="text"
                 id="whatsapp_number"
                 placeholder="Enter WhatsApp number"
-                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
+                class="w-full px-3 py-2 border-gray-900 border rounded-md focus:outline-none bg-gray-700 text-white focus:ring focus:ring-blue-300"
               />
             </div>
 
@@ -186,7 +190,7 @@
               <button
                 type="button"
                 @click="closeModal"
-                class="bg-gray-300 text-gray-700 px-4 py-2 rounded mr-2 hover:bg-gray-400"
+                class="bg-gray-800 text-gray-200 px-4 py-2 rounded mr-2 hover:bg-gray-400"
               >
                 Cancel
               </button>
@@ -332,6 +336,6 @@ export default {
 <style scoped>
 /* Optional: Add styles for smoother modal transitions */
 input {
-  color: black;
+  color: white;
 }
 </style>

@@ -12,7 +12,7 @@
         class="bg-gray-700 rounded-lg p-4 shadow-lg hover:bg-gray-800 cursor-pointer"
       >
         <h3 class="text-lg font-bold">
-          {{ item?.eskul_report_activity.title }}
+          {{ item?.eskul_report_activity?.title }}
         </h3>
         <p><strong>Absent Code:</strong> {{ item?.absent_code }}</p>
         <p>

@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  layout: 'dashboardLayout', // Specify the layout to use
+  layout: 'dashboardiLayout', // Specify the layout to use
   data() {
     return {
       absens: [],

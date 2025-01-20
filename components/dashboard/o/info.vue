@@ -32,7 +32,7 @@
             </button>
             <button
               @click="hrefEditWeb"
-              class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+              class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-gray-700 rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
             >
               Edit Web
             </button>
@@ -99,7 +99,7 @@
             </h2>
 
             <div class="flex justify-start gap-6">
-              <div>
+              <!-- <div>
                 <p class="text-xl font-bold text-gray-100">
                   Achivement:
                   {{
@@ -108,7 +108,7 @@
                     profileInfo.data?.total_organization
                   }}
                 </p>
-              </div>
+              </div> -->
               <div>
                 <p class="text-xl font-bold text-gray-100">
                   All Member:
@@ -123,9 +123,11 @@
                 <p class="text-xl font-bold text-gray-100">
                   Kas:
                   {{
-                    profileInfo &&
-                    profileInfo.data &&
-                    profileInfo.data?.total_followers
+                    formatRp(
+                      profileInfo &&
+                        profileInfo.data &&
+                        profileInfo.data?.kas?.total
+                    )
                   }}
                 </p>
               </div>
@@ -232,6 +234,12 @@ export default {
     },
   },
   methods: {
+    formatRp(amount = 0) {
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+      }).format(amount)
+    },
     hrefEditWeb() {
       this.$router.push(`/dashboard/o/webprofile`)
     },

@@ -1,12 +1,12 @@
 <template>
   <div>
-    <dashboard-o-eskul-report-activities />
+    <dashboard-i-eskul-report-activities />
   </div>
 </template>
 
 <script>
 export default {
-  layout: 'dashboardLayout', // Specify the layout to use
+  layout: 'dashboardiLayout', // Specify the layout to use
   data() {
     return {}
   },

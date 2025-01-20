@@ -27,6 +27,34 @@ export default {
       }
     }
   },
+  async getChartData(_) {
+    try {
+      // console.log("STATE TOKEN action: ", this.$store.state.token)
+
+      const data = await this.$axios.$get(
+        "/dashboard/i/getChartData"
+      );
+      return {
+        status: true,
+        message: "Berhasil mendapatkan data",
+        data: data,
+      };
+    } catch (e) {
+      if (e.message.toLowerCase().includes("network")) {
+        return {
+          status: false,
+          message: "Koneksi bermasalah, silakan cek koneksi internet.",
+        };
+      } else {
+        const { errors, message } = e.response.data;
+        return {
+          status: false,
+          errors,
+          message,
+        };
+      }
+    }
+  },
   async getProfileInfo(_) {
     try {
       // console.log("STATE TOKEN action: ", this.$store.state.token)

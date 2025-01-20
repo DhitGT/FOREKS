@@ -168,21 +168,41 @@ export default {
       this.showModal = false
       this.fetchMembers()
     },
-    editMember(member) {
+    async editMember(member) {
       this.isEditing = true
       this.currentMemberId = member.id
       this.form.name = member.name
       this.form.gen = member.gen
+
       this.showModal = true
     },
-    updateMember() {
+    async updateMember() {
       // Update logic here
+      let formData = new FormData()
+      formData.append('name', this.form.name)
+      formData.append('gen', this.form.gen)
+      formData.append('id', this.currentMemberId)
+
+      await this.$store.dispatch(
+        'Dashboard/organization/editEskulMember',
+        formData
+      )
+
+      console.log('UPDATEE')
       this.resetForm()
+      await this.fetchMembers()
       this.showModal = false
-      this.fetchMembers()
     },
-    deleteMember(id) {
+    async deleteMember(id) {
       // Delete logic here
+      let formData = new FormData()
+      formData.append('id', id)
+
+      await this.$store.dispatch(
+        'Dashboard/organization/deleteEskulMember',
+        formData
+      )
+
       this.fetchMembers()
     },
     resetForm() {

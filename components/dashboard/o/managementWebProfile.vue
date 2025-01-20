@@ -1,12 +1,12 @@
 <template>
   <div class="container flex flex-col gap-4">
-    <div class="p-4 bg-white rounded-lg shadow-lg">
+    <div class="p-4 bg-gray-700 rounded-lg shadow-lg">
       <div class="section">
-        <p class="text-xl font-bold text-gray-800">Header</p>
+        <p class="text-xl font-bold text-gray-100">Header</p>
       </div>
       <div class="flex flex-col gap-4">
         <div>
-          <label for="" class="text-gray-800"> Ekstrakurikuler Logo </label>
+          <label for="" class="text-gray-100"> Ekstrakurikuler Logo </label>
           <div class="flex gap-4">
             <v-avatar class="w-20">
               <img
@@ -28,7 +28,7 @@
           </div>
         </div>
         <div class="flex flex-col gap 4">
-          <label for="" class="text-gray-800">
+          <label for="" class="text-gray-100">
             Ekstrakurikuler Slogan Name
           </label>
           <input
@@ -53,13 +53,13 @@
         </div>
       </div>
     </div>
-    <div class="p-4 bg-white rounded-lg shadow-lg">
+    <div class="p-4 bg-gray-700 rounded-lg shadow-lg">
       <div class="section">
-        <p class="text-xl font-bold text-gray-800">Jumbotron</p>
+        <p class="text-xl font-bold text-gray-100">Jumbotron</p>
       </div>
       <div class="flex flex-col gap-4">
         <div>
-          <label for="" class="text-gray-800"> Background Image </label>
+          <label for="" class="text-gray-100"> Background Image </label>
           <div class="flex gap-4">
             <input
               accept="image/*"
@@ -70,7 +70,7 @@
           </div>
         </div>
         <div class="flex flex-col gap 4">
-          <label for="" class="text-gray-800"> Jumbotron Title </label>
+          <label for="" class="text-gray-100"> Jumbotron Title </label>
           <input
             type="text"
             v-model="preview.jumbotron.title"
@@ -78,7 +78,7 @@
           />
         </div>
         <div class="flex flex-col gap 4">
-          <label for="" class="text-gray-800"> Jumbotron SubTitle </label>
+          <label for="" class="text-gray-100"> Jumbotron SubTitle </label>
           <input
             type="text"
             v-model="preview.jumbotron.subtitle"
@@ -93,7 +93,7 @@
               v-model="preview.jumbotron.isFormRegister"
               class="w-4 h-4 text-blue-600 bg-gray-600 rounded"
             />
-            <label for="" class="text-gray-800">
+            <label for="" class="text-gray-100">
               Member Registration Form Links
             </label>
           </div>
@@ -123,13 +123,13 @@
         />
       </div>
     </div>
-    <div class="p-4 bg-white rounded-lg shadow-lg">
+    <div class="p-4 bg-gray-700 rounded-lg shadow-lg">
       <div class="section">
-        <p class="text-xl font-bold text-gray-800">About Us</p>
+        <p class="text-xl font-bold text-gray-100">About Us</p>
       </div>
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap 4">
-          <label for="" class="text-gray-800"> Content </label>
+          <label for="" class="text-gray-100"> Content </label>
           <quill-editor
             class="text-black"
             v-model="preview.aboutUs"
@@ -153,13 +153,13 @@
         />
       </div>
     </div>
-    <div class="p-4 bg-white rounded-lg shadow-lg">
+    <div class="p-4 bg-gray-700 rounded-lg shadow-lg">
       <div class="section">
-        <p class="text-xl font-bold text-gray-800">Activities</p>
+        <p class="text-xl font-bold text-gray-100">Activities</p>
       </div>
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap 4">
-          <label for="" class="text-gray-800"> Activities Description </label>
+          <label for="" class="text-gray-100"> Activities Description </label>
           <quill-editor
             class="text-black"
             v-model="preview.activities.activities_desc"
@@ -190,11 +190,11 @@
                 <tr
                   v-for="(item, i) in preview.activities.web_page_activities"
                   :key="i"
-                  class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                  class="bg-gray-700 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                 >
                   <td
                     scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    class="px-6 py-4 font-medium text-gray-100 whitespace-nowrap dark:text-white"
                   >
                     <div class="flex gap-4 items-center">
                       <v-avatar
@@ -209,7 +209,7 @@
                   </td>
                   <td
                     scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    class="px-6 py-4 font-medium text-gray-100 whitespace-nowrap dark:text-white"
                   >
                     <div class="flex gap-4 items-center">
                       {{ item.gen }}
@@ -217,7 +217,7 @@
                   </td>
                   <td
                     scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    class="px-6 py-4 font-medium text-gray-100 whitespace-nowrap dark:text-white"
                   >
                     <div class="flex gap-4 items-center">
                       {{ item.location }}
@@ -225,7 +225,7 @@
                   </td>
                   <td
                     scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    class="px-6 py-4 font-medium text-gray-100 whitespace-nowrap dark:text-white"
                   >
                     <div class="flex gap-4 items-center">
                       {{ item.date }}
@@ -480,23 +480,23 @@
         />
       </div>
     </div>
-    <!-- <div class="p-4 bg-white rounded-lg shadow-lg">
+    <!-- <div class="p-4 bg-gray-700 rounded-lg shadow-lg">
       <div class="section">
-        <p class="text-xl font-bold text-gray-800">Member Lists</p>
+        <p class="text-xl font-bold text-gray-100">Member Lists</p>
       </div>
       <div class="flex flex-col gap-4">
         <div>
-          <label for="" class="text-gray-800"> Member List </label>
+          <label for="" class="text-gray-100"> Member List </label>
           <div class="flex justify-start gap-4">
             <form class="max-w-sm">
               <label
                 for="countries"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-100 dark:text-white"
                 >Select User Data</label
               >
               <select
                 id="countries"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option selected>Choose a country</option>
                 <option value="US">United States</option>
@@ -517,9 +517,9 @@
         <organization-member-list />
       </div>
     </div> -->
-    <div class="p-4 bg-white rounded-lg shadow-lg">
+    <div class="p-4 bg-gray-700 rounded-lg shadow-lg">
       <div class="section">
-        <p class="text-xl font-bold text-gray-800">Gallery</p>
+        <p class="text-xl font-bold text-gray-100">Gallery</p>
       </div>
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-4 mt-4">

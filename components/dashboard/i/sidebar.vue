@@ -47,8 +47,8 @@
           </li>
           <li>
             <nuxt-link
-              v-if="profileInfo?.data?.web_pages?.custom_domain_name"
-              :to="`/i/${profileInfo?.data?.instansi.instansi_web_page.custom_domain_name}/${profileInfo?.data?.web_pages?.custom_domain_name}`"
+              v-if="profileInfo?.data?.custom_domain_name"
+              :to="`/i/${profileInfo?.data?.custom_domain_name}`"
               class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
             >
               <i class="text-white mdi mdi-card-outline text-xl"></i>
@@ -62,19 +62,7 @@
               <span class="text-gray-500 ml-3">Web Profile</span>
             </div>
           </li>
-         
-          <li>
-            <nuxt-link
-              to="/dashboard/i/members"
-              class="flex items-center p-2 text-gray-300 rounded-lg hover:bg-gray-700"
-            >
-              <i
-                class="text-white mdi mdi-account-multiple-outline text-xl"
-              ></i>
-              <!-- Members Icon -->
-              <span class="text-white ml-3">Members</span>
-            </nuxt-link>
-          </li>
+
           <li>
             <nuxt-link
               to="/dashboard/i/reportActivity"

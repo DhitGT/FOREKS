@@ -14,7 +14,7 @@
             <p class="text-gray-600">Theres No Eskul Activity For Now</p>
           </div>
         </div>
-        <hr />
+
         <p class="text-2xl font-bold">Profile</p>
         <dashboard-i-info
           :profileInfo="profileInfo"
@@ -23,7 +23,6 @@
         />
 
         <div v-if="profileInfo.data?.custom_domain_name != null">
-          <hr />
           <div>
             <p class="text-2xl font-bold">Organization</p>
           </div>
@@ -32,25 +31,25 @@
               <div class="max-w-full mx-auto">
                 <label
                   for="default-search"
-                  class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+                  class="mb-2 text-sm font-medium text-gray-100 bg-gray-800 sr-only"
                   >Search</label
                 >
                 <div class="relative">
                   <div
                     class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                   >
-                    <v-icon color="black">mdi-magnify</v-icon>
+                    <v-icon color="white">mdi-magnify</v-icon>
                   </div>
                   <input
                     type="search"
                     v-model="eskulSearchQuery"
                     id="default-search"
-                    class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="block w-full p-4 ps-10 rounded-lg text-sm bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search"
                   />
                   <button
                     @click="getEskulInstansi"
-                    class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    class="text-white absolute end-2.5 bottom-2.5 font-medium rounded-lg text-sm px-4 py-2 bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
                   >
                     Search
                   </button>
@@ -67,7 +66,7 @@
               />
               <button
                 @click="showNewEskulModal"
-                class="block w-full h-12 px-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="block w-full h-12 px-4 text-sm rounded-lg bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
               >
                 + New
               </button>
@@ -78,21 +77,21 @@
             <button
               @click="viewMode = 'list'"
               :class="viewMode === 'list' ? 'font-bold underline' : ''"
-              class="text-gray-600 hover:text-gray-800"
+              class="text-gray-100 hover:text-gray-400"
             >
               List View
             </button>
             <button
               @click="viewMode = 'table'"
               :class="viewMode === 'table' ? 'font-bold underline' : ''"
-              class="text-gray-600 hover:text-gray-800"
+              class="text-gray-100 hover:text-gray-400"
             >
               Table View
             </button>
             <button
               @click="viewMode = 'trash'"
               :class="viewMode === 'trash' ? 'font-bold underline' : ''"
-              class="text-gray-600 hover:text-gray-800"
+              class="text-gray-100 hover:text-gray-400"
             >
               Trash
             </button>
@@ -122,12 +121,12 @@
               @handleTrash="handleTrash"
             />
           </div>
-          <hr />
+
           <div>
             <p class="text-2xl font-bold">User Management</p>
           </div>
           <dashboard-i-user-management :eskulInstansiList="eskulInstansiList" />
-          <hr />
+
           <div>
             <p class="text-2xl font-bold">Charts</p>
           </div>
@@ -197,6 +196,7 @@ export default {
       this.profileInfo = data
       this.loading = false
     },
+
 
     async handleTrash(item) {
       this.loading = true

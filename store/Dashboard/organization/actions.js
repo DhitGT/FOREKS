@@ -192,6 +192,44 @@ export default {
       }
     }
   },
+  async editEskulMember(_, payload) {
+    try {
+      const data = await this.$axios.$post(
+        "/dashboard/o/updateEskulMember",
+        payload
+
+      );
+
+      return {
+        status: true,
+        data: data,
+      };
+    } catch (e) {
+      return {
+        status: false,
+        message: e?.message,
+      }
+    }
+  },
+  async deleteEskulMember(_, payload) {
+    try {
+      const data = await this.$axios.$post(
+        "/dashboard/o/deleteEskulMember",
+        payload
+
+      );
+
+      return {
+        status: true,
+        data: data,
+      };
+    } catch (e) {
+      return {
+        status: false,
+        message: e?.message,
+      }
+    }
+  },
   async storeEskulMember(_, payload) {
     try {
       const { data } = await this.$axios.$post(
