@@ -30,9 +30,7 @@
               class="w-16"
               alt="Foresk Logo"
             />
-            <div class="text-2xl font-bold text-gray-300">
-              Intansi Dashboard
-            </div>
+            <div class="text-2xl font-bold text-gray-300">Organization</div>
           </div>
         </div>
         <ul class="space-y-2">

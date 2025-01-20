@@ -44,7 +44,7 @@
                   }}
                 </p>
               </div>
-              <div>
+              <!-- <div>
                 <p class="text-xl font-bold">
                   Followers:
                   {{
@@ -53,7 +53,7 @@
                     profileInfo.data?.total_followers
                   }}
                 </p>
-              </div>
+              </div> -->
             </div>
           </div>
           <div
