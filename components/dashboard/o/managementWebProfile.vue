@@ -786,27 +786,18 @@ export default {
         return
       }
 
-      // Determine the target array based on edit mode
       const targetArray = activities.isEdit
         ? activities.web_page_activities_galery
         : activities.gallery
-
-      // Ensure target array exists and index is valid
       if (!Array.isArray(targetArray) || i < 0 || i >= targetArray.length) {
         console.error('Invalid array or index:', targetArray, i)
         return
       }
-
-      // Push to deletedImages if in edit mode
       if (activities.isEdit) {
-        activities.deletedImages = activities.deletedImages || [] // Ensure deletedImages is initialized
+        activities.deletedImages = activities.deletedImages || []
         activities.deletedImages.push(targetArray[i])
       }
-
-      // Remove the image from the target array
       targetArray.splice(i, 1)
-
-      // Log updated arrays for debugging
       console.log('Updated gallery:', activities.gallery)
       console.log(
         'Updated web_page_activities_galery:',
@@ -1011,14 +1002,11 @@ export default {
       if (this.preview.navbar.slogan != '') {
         formData.append('navbar_title', this.preview.navbar.slogan)
       }
-
       const { data, message } = await this.$store.dispatch(
         'Dashboard/organization/storeNavbar',
         formData
       )
-
       console.log('store nav : ', message)
-
       this.getProfileInfo()
     },
     async storeGallery() {
@@ -1142,16 +1130,12 @@ export default {
           }
         }
       )
-
       formData.append('description', this.preview.activities.activities_desc)
-
       const { data, message } = await this.$store.dispatch(
         'Dashboard/organization/storeActivitiesDesc',
         formData
       )
-
       console.log('store nav : ', message)
-
       this.getProfileInfo()
     },
     async storeAboutUs() {
