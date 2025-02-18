@@ -22,7 +22,7 @@ export default function ({ $axios, redirect, store }) {
       // Clear user-related data if necessary
       // store.commit('auth/CLEAR_USER_DATA'); // Example mutation
       // Redirect to the login page
-      redirect('/auth/login');
+      window.location.href = '/auth/login';
     }
     return Promise.reject(error); // Ensure other errors are handled appropriately
   })

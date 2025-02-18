@@ -14,6 +14,8 @@ export default {
         CryptoJS.AES.encrypt(data.token, "token").toString()
       );
 
+
+      this.$axios.setToken(data.token, 'Bearer');
       // console.log("data login :", data)
       const baseUrl = window.location.origin; // Dynamically get the base URL
       if (data.token) {
@@ -115,10 +117,12 @@ export default {
 
       // console.log("data login :", data)
 
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      this.$axios.setToken(data.token, 'Bearer');
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
 
       const baseUrl = window.location.origin; // Dynamically get the base URL
-      if (data.token && Cookies.get("app_id")) {
+      if (data.token && Cookies.get("app_id") != '') {
         if (data.user.role === "Manager") {
           this.$router.push({ name: "dashboard-i" });
         } else if (data.user.role === "Leader") {

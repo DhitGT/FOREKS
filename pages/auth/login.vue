@@ -66,6 +66,7 @@
 import { mapState } from 'vuex'
 
 export default {
+  layout: 'default',
   computed: {
     ...mapState({
       user: (state) => state.user,
