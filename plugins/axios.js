@@ -18,7 +18,7 @@ export default function ({ $axios, redirect, store }) {
   });
   $axios.onResponseError((error) => {
     // Check if the error response status is 401
-    if (error.response && error.response.status === 401) {
+    if (error.response && error.response.status === 401 || error.response && error.response.status === 404) {
       // Clear user-related data if necessary
       // store.commit('auth/CLEAR_USER_DATA'); // Example mutation
       // Redirect to the login page
